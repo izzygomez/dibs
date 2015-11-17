@@ -5,7 +5,11 @@ var Schema = mongoose.Schema;
 
 // create a schema
 var orderSchema = new Schema({
-	// TODO define schema
+  _id: Number,
+	drink: String,
+  from: {type: Number, ref: 'User'},
+  timeStamp: Date,
+  status: Number
 });
 
 // TODO create private and public methods
