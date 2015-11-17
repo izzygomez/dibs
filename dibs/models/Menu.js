@@ -1,3 +1,6 @@
+// Main Author: Daniel Lerner
+
+
 // grab the things that we need
 var mongoose = require('mongoose');
 
@@ -5,7 +8,8 @@ var Schema = mongoose.Schema;
 
 // create a schema
 var menuSchema = new Schema({
-	// TODO define schema
+  _id: Number,
+  drinks: [{drink: String, stock: Number}]
 });
 
 // TODO create private and public methods

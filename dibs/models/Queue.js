@@ -1,11 +1,14 @@
+// Main Author: Daniel Lerner
+
+
 // grab the things that we need
 var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 
-// create a schema
 var queueSchema = new Schema({
-	// TODO define schema
+  _id: Number,
+	orders: [{type: Number, ref: 'Order'}]
 });
 
 // TODO create private and public methods
