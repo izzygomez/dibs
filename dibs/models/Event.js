@@ -5,7 +5,14 @@ var Schema = mongoose.Schema;
 
 // create a schema
 var eventSchema = new Schema({
-	// TODO define schema
+  host: {type: Number, ref: 'User'},
+  drinkLimit: Number,
+  guests: [{type: Number, ref: 'User'}],
+  menu: {type: Number, ref: 'Menu'},
+  queue: {type: Number, ref: 'Queue'},
+  title: String, 
+  startTime: Date,
+  endTime: Date
 });
 
 // TODO create private and public methods
