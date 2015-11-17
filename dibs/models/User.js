@@ -1,3 +1,5 @@
+// Main author: Brian Saavedra
+
 // grab the things that we need
 var mongoose = require('mongoose');
 
@@ -5,7 +7,11 @@ var Schema = mongoose.Schema;
 
 // create a schema
 var userSchema = new Schema({
-	// TODO define schema
+	_id: Number,
+	username: String,
+	password: String,  // Facebook Credentials, not sure if this will be needed. 
+	eventsHosting: [{type: Number, ref: 'Event'}],
+  	eventsAttending: [{type: Number, ref: 'Event'}],
 });
 
 // TODO create private and public methods
