@@ -12,9 +12,88 @@ var menuSchema = new Schema({
   drinks: [{drink: String, stock: Number}]
 });
 
-// TODO create private and public methods
-// e.g. "var f = function (...) {...}" is private;
-//      "[schema].statics.f = function (...) {...}" is public
+
+/**
+* Checks if menu exists in database
+**/
+var menuExists = function(menuID, callback)
+{
+  var exists = null;
+  Menu.findOne({_id: menuID}, function(err, menu)
+  {
+    if (menu == null)
+    {
+      exists = false
+    }
+    else
+    {
+      exists = true;
+    }
+    callback(exists);
+  });
+}
+
+/*
+* Gets list of drinks on Menu
+*/
+menuSchema.statics.getMenuDrinks = function(menuID, callback){
+	var drinks;
+	menuExists(menuID, function(exists){
+		if (exists){
+			Menu.findOne({_id: menuID}, function(err, menu){
+				if (menu == null){
+					drinks = null;
+				}
+				else{
+					drinks = menu.drinks
+				}
+				callback(drinks)
+			});
+		}
+		else {
+			callback({msg: "Invalid Menu ID"});
+		}
+	});
+}
+
+/**
+* Adds drink to Menu, updates database
+**/
+menuSchema.statics.addDrinkOrder = function(menuID, drink, callback){
+	getMenuDrinks(menuID, function(drinks){
+		drinks.push(drink)
+		Menu.update(_id: menuID, {$push: {drinks: drinks}});
+	})
+	callback(null);
+}
+
+/**
+* Updates stock of drink on menu, reports to user if out of stock
+**/
+menuSchema.statics.updateStock = function(menuID, drinkName, callback)
+{
+	var targetDrink;
+	getMenuDrinks(menuID, function(drinks){
+		drinks.forEach(function(drink)
+		{
+			if(drink.drink == drinkName){
+				targetDrink = drink
+			}
+		})
+		if (targetDrink.stock == 0){
+			callback({msg: "Sorry, we're out of that drink :("})
+		}
+		else{
+			targetDrink.stock = targetDrink.stock - 1;
+			var filtered = drinks.filter(function(drink){
+				return drink.drink != drinkName;
+			});
+			Menu.update(_id: menuID, {$push: {drinks: filtered}});
+		});
+	})
+	callback(null);
+}
+
 
 var Menu = mongoose.model('Menu', menuSchema);
 

@@ -12,13 +12,12 @@ var queueSchema = new Schema({
 });
 
 /**
-* Returns true if user stored in store, false otherwise
-* @param username: username to look up in store
+* Checks if queue exists in database
 **/
 var queueExists = function(queueID, callback)
 {
   var exists = null;
-  User.findOne({_id: queueID}, function(err, queue)
+  Queue.findOne({_id: queueID}, function(err, queue)
   {
     if (queue == null)
     {
@@ -32,6 +31,9 @@ var queueExists = function(queueID, callback)
   });
 }
 
+/*
+* Gets list of orders currently in Queue for event
+*/
 queueSchema.statics.getEventOrders = function(queueID, callback){
 	var orders;
 	queueExists(queueID, function(exists){
@@ -52,6 +54,9 @@ queueSchema.statics.getEventOrders = function(queueID, callback){
 	});
 }
 
+/**
+* Gets next drink order on Queue, updates database
+**/
 queueSchema.statics.getNextOrder = function(queueID, callback)
 {
 	getEventOrders(queueID, function(orders){
@@ -61,9 +66,13 @@ queueSchema.statics.getNextOrder = function(queueID, callback)
 	});
 }
 
-queueSchema.statics.addDrinkOrder = function(queueID, drink, callback){
+/**
+* Adds drink order to Queue, updates database
+**/
+// need a callback function in update?? peep user model
+queueSchema.statics.addDrinkOrder = function(queueID, order, callback){
 	getEventOrders(queueID, function(orders){
-		orders.push(drink)
+		orders.push(order)
 		Queue.update(_id: queueID, {$push: {orders: orders}});
 	})
 	callback(null)
