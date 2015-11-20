@@ -17,6 +17,13 @@ app.listen(process.env.PORT || '3000'); // to deploy to heroku
 // app.set('port', port);
 
 /**
+ * MongoLab setup
+ */
+var mongoose = require('mongoose');
+// Connect to either the MONGOLAB_URI or to the local database.
+mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/test');
+
+/**
  * Create HTTP server.
  */
 
@@ -26,7 +33,7 @@ var server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
+// server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
