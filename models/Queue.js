@@ -11,24 +11,6 @@ var queueSchema = new Schema({
 	orders: [{type: Number, ref: 'Order'}]
 });
 
-
-userSchema.statics.getUser = function(username, callback)
-{
-  var result;
-  User.findOne({username: username}, function(err, user)
-  {
-    if (user == null)
-    {
-      result = null;
-    }
-    else
-    {
-      result = user
-    }
-    callback(result);
-  });
-}
-
 queueSchema.statics.getEventOrders = function(queueID, callback){
 	var result;
 	Queue.findOne({_id: queueID}, function(err, queue){
@@ -41,7 +23,7 @@ queueSchema.statics.getEventOrders = function(queueID, callback){
 		callback(result)
 	});
 }
-
+// TODO: remove drink order from orders list
 queueSchema.statics.getDrinkOrder = function(orders, orderID){
 	orders.foreach(function(order, orderID){
 		if (order._id == orderID){
@@ -50,9 +32,10 @@ queueSchema.statics.getDrinkOrder = function(orders, orderID){
 	})
 }
 
-queueSchema.statics.addDrinkOrder = function(callback)
-{
+queueSchema.statics.addDrinkOrder = function(drink, callback){
 	var result;
+	Queue.create(drink)
+	callback(null)
 }
 
 // TODO create private and public methods
