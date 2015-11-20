@@ -7,9 +7,8 @@ var Schema = mongoose.Schema;
 
 // create a schema
 var userSchema = new Schema({
-	_id: Number,
-	username: String,
-	password: String,  // Facebook Credentials, not sure if this will be needed. 
+	_id: Number,					// Will be the Facebook ID assigned to the user
+	facebookCredentials = String,	// Facebook Credentials, not sure if this will be needed. 
 	eventsHosting: [{type: Number, ref: 'Event'}],
   	eventsAttending: [{type: Number, ref: 'Event'}],
 });
