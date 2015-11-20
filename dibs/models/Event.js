@@ -5,14 +5,15 @@ var Schema = mongoose.Schema;
 
 // create a schema
 var eventSchema = new Schema({
-  host: {type: Number, ref: 'User'},
-  drinkLimit: Number,
-  guests: [{type: Number, ref: 'User'}],
-  menu: {type: Number, ref: 'Menu'},
-  queue: {type: Number, ref: 'Queue'},
-  title: String, 
-  startTime: Date,
-  endTime: Date
+	_id: Number,
+	host: {type: Number, ref: 'User'},
+	drinkLimit: Number,
+	guests: [{type: Number, ref: 'User'}],
+	menu: {type: Number, ref: 'Menu'},
+	queue: {type: Number, ref: 'Queue'},
+	title: String, 
+	startTime: Date,
+	endTime: Date
 });
 
 // TODO create private and public methods
@@ -20,9 +21,9 @@ var eventSchema = new Schema({
 //      "[schema].statics.f = function (...) {...}" is public
 
 /* 
-Checks if an event exists and is registered with dibs
+Checks if an event exists in the database
 */
-var checkIfRegistered = function(eventName, callback) {
+var eventExists = function(eventName, callback) {
 	var exists = null;
 	Event.findOne({title: eventName}, function(err, thisEvent) {
 		if (err) {
@@ -34,8 +35,7 @@ var checkIfRegistered = function(eventName, callback) {
 			exists = true;
 		}
 		callback(exists);
-	})
-	// STILL HAVE TO CHECK IF REGISTERED
+	});
 }
 
 /*
@@ -43,7 +43,7 @@ Gets an event from the database
 */
 var getEvent = function(eventName, callback) {
 	var thisEvent = null;
-	checkIfRegistered(eventName, function(exists) {
+	eventExists(eventName, function(exists) {
 		if (exists) {
 			Event.findOne({title: eventName}, function(err, found) {
 				if (found === null) {
@@ -52,20 +52,30 @@ var getEvent = function(eventName, callback) {
 					thisEvent = found; 
 				}
 				callback(thisEvent);
-			})
+			});
+		} else {
+			callback({msg: 'Invalid event.'});
 		}
-	})
+	});
 }
 
 /*
 Gets an event given the title
 */
-eventSchema.statics.findByTitle = function(title, callback) {}
+eventSchema.statics.findByTitle = function(title, callback) {
+	getEvent(title, function(thisEvent) {
+		if (exists) {
+			callback(null, thisEvent);
+		} else {
+			callback({msg: 'Event does not exist or is not registered'});
+		}
+	});
+}
 
 /*
 Creates a new event and adds it to the database.
 */
-eventSchema.statics.createNewEvent = function(title, callback) {}
+eventSchema.statics.createNewEvent = function(title, start, end, guests, host, limit, callback) {}
 
 /*
 Checks if an event is currently happening
@@ -75,17 +85,32 @@ eventSchema.statics.isHappening = function(title, callback){}
 /*
 Gets the menu for an event
 */
-eventSchema.statics.getMenu = function(title, callback){}
+eventSchema.statics.getMenu = function(title, callback){
+	getEvent(title, function(thisEvent) {
+		var menu = thisEvent.menu;
+		callback(null, menu);
+	});
+}
 
 /*
 Gets the queue for an event
 */
-eventSchema.statics.getQueue = function(title, callback){}
+eventSchema.statics.getQueue = function(title, callback){
+	getEvent(title, function(thisEvent) {
+		var queue = thisEvent.queue;
+		callback(null, queue);
+	});
+}
 
 /*
 Gets the guests of an event
 */
-eventSchema.statics.getGuests = function(title, callback){}
+eventSchema.statics.getGuests = function(title, callback){
+	getEvent(title, function(thisEvent) {
+		var guests = thisEvent.guests;
+		callback(null, guests);
+	});
+}
 
 /*
 Gets the host of an event
