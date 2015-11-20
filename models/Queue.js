@@ -11,36 +11,63 @@ var queueSchema = new Schema({
 	orders: [{type: Number, ref: 'Order'}]
 });
 
+/**
+* Returns true if user stored in store, false otherwise
+* @param username: username to look up in store
+**/
+var queueExists = function(queueID, callback)
+{
+  var exists = null;
+  User.findOne({_id: queueID}, function(err, queue)
+  {
+    if (queue == null)
+    {
+      exists = false
+    }
+    else
+    {
+      exists = true;
+    }
+    callback(exists);
+  });
+}
+
 queueSchema.statics.getEventOrders = function(queueID, callback){
-	var result;
-	Queue.findOne({_id: queueID}, function(err, queue){
-		if (queue == null){
-			result = null;
+	var orders;
+	queueExists(queueID, function(exists){
+		if (exists){
+			Queue.findOne({_id: queueID}, function(err, queue){
+				if (queue == null){
+					orders = null;
+				}
+				else{
+					orders = queue.orders
+				}
+				callback(orders)
+			});
 		}
-		else{
-			result = queue.orders
+		else {
+			callback({msg: "Invalid Queue ID"});
 		}
-		callback(result)
 	});
 }
-// TODO: remove drink order from orders list
-queueSchema.statics.getDrinkOrder = function(orders, orderID){
-	orders.foreach(function(order, orderID){
-		if (order._id == orderID){
-			return order
-		}
-	})
+
+queueSchema.statics.getNextOrder = function(queueID, callback)
+{
+	getEventOrders(queueID, function(orders){
+		nextOrder = orders.shift()
+		Queue.update({_id: queueID}, {$pop: {orders: -1}});
+		callback(null, nextOrder)
+	});
 }
 
-queueSchema.statics.addDrinkOrder = function(drink, callback){
-	var result;
-	Queue.create(drink)
+queueSchema.statics.addDrinkOrder = function(queueID, drink, callback){
+	getEventOrders(queueID, function(orders){
+		orders.push(drink)
+		Queue.update(_id: queueID, {$push: {orders: orders}});
+	})
 	callback(null)
 }
-
-// TODO create private and public methods
-// e.g. "var f = function (...) {...}" is private;
-//      "[schema].statics.f = function (...) {...}" is public
 
 var Queue = mongoose.model('Queue', queueSchema);
 
