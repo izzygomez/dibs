@@ -18,4 +18,9 @@ var orderSchema = new Schema({
 
 var Order = mongoose.model('Order', orderSchema);
 
+/*
+Changes the status of an order
+*/
+orderSchema.statics.changeStatus = function(_id, newStatus, callback) {}
+
 module.exports = Order;
