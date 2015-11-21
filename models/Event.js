@@ -6,7 +6,7 @@ var Schema = mongoose.Schema;
 // create a schema
 var eventSchema = new Schema({
 	_id: Number,
-	host: {type: Number, ref: 'User'},
+	hosts: [{type: Number, ref: 'User'}],
 	drinkLimit: Number,
 	guests: [{type: Number, ref: 'User'}],
 	menu: {type: Number, ref: 'Menu'},
@@ -15,10 +15,6 @@ var eventSchema = new Schema({
 	startTime: Date,
 	endTime: Date
 });
-
-// TODO create private and public methods
-// e.g. "var f = function (...) {...}" is private;
-//      "[schema].statics.f = function (...) {...}" is public
 
 /* 
 Checks if an event exists in the database
@@ -64,23 +60,46 @@ Gets an event given the title
 */
 eventSchema.statics.findByTitle = function(title, callback) {
 	getEvent(title, function(thisEvent) {
-		if (exists) {
-			callback(null, thisEvent);
-		} else {
-			callback({msg: 'Event does not exist or is not registered'});
-		}
+		callback(null, thisEvent);
 	});
 }
 
 /*
 Creates a new event and adds it to the database.
 */
-eventSchema.statics.createNewEvent = function(title, start, end, guests, host, limit, callback) {}
+eventSchema.statics.createNewEvent = function(eventID, title, start, end, guests, hosts, limit, callback) {
+	eventExists(title, function(exists) {
+		if (exists) {
+			callback({taken: true});
+		} else {
+			var data = {_id: eventID,
+						hosts: hosts,
+						drinkLimit: limit,
+						guests: guests,
+						menu: [], //NEED METHODS FOR CREATING QUEUE AND MENU
+						queue: [],
+						title: title,
+						startTime: start,
+						endTime: end};
+			Event.create(data);
+			callback(null);
+		}
+	});
+}
 
 /*
 Checks if an event is currently happening
 */
-eventSchema.statics.isHappening = function(title, callback){}
+eventSchema.statics.isHappening = function(title, callback){
+	var now = Date.now();
+	getEvent(title, function(thisEvent) {
+		if (thisEvent.startTime <= now && thisEvent.endTime > now) {
+			callback(null, true);
+		} else {
+			callback(null, false);
+		}
+	})
+}
 
 /*
 Gets the menu for an event
@@ -113,9 +132,14 @@ eventSchema.statics.getGuests = function(title, callback){
 }
 
 /*
-Gets the host of an event
+Gets the hosts of an event
 */
-eventSchema.statics.getHost = function(title, callback){}
+eventSchema.statics.getHosts = function(title, callback){
+	getEvent(title, function(thisEvent) {
+		var hosts = thisEvent.hosts; 
+		callback(null, hosts);
+	});
+}
 
 var Event = mongoose.model('Event', eventSchema);
 
