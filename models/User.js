@@ -9,7 +9,7 @@ var Schema = mongoose.Schema;
 var userSchema = new Schema({
 	_id: Number,					// Will be the Facebook ID assigned to the user
 	username: String,
-	token = String,	// Facebook Credentials, not sure if this will be needed. 
+	token: String,	// Facebook Credentials, not sure if this will be needed. 
 	eventsHosting: [{type: Number, ref: 'Event'}],
   	eventsAttending: [{type: Number, ref: 'Event'}],
 });
@@ -67,7 +67,7 @@ userSchema.statics.createNewUser = function(userID, token, hostedEvents, attendi
 		} else{
 			User.create({_id: userID,
 						token: token,
-						eventsHosting: hostedEvents;
+						eventsHosting: hostedEvents,
 						eventsAttending: attendingEvents});
 			callback(null);
 		}
