@@ -1,13 +1,34 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %></title>
+    <title>Dibs</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script type="text/javascript">
+    // Test for the ugliness.
+	if (window.location.hash == '#_=_'){
+
+    // Check if the browser supports history.replaceState.
+    if (history.replaceState) {
+
+        // Keep the exact URL up to the hash.
+        var cleanHref = window.location.href.split('#')[0];
+
+        // Replace the URL in the address bar without messing with the back button.
+        history.replaceState(null, null, cleanHref);
+
+    } else {
+
+        // Well, you're on an old browser, we can get rid of the _=_ but not the #.
+        window.location.hash = '';
+
+    }
+
+	}
+	</script>
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-    <div id="status">TODO write status here</div>
+    <h1>Dibs</h1>
+    <p>Welcome to Dibs</p>
     <div id="event_listing">TODO write event listing here</div>
   </body>
 </html>
