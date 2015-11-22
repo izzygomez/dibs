@@ -1,3 +1,5 @@
+// Main author: Sara Stiklickas
+
 // grab the things that we need
 var mongoose = require('mongoose');
 

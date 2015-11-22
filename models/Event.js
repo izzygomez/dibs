@@ -1,5 +1,9 @@
+// Main author: Sara Stiklickas
+
 // grab the things that we need
 var mongoose = require('mongoose');
+var Menu = require('Menu');
+var Queue = require('Queue');
 
 var Schema = mongoose.Schema;
 
@@ -19,9 +23,9 @@ var eventSchema = new Schema({
 /* 
 Checks if an event exists in the database
 */
-var eventExists = function(eventName, callback) {
+var eventExists = function(eventID, callback) {
 	var exists = null;
-	Event.findOne({title: eventName}, function(err, thisEvent) {
+	Event.findOne({_id: eventID}, function(err, thisEvent) {
 		if (err) {
 			console.log(err);
 		}
@@ -37,11 +41,11 @@ var eventExists = function(eventName, callback) {
 /*
 Gets an event from the database
 */
-var getEvent = function(eventName, callback) {
+var getEvent = function(eventID, callback) {
 	var thisEvent = null;
-	eventExists(eventName, function(exists) {
+	eventExists(eventID, function(exists) {
 		if (exists) {
-			Event.findOne({title: eventName}, function(err, found) {
+			Event.findOne({_id: eventID}, function(err, found) {
 				if (found === null) {
 					thisEvent = null;
 				} else {
@@ -56,10 +60,10 @@ var getEvent = function(eventName, callback) {
 }
 
 /*
-Gets an event given the title
+Gets an event given the eventID
 */
-eventSchema.statics.findByTitle = function(title, callback) {
-	getEvent(title, function(thisEvent) {
+eventSchema.statics.findByID = function(eventID, callback) {
+	getEvent(eventID, function(thisEvent) {
 		callback(null, thisEvent);
 	});
 }
@@ -68,16 +72,34 @@ eventSchema.statics.findByTitle = function(title, callback) {
 Creates a new event and adds it to the database.
 */
 eventSchema.statics.createNewEvent = function(eventID, title, start, end, guests, hosts, limit, callback) {
-	eventExists(title, function(exists) {
+	eventExists(eventID, function(exists) {
 		if (exists) {
 			callback({taken: true});
 		} else {
+			var newMenu = null;
+			var newQueue = null;
+			Menu.createMenu(eventID, function(err){
+				if (err) {
+					console.log(err);
+				}
+			});
+			Menu.getMenu(eventID, function(err) {
+				newMenu = menu;
+			});
+			Queue.createQueue(eventID, function(err){
+				if (err) {
+					console.log(err);
+				}
+			});
+			Queue.getQueue(eventID, function(err) {
+				newQueue = queue;
+			});
 			var data = {_id: eventID,
 						hosts: hosts,
 						drinkLimit: limit,
 						guests: guests,
-						menu: [], //NEED METHODS FOR CREATING QUEUE AND MENU
-						queue: [],
+						menu: newMenu,
+						queue: newQueue,
 						title: title,
 						startTime: start,
 						endTime: end};
@@ -90,9 +112,9 @@ eventSchema.statics.createNewEvent = function(eventID, title, start, end, guests
 /*
 Checks if an event is currently happening
 */
-eventSchema.statics.isHappening = function(title, callback){
+eventSchema.statics.isHappening = function(eventID, callback){
 	var now = Date.now();
-	getEvent(title, function(thisEvent) {
+	getEvent(eventID, function(thisEvent) {
 		if (thisEvent.startTime <= now && thisEvent.endTime > now) {
 			callback(null, true);
 		} else {
@@ -104,8 +126,8 @@ eventSchema.statics.isHappening = function(title, callback){
 /*
 Gets the menu for an event
 */
-eventSchema.statics.getMenu = function(title, callback){
-	getEvent(title, function(thisEvent) {
+eventSchema.statics.getMenu = function(eventID, callback){
+	getEvent(eventID, function(thisEvent) {
 		var menu = thisEvent.menu;
 		callback(null, menu);
 	});
@@ -114,8 +136,8 @@ eventSchema.statics.getMenu = function(title, callback){
 /*
 Gets the queue for an event
 */
-eventSchema.statics.getQueue = function(title, callback){
-	getEvent(title, function(thisEvent) {
+eventSchema.statics.getQueue = function(eventID, callback){
+	getEvent(eventID, function(thisEvent) {
 		var queue = thisEvent.queue;
 		callback(null, queue);
 	});
@@ -124,8 +146,8 @@ eventSchema.statics.getQueue = function(title, callback){
 /*
 Gets the guests of an event
 */
-eventSchema.statics.getGuests = function(title, callback){
-	getEvent(title, function(thisEvent) {
+eventSchema.statics.getGuests = function(eventID, callback){
+	getEvent(eventID, function(thisEvent) {
 		var guests = thisEvent.guests;
 		callback(null, guests);
 	});
@@ -134,8 +156,8 @@ eventSchema.statics.getGuests = function(title, callback){
 /*
 Gets the hosts of an event
 */
-eventSchema.statics.getHosts = function(title, callback){
-	getEvent(title, function(thisEvent) {
+eventSchema.statics.getHosts = function(eventID, callback){
+	getEvent(eventID, function(thisEvent) {
 		var hosts = thisEvent.hosts; 
 		callback(null, hosts);
 	});
