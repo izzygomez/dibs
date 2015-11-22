@@ -1,6 +1,5 @@
 // Main Author: Daniel Lerner
 
-
 // grab the things that we need
 var mongoose = require('mongoose');
 
@@ -28,6 +27,26 @@ var queueExists = function(queueID, callback)
       exists = true;
     }
     callback(exists);
+  });
+}
+
+/**
+* Get Queue using inputted id
+**/
+queueSchema.statics.getQueue = function(queueID, callback)
+{
+  var result;
+  Queue.findOne({_id: queueID}, function(err, queue)
+  {
+    if (queue == null)
+    {
+      result = null;
+    }
+    else
+    {
+      result = queue
+    }
+    callback(result);
   });
 }
 
@@ -81,7 +100,7 @@ queueSchema.statics.addDrinkOrder = function(queueID, order, callback){
 /**
 * Creates new Queue for event
 **/
-userSchema.statics.createQueue = function(queueID, callback){
+queueSchema.statics.createQueue = function(queueID, callback){
   queueExists(queueId, function(result){
     if (result){
       callback({taken: true});

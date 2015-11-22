@@ -33,6 +33,26 @@ var menuExists = function(menuID, callback)
   });
 }
 
+/**
+* Get Queue using inputted id
+**/
+menuSchema.statics.getMenu = function(menuID, callback)
+{
+  var result;
+  Menu.findOne({_id: menuID}, function(err, menu)
+  {
+    if (menu == null)
+    {
+      result = null;
+    }
+    else
+    {
+      result = menu
+    }
+    callback(result);
+  });
+}
+
 /*
 * Gets list of drinks on Menu
 */
@@ -97,7 +117,7 @@ menuSchema.statics.updateStock = function(menuID, drinkName, callback)
 /**
 * Creates new Menu for event
 **/
-userSchema.statics.createMenu = function(menuID, callback){
+menuSchema.statics.createMenu = function(menuID, callback){
   menuExists(menuID, function(result){
     if (result){
       callback({taken: true});
