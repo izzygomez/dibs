@@ -69,6 +69,7 @@ router.post('/', function(req, res){
 	// TODO: Get all the information needed to create the event using the FB API
 	// TODO: Set the drink limit for a specific event, which for the MVP, will be
 	// 		 a fixed number.
+	var eventID = req.body.eventID;
 	Event.createNewEvent(eventID, title, start, end, guests, hosts, limit, function(err){
 		if (err){
 			utils.sendErrResponse(res, 500, 'The event already exists');
