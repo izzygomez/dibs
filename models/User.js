@@ -9,7 +9,7 @@ var Schema = mongoose.Schema;
 var userSchema = new Schema({
 	_id: Number,					// Will be the Facebook ID assigned to the user
 	username: String,
-	facebookCredentials = String,	// Facebook Credentials, not sure if this will be needed. 
+	token = String,	// Facebook Credentials, not sure if this will be needed. 
 	eventsHosting: [{type: Number, ref: 'Event'}],
   	eventsAttending: [{type: Number, ref: 'Event'}],
 });
@@ -60,13 +60,13 @@ userSchema.statics.getUser = function(userID, callback){
 	});
 }
 
-userSchema.statics.createNewUser = function(userID, facebookCredentials, hostedEvents, attendingEvents, callback){
+userSchema.statics.createNewUser = function(userID, token, hostedEvents, attendingEvents, callback){
 	User.userExists(username, function(bool){
 		if (bool){
 			callback({taken: true});
 		} else{
 			User.create({_id: userID,
-						facebookCredentials: facebookCredentials,
+						token: token,
 						eventsHosting: hostedEvents;
 						eventsAttending: attendingEvents});
 			callback(null);
@@ -94,10 +94,10 @@ userSchema.statics.getEventsAttending = function(userID, callback){
 	});
 }
 
-userSchema.statics.getFacebookCredentials = function(userID, callback){
+userSchema.statics.getToken = function(userID, callback){
 	User.getUser(userID, function(bool, actualUser){
 		if (bool){
-			callback(null, actualUser.facebookCredentials);
+			callback(null, actualUser.token);
 		} else{
 			callback({msg: 'Invalid user'});
 		}
@@ -139,12 +139,6 @@ userSchema.statics.addAttendingEvent = function(userID, attendingEvent, callback
 		}
 	});
 }
-
-
-
-// TODO create private and public methods
-// e.g. "var f = function (...) {...}" is private;
-//      "[schema].statics.f = function (...) {...}" is public
 
 var User = mongoose.model('User', userSchema);
 
