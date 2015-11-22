@@ -1,3 +1,5 @@
+// Main Author: Sara Stiklickas
+
 // Wrapped in an immediately invoked function expression.
 (function() {
 	$(document).on('click', '#submit-dibs', function(evt) {

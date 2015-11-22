@@ -1,10 +1,10 @@
+// Main Author: Sara Stiklickas
+
 var express = require('express');
 var router = express.Router();
 var utils = require('../utils/utils');
 var Order = require('../models/Order');
 var Queue = require('../models/Queue');
-
-// order routes go here
 
 /*
 POST /orders
