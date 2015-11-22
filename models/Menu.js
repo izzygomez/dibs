@@ -94,6 +94,22 @@ menuSchema.statics.updateStock = function(menuID, drinkName, callback)
 	callback(null);
 }
 
+/**
+* Creates new Menu for event
+**/
+userSchema.statics.createMenu = function(menuID, callback){
+  menuExists(menuID, function(result){
+    if (result){
+      callback({taken: true});
+    }
+    else{
+      var data = {_id: menuID, drinks: []};
+      Menu.create(data);
+      callback(null);
+    }
+  });
+}
+
 
 var Menu = mongoose.model('Menu', menuSchema);
 

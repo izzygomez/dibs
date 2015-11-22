@@ -78,6 +78,22 @@ queueSchema.statics.addDrinkOrder = function(queueID, order, callback){
 	callback(null)
 }
 
+/**
+* Creates new Queue for event
+**/
+userSchema.statics.createQueue = function(queueID, callback){
+  queueExists(queueId, function(result){
+    if (result){
+      callback({taken: true});
+    }
+    else{
+      var data = {_id: queueID, orders: []};
+      Queue.create(data);
+      callback(null);
+    }
+  });
+}
+
 var Queue = mongoose.model('Queue', queueSchema);
 
 module.exports = Queue;
