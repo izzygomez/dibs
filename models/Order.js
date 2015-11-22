@@ -113,4 +113,14 @@ orderSchema.statics.getTime = function(orderID, callback) {
 	});
 }
 
+/*
+Gets the user who made the order, given the order ID
+*/
+orderSchema.statics.getFrom = function(orderID, callback) {
+	Order.getOrder(orderID, function(order) {
+		var user = order.from;
+		callback(null, user);
+	});
+}
+
 module.exports = Order;
