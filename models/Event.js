@@ -43,7 +43,7 @@ Gets an event from the database
 */
 var getEvent = function(eventID, callback) {
 	var thisEvent = null;
-	eventExists(eventID, function(exists) {
+	Event.eventExists(eventID, function(exists) {
 		if (exists) {
 			Event.findOne({_id: eventID}, function(err, found) {
 				if (found === null) {
@@ -72,7 +72,7 @@ eventSchema.statics.findByID = function(eventID, callback) {
 Creates a new event and adds it to the database.
 */
 eventSchema.statics.createNewEvent = function(eventID, title, start, end, guests, hosts, limit, callback) {
-	eventExists(eventID, function(exists) {
+	Event.eventExists(eventID, function(exists) {
 		if (exists) {
 			callback({taken: true});
 		} else {
