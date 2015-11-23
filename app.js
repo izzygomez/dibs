@@ -35,12 +35,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 var index = require('./routes/index');
 var users = require('./routes/users');
 var dashboard = require('./routes/dashboard');
+var logout = require('./routes/logout');
 require('./routes/auth')(app, passport);
 
 // setup routes
 app.use('/', index);
 app.use('/users', users);
 app.use('/dashboard', dashboard);
+app.use('/logout', logout);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
