@@ -1,0 +1,8 @@
+<div class="menu" id = <%= menu._id %>>
+        <h1>Menu</h1>
+
+        <p><%= eventName %></p>
+        <% for (var i = 0; i < menu.drinks.length; i++){ %>
+        	<li><%= menu.drinks[i].drink + " (" + menu.drinks[i].stock + ")"; %></li>
+    	} %>
+</div>
