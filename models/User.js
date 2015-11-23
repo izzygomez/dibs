@@ -43,7 +43,7 @@ userSchema.statics.userExists = function(userID, callback){
 
 userSchema.statics.getUser = function(userID, callback){
 	var currentUser = null;
-	User.userExists(username, function(bool){
+	User.userExists(userID, function(bool){
 		if (bool){
 			User.findOne({_id: userID}, function(err, matchedUser){
 				if (err !== null){
