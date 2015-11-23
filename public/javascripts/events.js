@@ -6,6 +6,7 @@
 (function() {
 	// Logic to register an event with the DIBS app.
 	// Only the host can see this.
+	console.log("what's up");
 	$(document).on('click', '.register-button', function(evt){
 		console.log('Hello AGain!');
 		var item = $(this).parent();
