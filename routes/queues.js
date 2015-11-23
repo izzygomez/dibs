@@ -39,7 +39,7 @@ Response:
   - err: on failure, an error message
 */
 router.get('/', function(req, res) {
-  Queue.getQueue(req.queueID, function(queue) {
+  Queue.getQueue(req.query.queueID, function(queue) {
     if (result) {
       var orders = result.orders;
       var orderAttributes = [];

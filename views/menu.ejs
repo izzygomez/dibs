@@ -1,7 +1,7 @@
 <div class="menu" data-id = "<%= menu._id %>">
     <h1>Menu</h1>
 
-    <p><%= eventName %></p>
+    <p><%= _event._title %></p>
     <% for (var i = 0; i < menu.drinks.length; i++){ %>
     	<div>
     		<li data-drink = <%= menu.drinks[i].drink%>><%= menu.drinks[i].drink + " (" + menu.drinks[i].stock + ")"; %></li>

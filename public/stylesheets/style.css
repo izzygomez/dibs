@@ -8,10 +8,12 @@ a {
 }
 
 .date {
+	margin-top: 15px;
 	font-size: 50%;
-	margin-bottom: 0px;
+	margin-bottom: 1px;
 }
 
-.event-container {
-	display: inline;
+.eventTitle {
+	margin-bottom: 2px;
 }
+
