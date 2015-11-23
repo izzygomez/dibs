@@ -8,8 +8,8 @@
 	// Only the host can see this.
 	$(document).on('click', '.registerEvent', function(event){
 		// TODO: Correct when the actual HTML format for this is figured out
-		var item = $(this).parent().parent();
-		var eventID = item.data('eventID');
+		var item = $(this).parent();
+		var eventID = item.data('event-id');
 		// TODO: Need to get information from the Facebook api regarding the event's info
 		// Post to the events
 		$.post(
@@ -27,8 +27,8 @@
 	// Logic to go to an event 
 	$(document).on('click', '.gotoEvent', function(event){
 		// TODO: Correct when the actual HTML format for this is figured out.
-		var item = $(this).parent().parent();
-		var eventID = item.data('eventID');
+		var item = $(this).parent();
+		var eventID = item.data('event-id');
 		// TODO: Need to get information from the Facebook api regarding the event's info
 		// Load the ejs templates for this.
 	});
