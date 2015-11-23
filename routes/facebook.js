@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Event = require('../models/Event.js');
+var FB = require('fb');
 
 /*
   GET /facebook/events
