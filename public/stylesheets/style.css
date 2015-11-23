@@ -13,5 +13,5 @@ a {
 }
 
 .event-container {
-	display: inline;
+	display: inline-block;
 }
