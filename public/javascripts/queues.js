@@ -1,3 +1,5 @@
+// Main Author: Daniel Lerner
+
 // Wrap in an immediately invoked function expression.
 (function() {
 
