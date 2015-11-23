@@ -1,8 +1,24 @@
 <!-- Main author: Brian Saavedra-->
 
 <div id = "allEvents">
-	<div id = 'hostNotRegisteredEvents' class = 'event-container'><%= partial('hostNotRegisteredEvent.ejs') %></div>
-	<div id = 'hostRegisteredEvents' class = 'event-container'><%= partial('hostRegisteredEvent.ejs') %></div>
-	<div id = 'attendingNotRegisteredEvents' class = 'event-container'><%= partial('attendingNotRegisteredEvent.ejs') %></div>
-	<div id = 'attendingRegisteredEvents' class = 'event-container'><%= partial('attendingRegisteredEvent.ejs') %></div>
+	<div id = 'hostNotRegisteredEvents' class = 'event-container'>
+		<% for(var i = 0; i<hostNotRegisteredEvents.length; i++) { %>
+			<%= partial('hostNotRegisteredEvent.ejs') %>
+		<% } %>
+	</div>
+	<div id = 'hostRegisteredEvents' class = 'event-container'>
+		<% for(var i = 0; i<hostRegisteredEvents.length; i++) { %>
+			<%= partial('hostRegisteredEvent.ejs') %>	
+		<% } %>
+	</div>
+	<div id = 'attendingNotRegisteredEvents' class = 'event-container'>
+		<% for(var i = 0; i<attendingNotRegisteredEvents.length; i++) { %>
+			<%= partial('attendingNotRegisteredEvent.ejs') %>
+		<% } %>
+	</div>
+	<div id = 'attendingRegisteredEvents' class = 'event-container'>
+		<% for(var i = 0; i<attendingRegisteredEvents.length; i++) { %>
+			<%= partial('attendingRegisteredEvent.ejs') %>
+		<% } %>
+	</div>
 </div>
