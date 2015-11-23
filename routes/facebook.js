@@ -19,7 +19,6 @@ router.get('/events', isLoggedIn, function (req, res) {
 				userEvents.forEach(function(currentEvent, i, userEvents){
 					// Check to see what type of event it is.
 					Event.eventExists(currentEvent.id, function(bool){
-						console.log(currentEvent.is_viewer_admin);
 						if (currentEvent.is_viewer_admin && bool){
 							separatedEvents.hostRegisteredEvents.push(currentEvent);
 						} else if (currentEvent.is_viewer_admin && !bool){
@@ -32,13 +31,10 @@ router.get('/events', isLoggedIn, function (req, res) {
 							console.log('Error!');
 						}
 						if (i === userEvents.length -1){
-							console.log(separatedEvents);
 							res.render('allEvents', separatedEvents);
 						}
 					});
 				});
-				console.log('Hello!');
-				console.log(separatedEvents);
 			} else {
 				console.log("Error!");
 			}

@@ -6,7 +6,8 @@
 (function() {
 	// Logic to register an event with the DIBS app.
 	// Only the host can see this.
-	$(document).on('click', '.registerEvent', function(event){
+	$(document).on('click', '.register-button', function(evt){
+		console.log('Hello AGain!');
 		var item = $(this).parent();
 		var eventID = item.data('event-id');
 		// Post to the events
@@ -23,7 +24,7 @@
 	});
 
 	// Logic to go to an event 
-	$(document).on('click', '.gotoEvent', function(event){
+	$(document).on('click', '.gotoEvent', function(evt){
 		// TODO: Correct when the actual HTML format for this is figured out.
 		var item = $(this).parent();
 		var eventID = item.data('event-id');
@@ -31,4 +32,4 @@
 		// Load the ejs templates for this.
 	});
 
-});
+})();

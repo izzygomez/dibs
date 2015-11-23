@@ -70,6 +70,17 @@ router.post('/', function(req, res){
 	// TODO: Set the drink limit for a specific event, which for the MVP, will be
 	// 		 a fixed number.
 	var eventID = req.body.eventID;
+	User.getToken(req.user._id, function(err, token){
+		FB.setAccessToken(token);
+		FB.api('/' + eventID, function(response){
+			if (response && !response.error){
+				console.log(response);
+			} else {
+				console.log('Error!');
+			}
+		});
+	});
+	/*
 	Event.createNewEvent(eventID, title, start, end, guests, hosts, limit, function(err){
 		if (err){
 			utils.sendErrResponse(res, 500, 'The event already exists');
@@ -77,5 +88,6 @@ router.post('/', function(req, res){
 			utils.sendSuccessResponse(res);
 		}
 	});
+*/
 });
 
