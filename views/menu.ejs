@@ -3,6 +3,9 @@
 
     <p><%= eventName %></p>
     <% for (var i = 0; i < menu.drinks.length; i++){ %>
-    	<li data-drink = <%= menu.drinks[i].drink%>><%= menu.drinks[i].drink + " (" + menu.drinks[i].stock + ")"; %></li>
+    	<div>
+    		<li data-drink = <%= menu.drinks[i].drink%>><%= menu.drinks[i].drink + " (" + menu.drinks[i].stock + ")"; %></li>
+    		<button id="submit-dibs">Dibs!</button>
+    	</div>
 	<% } %>
 </div>

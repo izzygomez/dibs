@@ -1,4 +1,5 @@
 // Main Author: Sara Stiklickas
+var Order = require('../models/Order');
 
 // Wrapped in an immediately invoked function expression.
 (function() {
@@ -12,13 +13,31 @@
 			{drink: drink, from: currentUser, eventID: eventID}
 		).done(function(response) {
 			loadWaitingPage(); // page that waits for notification
+			var isReady = false;
+			while (!isReady) {
+				Order.getOrder(response.orderID, function(order){
+					if (order.status === 1) {
+						isReady = true;
+					}
+				});
+			}
+			loadNotificationPage();
+			var isServed = false;
+			while (!isServed) {
+				Order.getOrder(response.orderID, function(order) {
+					if (order.status === 2) {
+						isServed = true;
+					}
+				});
+			}
+			loadQueuePage();
 		}).fail(function(responseObject) {
 			var response = $.parseJSON(responseObject.responseText);
 			$('.error').text(response.err);
 		});
 	});
 
-	$(document).on('click', '#served-button', function(evt) {
+	$(document).on('click', '#servedButton', function(evt) {
 		var item = $(this).parent();
 		var orderID = item.data('order-id'); // need to give orders a data-order-id class
 		$.post(
@@ -32,7 +51,7 @@
 		});
 	});
 
-	$(document).on('click', '#notify-button', function(evt) {
+	$(document).on('click', '#notifyButton', function(evt) {
 		var item = $(this).parent();
 		var orderID = item.data('order-id');
 		$.post(
@@ -45,4 +64,4 @@
 			$('.error').text(response.err);
 		});
 	});
-});
+})();

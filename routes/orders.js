@@ -7,30 +7,6 @@ var Order = require('../models/Order');
 var Queue = require('../models/Queue');
 
 /*
-GET /orders/:order
-Request parameters:
-  - order: the orderID
-Response: 
-  - success: true if the server succeeded in getting the event's orders
-  - content: on success, an object with the following attributes:
-		drink: the drink that was ordered
-		timeStamp: the time at which the order was placed
-		fromUser: the user who made the order
-  - err: on failure, an error message
-*/
-router.get('/:order', function(req, res) {
-	Order.getOrder(req.order, function(err, order) {
-		if (err) {
-			utils.sendErrResponse(res, 500, 'An unknown error occurred.');
-		} else {
-			utils.sendSuccessResponse(res, {drink: order.drink, 
-											timeStamp: order.timeStamp,
-											fromUser: order.from});
-		}
-	});
-});
-
-/*
 POST /orders
 Request body:
   - drink: the drink ordered
@@ -46,7 +22,7 @@ router.post('/', function(req, res) {
 				if (err) {
 					utils.sendErrResponse(res, 500, 'An unknown error occurred.');
 				} else {
-					utils.sendSuccessResponse(res);
+					utils.sendSuccessResponse(res, {orderID: orderID});
 				}
 			});
 		});

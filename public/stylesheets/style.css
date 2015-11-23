@@ -11,3 +11,7 @@ a {
 	font-size: 50%;
 	margin-bottom: 0px;
 }
+
+.event-container {
+	display: inline;
+}
