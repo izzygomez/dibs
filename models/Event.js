@@ -90,8 +90,8 @@ eventSchema.statics.createNewEvent = function(eventID, title, start, end, guests
 						hosts: hosts,
 						drinkLimit: limit,
 						guests: guests,
-						menu: newMenu,
-						queue: newQueue,
+						menu: eventID,
+						queue: eventID,
 						_title: title,
 						startTime: start,
 						endTime: end};
