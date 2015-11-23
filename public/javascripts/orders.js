@@ -5,7 +5,7 @@
 	$(document).on('click', '#submit-dibs', function(evt) {
 		var item = $(this).parent();
 		var drink = item.data('drink'); //get drink from menu item
-		var currentUser = req.user;
+		var currentUser = req.user._id;
 		var eventID = item.data('id'); // get menuID
 		$.post(
 			'/orders',

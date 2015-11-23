@@ -4,6 +4,7 @@ var express = require('express');
 var router = express.Router();
 var utils = require('../utils/utils');
 var Queue = require('../models/Queue');
+var User = require('../models/User');
 
 /**
 POST /queue/served
@@ -43,8 +44,10 @@ router.get('/', function(req, res) {
       var orders = result.orders;
       var orderAttributes = [];
       orders.forEach(function(order, i, orders) {
-        orderAttributes.push({drink: order.drink, timeStamp: order.timeStamp,
-                              fromUser: order.from});
+        User.getUser(order.from, callback(exists, user) {
+          orderAttributes.push({drink: order.drink, timeStamp: order.timeStamp,
+                              fromUser: user.username});  
+        });
       });
       res.render('queue', {orderAttributes: orderAttributes});
     } else {
