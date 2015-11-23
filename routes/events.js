@@ -75,19 +75,23 @@ router.post('/', function(req, res){
 		FB.setAccessToken(token);
 		FB.api('/' + eventID + '?fields=name, start_time, end_time, admins, attending', function(response){
 			if (response && !response.error){
-				console.log(response);
 				var attending = response.attending.data;
 				var guests = attending.filter(function(attendee) {
 					return response.admins.data.indexOf(attendee) != -1;
 				});
-				Event.createNewEvent(eventID, response.name, response.start_time, response.end_time, guests, response.admins, 3, function(err){
+				var guestIDs = guests.map(function(guest) {
+					return guest.id;
+				})
+				var hosts = response.admins.data.map(function(admin) {
+					return admin.id;
+				});
+				Event.createNewEvent(eventID, response.name, response.start_time, response.end_time, guests, hosts, 3, function(err){
 					if (err){
 						utils.sendErrResponse(res, 500, 'The event already exists');
 					} else{
 						utils.sendSuccessResponse(res);
 					}
 				});
-				console.log(guests);
 			} else {
 				console.log(response.error);
 			}
