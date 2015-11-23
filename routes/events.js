@@ -55,6 +55,14 @@ router.get('/registeredAttendEvents', function(req, res){
 	});
 });
 
+// METHOD SPEC NEEDED -- renders display of menu for guest at event happening now
+router.get('/menu', function(req, res){
+	Event.findByID(req.query.menuID, function(err, _event){
+		console.log("rendering menu");
+		res.render('menu', {_event: _event, menu: _event.menu})
+   	});
+});
+
 // TODO: Possibly not in this file, but somewhere, write routes that will fetch the events 
 // a user is going to that are not registered with dibs. 
 
