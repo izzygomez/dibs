@@ -23,7 +23,7 @@ var eventSchema = new Schema({
 /* 
 Checks if an event exists in the database
 */
-var eventExists = function(eventID, callback) {
+eventSchema.statics.eventExists = function(eventID, callback) {
 	var exists = null;
 	Event.findOne({_id: eventID}, function(err, thisEvent) {
 		if (err) {
