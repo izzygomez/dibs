@@ -83,7 +83,7 @@ queueSchema.statics.getNextOrder = function(queueID, callback)
 queueSchema.statics.addDrinkOrder = function(queueID, order, callback){
 	getEventOrders(queueID, function(orders){
 		orders.push(order)
-		Queue.update(_id: queueID, {$push: {orders: orders}});
+		Queue.update({_id: queueID}, {$push: {orders: orders}});
 	})
 	callback(null)
 }
