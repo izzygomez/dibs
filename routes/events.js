@@ -80,6 +80,13 @@ router.post('/', function(req, res){
 				var guests = attending.filter(function(attendee) {
 					return response.admins.data.indexOf(attendee) != -1;
 				});
+				Event.createNewEvent(eventID, response.name, response.start_time, response.end_time, guests, response.admins, 3, function(err){
+					if (err){
+						utils.sendErrResponse(res, 500, 'The event already exists');
+					} else{
+						utils.sendSuccessResponse(res);
+					}
+				});
 				console.log(guests);
 			} else {
 				console.log(response.error);
