@@ -12,34 +12,40 @@ router.get('/', isLoggedIn, function(req, res, next) {
 
 /* GET guestPreEvent page. */
 router.get('/guestPreEvent', function(req, res, next) {
-  var tarEvent = Event.getEvent(req.eventID)
-  if (tarEvent.isHappening()){  
-  	res.render('guestPreEvent');
-  }
-  else{
-  	return false;
-  }
+  Event.findByID(req.query.eventID, function(err, _event){
+    Event.isHappening(req.query.eventID, function(err, result){
+      if (result){
+        res.render('menu', {_event: _event, menu: _event.menu});
+      }
+      else{
+        res.render('guestPreEvent', {_event: _event})
+      }
+    });
+  });
 });
 
 /* GET hostPreEvent page. */
-router.get('/hostPreEvent', function(req, res, next) {
-  var tarEvent = Event.getEvent(req.eventID)
-  if (tarEvent.isHappening()){  
-  	res.render('hostPreEvent');
-  }
-  else{
-  	return false;
-  }
+router.get('/hostPreEvent', function(req, res) {
+  Event.findByID(req.query.eventID, function(err, _event){
+    Event.isHappening(req.query.eventID, function(err, result){
+      if (result){
+        res.render('queue');
+      }
+      else{
+        res.render('hostPreEvent', {_event: _event})
+      }
+    });
+  });
 });
 
 /* GET guest waiting page. */
 router.get('/waiting', function(req, res, next) {
   var tarOrder = Order.getOrder(req.eventID)
   if (tarOrder.status == 0){
-  	res.render('waitPage');
+    res.render('waitPage');
   }
   else{
-  	return false;
+    return false;
   }
 });
 
