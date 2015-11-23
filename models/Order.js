@@ -2,7 +2,7 @@
 
 // grab the things that we need
 var mongoose = require('mongoose');
-var Queue = require('Queue');
+var Queue = require('./Queue');
 
 var Schema = mongoose.Schema;
 

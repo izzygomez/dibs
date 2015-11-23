@@ -37,6 +37,10 @@ var users = require('./routes/users');
 var dashboard = require('./routes/dashboard');
 var logout = require('./routes/logout');
 var facebook = require('./routes/facebook');
+var events = require('./routes/events');
+var menus = require('./routes/menus');
+var orders = require('./routes/orders');
+var queues = require('./routes/queues');
 require('./routes/auth')(app, passport);
 
 // setup routes
@@ -45,6 +49,10 @@ app.use('/users', users);
 app.use('/dashboard', dashboard);
 app.use('/logout', logout);
 app.use('/facebook', facebook);
+app.use('/events', events);
+app.use('/menus', menus);
+app.use('/orders', orders);
+app.use('/queues', queues);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

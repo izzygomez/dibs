@@ -44,7 +44,7 @@ router.get('/', function(req, res) {
       var orders = result.orders;
       var orderAttributes = [];
       orders.forEach(function(order, i, orders) {
-        User.getUser(order.from, callback(exists, user) {
+        User.getUser(order.from, function(exists, user) {
           orderAttributes.push({drink: order.drink, timeStamp: order.timeStamp,
                               fromUser: user.username});  
         });
@@ -55,3 +55,5 @@ router.get('/', function(req, res) {
     }
   });
 });
+
+module.exports = router;
