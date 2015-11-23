@@ -1,9 +1,8 @@
 currentUser = undefined; //sessions stuff?
 
 var loadDashboard = function(){
-	console.log("got to loadDashboard()");
 	$.get('/facebook/events', function (response) {
-		// TODO implement this
+		loadPage(response);
 	});
 };
 
@@ -24,5 +23,5 @@ var loadMenuPage = function(){
 };
 
 var loadPage = function(data) {
-	$('.container').html(data);
+	$('#main-content').html(data);
 };

@@ -106,16 +106,9 @@
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));
 
-  // Here we run a very simple test of the Graph API after login is
-  // successful.  See statusChangeCallback() for when this call is made.
+  // This is called after the login is validated; check statusChangeCallback() to see when this is called
   function afterSuccessfulLogin() {
-    console.log('Welcome!  Fetching your information.... ');
-    FB.api('/me', function(response) {
-      console.log('Successful login for: ' + response.name);
-      document.getElementById('main-content').innerHTML =
-        'Thanks for logging in, ' + response.name + '! Currently loading your events...';
-    });
-
+    // load our initial dashboard
     loadDashboard();
   }
 </script>
