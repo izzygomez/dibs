@@ -10,12 +10,49 @@ var FB = require('fb');
 router.get('/events', isLoggedIn, function (req, res) {
 	User.getToken(req.user._id, function(err, token){
 		FB.setAccessToken(token);
-		FB.api('/me/events?fields=name,start_time,is_viewer_admin, title', function(response){
+		FB.api('/me/events?fields=name,start_time,end_time,is_viewer_admin,title', function(response){
 			if (response && !response.error){
 				// Get user events
 				var userEvents = response.data;
+				// console.log(userEvents);
+
+				var filteredUserEvents = [];
+
+				var rightNow = Date.now(); // in ms since Jan 1, 1970 00:00:00 UTC
+				// console.log("Date.now() :" + rightNow);
+
+				userEvents.forEach(function (currentEvent, i, userEvents) {
+					if (currentEvent.end_time) {
+						var currEventDate = Date.parse(currentEvent.end_time.substring(0,19));
+						var offsetString = currentEvent.end_time.substring(20);
+						var offset = (offsetString.substring(0,2) + offsetString.substring(2)/60.0) * 3600000; // 3600000 = ms in an hour
+						if (currentEvent.end_time.substring(19,20) === '+') {
+							currEventDate = currEventDate - offset;
+						} else { // '-'
+							currEventDate = currEventDate + offset;
+						}
+					} else {
+						var currEventDate = Date.parse(currentEvent.start_time.substring(0,19)) + 18000000; // adding 5 hours (18000000 ms)
+						var offsetString = currentEvent.start_time.substring(20);
+						var offset = (offsetString.substring(0,2) + offsetString.substring(2)/60.0) * 3600000; // 3600000 = ms in an hour
+						if (currentEvent.start_time.substring(19,20) === '+') {
+							currEventDate = currEventDate - offset;
+						} else { // '-'
+							currEventDate = currEventDate + offset;
+						}
+					}
+
+					if (currEventDate - rightNow >= 0) {
+						filteredUserEvents.push(currentEvent)
+					}
+				});
+
+				userEvents = filteredUserEvents;
+				// console.log(userEvents);
+
 				var separatedEvents = {hostNotRegisteredEvents: [], hostRegisteredEvents: [],
 									   attendingNotRegisteredEvents: [], attendingRegisteredEvents: []};
+
 				userEvents.forEach(function(currentEvent, i, userEvents){
 					// Check to see what type of event it is.
 					Event.eventExists(currentEvent.id, function(bool){

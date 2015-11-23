@@ -105,15 +105,6 @@ router.post('/', function(req, res){
 			}
 		});
 	});
-	/*
-	Event.createNewEvent(eventID, title, start, end, guests, hosts, limit, function(err){
-		if (err){
-			utils.sendErrResponse(res, 500, 'The event already exists');
-		} else{
-			utils.sendSuccessResponse(res);
-		}
-	});
-*/
 });
 
 module.exports = router;
