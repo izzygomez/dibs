@@ -24,3 +24,31 @@ router.post('/served', function(req, res) {
       }
   });
 });
+
+/*
+GET /queue
+Request Parameters:
+  - queueID: the ID of the event and queue
+Response:
+  - success: true if the server succeeded in getting the queue orders
+  - content: on success, a list of objects with the following attributes:
+      drink: the drink that was ordered
+      timeStamp: the time at which the order was placed
+      fromUser: the user who made the order
+  - err: on failure, an error message
+*/
+router.get('/', function(req, res) {
+  Queue.getQueue(req.queueID, function(queue) {
+    if (result) {
+      var orders = result.orders;
+      var orderAttributes = [];
+      orders.forEach(function(order, i, orders) {
+        orderAttributes.push({drink: order.drink, timeStamp: order.timeStamp,
+                              fromUser: order.from});
+      });
+      res.render('queue', {orderAttributes: orderAttributes});
+    } else {
+      utils.sendErrResponse(res, 500, 'An unknown error occurred.');
+    }
+  });
+});

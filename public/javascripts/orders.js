@@ -3,12 +3,13 @@
 // Wrapped in an immediately invoked function expression.
 (function() {
 	$(document).on('click', '#submit-dibs', function(evt) {
-		var drink; // get drink from menu item clicked
-		var currentUser; // get currentUser somehow
-		var eventID; // get eventID from menu?
+		var item = $(this).parent();
+		var drink = item.data('drink'); //get drink from menu item
+		var currentUser = req.user;
+		var eventID = item.data('id'); // get menuID
 		$.post(
 			'/orders',
-			{drink: drink, from: currentUser}
+			{drink: drink, from: currentUser, eventID: eventID}
 		).done(function(response) {
 			loadWaitingPage(); // page that waits for notification
 		}).fail(function(responseObject) {

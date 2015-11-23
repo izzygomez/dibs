@@ -4,7 +4,11 @@ var loadDashboard = function(){};
 
 var loadWaitingPage = function(){};
 
-var loadQueuePage = function(){};
+var loadQueuePage = function(queueID){
+	$.get('queue', {queueID: queueID}, function(response) {
+		loadPage(response);
+	});
+};
 
 var loadNotificationPage = function(){};
 
