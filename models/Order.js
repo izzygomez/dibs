@@ -93,34 +93,4 @@ orderSchema.statics.changeStatus = function(orderID, newStatus, callback) {
 	});
 }
 
-/*
-Gets the drink from an order, given the order ID
-*/
-orderSchema.statics.getDrink = function(orderID, callback) {
-	Order.getOrder(orderID, function(order) {
-		var drink = order.drink;
-		callback(null, drink);
-	});
-}
-
-/*
-Gets the timestamp of an order, given the order ID
-*/
-orderSchema.statics.getTime = function(orderID, callback) {
-	Order.getOrder(orderID, function(order) {
-		var timeStamp = order.timeStamp;
-		callback(null, timeStamp);
-	});
-}
-
-/*
-Gets the user who made the order, given the order ID
-*/
-orderSchema.statics.getFrom = function(orderID, callback) {
-	Order.getOrder(orderID, function(order) {
-		var user = order.from;
-		callback(null, user);
-	});
-}
-
 module.exports = Order;

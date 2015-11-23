@@ -67,7 +67,8 @@ queueSchema.statics.getEventOrders = function(queueID, callback){
 /**
 * Gets next drink order on Queue, updates database
 **/
-queueSchema.statics.getNextOrder = function(queueID, callback){
+queueSchema.statics.getNextOrder = function(queueID, callback)
+{
 	getEventOrders(queueID, function(orders){
 		nextOrder = orders.shift()
 		Queue.update({_id: queueID}, {$pop: {orders: -1}});
