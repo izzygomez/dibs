@@ -9,15 +9,15 @@ var loadDashboard = function(){
 var loadWaitingPage = function(){};
 
 var loadQueuePage = function(queueID){
-	$.get('queue', {queueID: queueID}, function(response) {
+	$.get('queues', {queueID: queueID}, function(response) {
 		loadPage(response);
 	});
 };
 
 var loadNotificationPage = function(){};
 
-var loadMenuPage = function(){
-	$.get('events/menu', function(response) {
+var loadMenuPage = function(menuID){
+	$.get('events/menu', {menuID: menuID}, function(response) {
 		loadPage(response);
 	});
 };

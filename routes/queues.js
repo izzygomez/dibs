@@ -40,8 +40,8 @@ Response:
 */
 router.get('/', function(req, res) {
   Queue.getQueue(req.query.queueID, function(queue) {
-    if (result) {
-      var orders = result.orders;
+    if (queue) {
+      var orders = queue.orders;
       var orderAttributes = [];
       orders.forEach(function(order, i, orders) {
         User.getUser(order.from, function(exists, user) {

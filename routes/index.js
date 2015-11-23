@@ -4,6 +4,7 @@ var express = require('express');
 var router = express.Router();
 var Event = require('../models/Event');
 var Order = require('../models/Order');
+var utils = require('../utils/utils');
 
 /* GET home page. */
 router.get('/', isLoggedIn, function(req, res, next) {
@@ -15,10 +16,12 @@ router.get('/guestPreEvent', function(req, res, next) {
   Event.findByID(req.query.eventID, function(err, _event){
     Event.isHappening(req.query.eventID, function(err, result){
       if (result){
-        res.render('menu', {_event: _event, menu: _event.menu});
+        var happen = {happening: true};
+        utils.sendSuccessResponse(res, happen);
       }
       else{
-        res.render('guestPreEvent', {_event: _event})
+        var happen = {happening: false};
+        res.render('guestPreEvent', happen);
       }
     });
   });
@@ -26,12 +29,15 @@ router.get('/guestPreEvent', function(req, res, next) {
 
 /* GET hostPreEvent page. */
 router.get('/hostPreEvent', function(req, res) {
+  console.log("host pre event");
   Event.findByID(req.query.eventID, function(err, _event){
     Event.isHappening(req.query.eventID, function(err, result){
-      if (result){
-        res.render('queue');
+      if(result){
+        var happen = {happening: true};
+        utils.sendSuccessResponse(res, happen);
       }
       else{
+        var happen = {happening: false};
         res.render('hostPreEvent', {_event: _event})
       }
     });

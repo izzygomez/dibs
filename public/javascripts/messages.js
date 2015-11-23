@@ -25,20 +25,25 @@
     var item = $(this).parent();
 	var eventID = item.data('event-id');
 	$.get('/guestPreEvent', {eventID: eventID}, function(response) {
-		if (response){
+		if (response.content.happening != true){
 			loadPage(response);
+		}
+		else{
+			loadMenuPage(eventID);
 		}
 	});
   });
 
   $(document).on('click', '.see-suggestions-button', function(evt) {
     evt.preventDefault();
-    console.log("see suggestions");
     var item = $(this).parent();
 	var eventID = item.data('event-id');
 	$.get('/hostPreEvent', {eventID: eventID}, function(response) {
-		if (response){
+		if (response.content.happening != true){
 			loadPage(response);
+		}
+		else{
+			loadQueuePage(eventID);
 		}
 	});
   });
