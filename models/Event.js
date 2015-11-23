@@ -76,23 +76,15 @@ eventSchema.statics.createNewEvent = function(eventID, title, start, end, guests
 		if (exists) {
 			callback({taken: true});
 		} else {
-			var newMenu = null;
-			var newQueue = null;
 			Menu.createMenu(eventID, function(err){
 				if (err) {
 					console.log(err);
 				}
 			});
-			Menu.getMenu(eventID, function(err) {
-				newMenu = menu;
-			});
 			Queue.createQueue(eventID, function(err){
 				if (err) {
 					console.log(err);
 				}
-			});
-			Queue.getQueue(eventID, function(err) {
-				newQueue = queue;
 			});
 			var data = {_id: eventID,
 						hosts: hosts,

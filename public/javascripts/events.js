@@ -7,10 +7,8 @@
 	// Logic to register an event with the DIBS app.
 	// Only the host can see this.
 	$(document).on('click', '.registerEvent', function(event){
-		// TODO: Correct when the actual HTML format for this is figured out
 		var item = $(this).parent();
 		var eventID = item.data('event-id');
-		// TODO: Need to get information from the Facebook api regarding the event's info
 		// Post to the events
 		$.post(
 			'/events',

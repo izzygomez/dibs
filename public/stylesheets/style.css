@@ -6,3 +6,8 @@ body {
 a {
   color: #00B7FF;
 }
+
+.date {
+	font-size: 50%;
+	margin-bottom: 0px;
+}
