@@ -3,22 +3,22 @@
 <div id = "allEvents">
 	<div id = 'hostNotRegisteredEvents' class = 'event-container'>
 		<% for(var i = 0; i<hostNotRegisteredEvents.length; i++) { %>
-			<%= partial('hostNotRegisteredEvent.ejs') %>
+			<% include ./hostNotRegisteredEvent %>
 		<% } %>
 	</div>
 	<div id = 'hostRegisteredEvents' class = 'event-container'>
 		<% for(var i = 0; i<hostRegisteredEvents.length; i++) { %>
-			<%= partial('hostRegisteredEvent.ejs') %>	
+			<% include ./hostRegisteredEvent %>	
 		<% } %>
 	</div>
 	<div id = 'attendingNotRegisteredEvents' class = 'event-container'>
 		<% for(var i = 0; i<attendingNotRegisteredEvents.length; i++) { %>
-			<%= partial('attendingNotRegisteredEvent.ejs') %>
+			<% include ./attendingNotRegisteredEvent %>
 		<% } %>
 	</div>
 	<div id = 'attendingRegisteredEvents' class = 'event-container'>
 		<% for(var i = 0; i<attendingRegisteredEvents.length; i++) { %>
-			<%= partial('attendingRegisteredEvent.ejs') %>
+			<% include ./attendingRegisteredEvent %>
 		<% } %>
 	</div>
 </div>

@@ -1,7 +1,7 @@
 <!-- Main author: Brian Saavedra-->
 
-<div data-event-id = <%= eventID %>> 
-	<p class = 'date'><%= eventDate %></p>
-	<p class = 'eventTitle'><%= eventTitle %></p>
+<div data-event-id = <%= attendingRegisteredEvents[i].id %>> 
+	<p class = 'date'><%= attendingRegisteredEvents[i].start_time %></p>
+	<p class = 'eventTitle'><%= attendingRegisteredEvents[i].name %></p>
 	<button class = 'suggest-button'>Suggest Drinks</button>
 </div>

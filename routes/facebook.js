@@ -8,19 +8,18 @@ var FB = require('fb');
   GET /facebook/events
 */
 router.get('/events', isLoggedIn, function (req, res) {
-	console.log('First message');
 	User.getToken(req.user._id, function(err, token){
 		FB.setAccessToken(token);
-		console.log('Hello!');
-		FB.api('/me/events', function(response){
+		FB.api('/me/events?fields=name,start_time,is_viewer_admin, title', function(response){
 			if (response && !response.error){
 				// Get user events
 				var userEvents = response.data;
 				var separatedEvents = {hostNotRegisteredEvents: [], hostRegisteredEvents: [],
 									   attendingNotRegisteredEvents: [], attendingRegisteredEvents: []};
-				userEvents.forEach(function(currentEvent){
+				userEvents.forEach(function(currentEvent, i, userEvents){
 					// Check to see what type of event it is.
 					Event.eventExists(currentEvent.id, function(bool){
+						console.log(currentEvent.is_viewer_admin);
 						if (currentEvent.is_viewer_admin && bool){
 							separatedEvents.hostRegisteredEvents.push(currentEvent);
 						} else if (currentEvent.is_viewer_admin && !bool){
@@ -32,9 +31,14 @@ router.get('/events', isLoggedIn, function (req, res) {
 						} else {
 							console.log('Error!');
 						}
+						if (i === userEvents.length -1){
+							console.log(separatedEvents);
+							res.render('allEvents', separatedEvents);
+						}
 					});
 				});
-				res.render('allEvents', separatedEvents);
+				console.log('Hello!');
+				console.log(separatedEvents);
 			} else {
 				console.log("Error!");
 			}
