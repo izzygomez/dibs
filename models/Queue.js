@@ -13,17 +13,12 @@ var queueSchema = new Schema({
 /**
 * Checks if queue exists in database
 **/
-var queueExists = function(queueID, callback)
-{
+var queueExists = function(queueID, callback){
   var exists = null;
-  Queue.findOne({_id: queueID}, function(err, queue)
-  {
-    if (queue == null)
-    {
-      exists = false
-    }
-    else
-    {
+  Queue.findOne({_id: queueID}, function(err, queue){
+    if (queue == null){
+      exists = false}
+    else{
       exists = true;
     }
     callback(exists);
@@ -33,17 +28,13 @@ var queueExists = function(queueID, callback)
 /**
 * Get Queue using inputted id
 **/
-queueSchema.statics.getQueue = function(queueID, callback)
-{
+queueSchema.statics.getQueue = function(queueID, callback){
   var result;
-  Queue.findOne({_id: queueID}, function(err, queue)
-  {
-    if (queue == null)
-    {
+  Queue.findOne({_id: queueID}, function(err, queue){
+    if (queue == null){
       result = null;
     }
-    else
-    {
+    else{
       result = queue
     }
     callback(result);
@@ -76,8 +67,7 @@ queueSchema.statics.getEventOrders = function(queueID, callback){
 /**
 * Gets next drink order on Queue, updates database
 **/
-queueSchema.statics.getNextOrder = function(queueID, callback)
-{
+queueSchema.statics.getNextOrder = function(queueID, callback){
 	getEventOrders(queueID, function(orders){
 		nextOrder = orders.shift()
 		Queue.update({_id: queueID}, {$pop: {orders: -1}});

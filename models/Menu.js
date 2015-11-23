@@ -1,6 +1,5 @@
 // Main Author: Daniel Lerner
 
-
 // grab the things that we need
 var mongoose = require('mongoose');
 
@@ -16,17 +15,12 @@ var menuSchema = new Schema({
 /**
 * Checks if menu exists in database
 **/
-var menuExists = function(menuID, callback)
-{
+var menuExists = function(menuID, callback){
   var exists = null;
-  Menu.findOne({_id: menuID}, function(err, menu)
-  {
-    if (menu == null)
-    {
-      exists = false
-    }
-    else
-    {
+  Menu.findOne({_id: menuID}, function(err, menu){
+    if (menu == null){
+      exists = false}
+    else{
       exists = true;
     }
     callback(exists);
@@ -36,17 +30,13 @@ var menuExists = function(menuID, callback)
 /**
 * Get Queue using inputted id
 **/
-menuSchema.statics.getMenu = function(menuID, callback)
-{
+menuSchema.statics.getMenu = function(menuID, callback){
   var result;
-  Menu.findOne({_id: menuID}, function(err, menu)
-  {
-    if (menu == null)
-    {
+  Menu.findOne({_id: menuID}, function(err, menu){
+    if (menu == null){
       result = null;
     }
-    else
-    {
+    else{
       result = menu
     }
     callback(result);
@@ -94,8 +84,7 @@ menuSchema.statics.updateStock = function(menuID, drinkName, callback)
 {
 	var targetDrink;
 	getMenuDrinks(menuID, function(drinks){
-		drinks.forEach(function(drink)
-		{
+		drinks.forEach(function(drink){
 			if(drink.drink == drinkName){
 				targetDrink = drink
 			}
