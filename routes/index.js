@@ -1,3 +1,5 @@
+//Main Author: Daniel Lerner
+
 var express = require('express');
 var router = express.Router();
 var Event = require('../models/Event');
@@ -27,6 +29,7 @@ router.get('/hostPreEvent', function(req, res, next) {
   }
   else{
   	return false;
+  }
 });
 
 /* GET guest waiting page. */
@@ -48,6 +51,7 @@ router.get('/notify', function(req, res, next) {
   }
   else{
   	return false;
+  }
 });
 
 function isLoggedIn(req, res, next) {
