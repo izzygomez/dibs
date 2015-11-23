@@ -92,7 +92,7 @@ queueSchema.statics.addDrinkOrder = function(queueID, order, callback){
 * Creates new Queue for event
 **/
 queueSchema.statics.createQueue = function(queueID, callback){
-  queueExists(queueId, function(result){
+  queueExists(queueID, function(result){
     if (result){
       callback({taken: true});
     }
