@@ -6,7 +6,6 @@
 (function() {
 	// Logic to register an event with the DIBS app.
 	// Only the host can see this.
-	console.log("what's up");
 	$(document).on('click', '.register-button', function(evt){
 		console.log('Hello AGain!');
 		var item = $(this).parent();
@@ -16,8 +15,8 @@
 			'/events',
 			{eventID: eventID}
 		).done(function(response){
-			// TODO: Find whicch page to load after the event is successfully posted.
-			// 		 Will probably stay on the same page.
+			console.log('about to load dashboard');
+			loadDashboard();
 		}).fail(function(responseObject){
 			var response = $.parseJSON(responseObject.responseText);
 			$('.error').text(response.err);

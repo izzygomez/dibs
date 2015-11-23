@@ -7,6 +7,7 @@ var utils = require('../utils/utils');
 
 var Event = require('../models/Event');
 var User = require('../models/User');
+var FB = require('fb');
 
 // ***************************************
 // The event routes go here.
@@ -72,11 +73,16 @@ router.post('/', function(req, res){
 	var eventID = req.body.eventID;
 	User.getToken(req.user._id, function(err, token){
 		FB.setAccessToken(token);
-		FB.api('/' + eventID, function(response){
+		FB.api('/' + eventID + '?fields=name, start_time, end_time, admins, attending', function(response){
 			if (response && !response.error){
 				console.log(response);
+				var attending = response.attending.data;
+				var guests = attending.filter(function(attendee) {
+					return response.admins.data.indexOf(attendee) != -1;
+				});
+				console.log(guests);
 			} else {
-				console.log('Error!');
+				console.log(response.error);
 			}
 		});
 	});
