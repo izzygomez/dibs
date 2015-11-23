@@ -1,10 +1,7 @@
 // Main Author: Sara Stiklickas
 
-
 // Wrapped in an immediately invoked function expression.
 (function() {
-	var Order = require('../models/Order');
-	
 	$(document).on('click', '#submit-dibs', function(evt) {
 		var item = $(this).parent();
 		var drink = item.data('drink'); //get drink from menu item
@@ -17,8 +14,8 @@
 			loadWaitingPage(); // page that waits for notification
 			var isReady = false;
 			while (!isReady) {
-				Order.getOrder(response.orderID, function(order){
-					if (order.status === 1) {
+				$.get('/orders/status', function(response) {
+					if (response.status === 1) {
 						isReady = true;
 					}
 				});
@@ -26,8 +23,8 @@
 			loadNotificationPage();
 			var isServed = false;
 			while (!isServed) {
-				Order.getOrder(response.orderID, function(order) {
-					if (order.status === 2) {
+				$.get('/orders/status', function(response) {
+					if (response.status === 2) {
 						isServed = true;
 					}
 				});

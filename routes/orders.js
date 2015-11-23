@@ -65,4 +65,21 @@ router.post('/notified', function(req, res) {
 	});
 });
 
+/*
+GET /orders/status
+No request parameters
+Response:
+  - success: true if the status of the order has been obtained, contains status
+  - err: on failure, an error message
+*/
+router.get('/status', function(req, res) {
+	Order.getOrder(req.orderID, function(order) {
+		if (order) {
+			utils.sendSuccessResponse(res, {status: order.status});
+		} else {
+			utils.sendErrResponse(res, 500, 'An unknown error occurred.');
+		}
+	});
+});
+
 module.exports = router;
