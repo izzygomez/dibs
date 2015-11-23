@@ -15,7 +15,7 @@ var eventSchema = new Schema({
 	guests: [{type: Number, ref: 'User'}],
 	menu: {type: Number, ref: 'Menu'},
 	queue: {type: Number, ref: 'Queue'},
-	title: String, 
+	_title: String, 
 	startTime: Date,
 	endTime: Date
 });
@@ -90,9 +90,9 @@ eventSchema.statics.createNewEvent = function(eventID, title, start, end, guests
 						hosts: hosts,
 						drinkLimit: limit,
 						guests: guests,
-						menu: eventID,
-						queue: eventID,
-						title: title,
+						menu: newMenu,
+						queue: newQueue,
+						_title: title,
 						startTime: start,
 						endTime: end};
 			Event.create(data);
