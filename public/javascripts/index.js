@@ -7,21 +7,19 @@ var loadDashboard = function(){
 };
 
 var loadWaitingPage = function(orderID){
-	$.get('/status'), {orderID: orderID, function(response) {
+	$.get('/index/waiting'), function(response) {
 		loadPage(response);
-	}}
-};
-
-var loadQueuePage = function(queueID){
-	$.get('queues/', {queueID: queueID}, function(response) {
-		if (response.change){
-			loadPage(response);
-		}
 	});
 };
 
 var loadNotificationPage = function(orderID){
-	$.get('/status', {orderID: orderID}, function(response) {
+	$.get('/index/notify', function(response) {
+		loadPage(response);
+	});
+};
+
+var loadQueuePage = function(queueID){
+	$.get('queues/', {queueID: queueID}, function(response) {
 		if (response.change){
 			loadPage(response);
 		}

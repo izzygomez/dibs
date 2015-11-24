@@ -43,35 +43,17 @@ router.get('/hostPreEvent', function(req, res) {
   });
 });
 
-/* GET guest waiting page. */
-router.get('/status', function(req, res) {
-  Order.getOrder(req.query.orderID, function(order){
-    if (order.status == 0){
-      res.render('waitPage');
-      utils.sendSuccessResponse(res, {change: true})
-    }
-    else if (order.status == 1){
-      res.render('notifyPage');
-      utils.sendSuccessResponse(res, {change: true})
-    }
-    else{
-      utils.sendSuccessResponse(res, {change: false})
-    }
-  });
+/* GET guest waiting page */
+router.get('/waiting', function(req, res) {
+  res.render('waitPage');
 });
 
-/*
-GET guest notification page.
+/* GET guest notification page */
 router.get('/notify', function(req, res) {
-  var tarOrder = Order.getOrder(req.query.eventID)
-  if (tarOrder.status == 1){
-  	res.render('notifyPage');
-  }
-  else{
-  	return false;
-  }
+  res.render('notifyPage');
 });
-*/
+
+
 function isLoggedIn(req, res, next) {
 	if (!req.isAuthenticated()) {
 		return next();	
