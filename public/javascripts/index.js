@@ -6,14 +6,14 @@ var loadDashboard = function(){
 	});
 };
 
-var loadWaitingPage = function(orderID){
-	$.get('/index/waiting'), function(response) {
+var loadWaitingPage = function(){
+	$.get('/waiting', function(response) {
 		loadPage(response);
 	});
 };
 
-var loadNotificationPage = function(orderID){
-	$.get('/index/notify', function(response) {
+var loadNotificationPage = function(){
+	$.get('/notify', function(response) {
 		loadPage(response);
 	});
 };
