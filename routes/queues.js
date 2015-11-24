@@ -45,6 +45,9 @@ router.get('/', function(req, res) {
     if (queue) {
       var orderIDs = queue.orders;
       var orderAttributes = [];
+      if (orderIDs.length === 0){
+        res.render('blankQueue');
+      }
       orderIDs.forEach(function(orderID, i, orderIDs) {
           Order.getOrder(orderID, function(order) {
               User.getUser(order.from, function(exists, user) {
