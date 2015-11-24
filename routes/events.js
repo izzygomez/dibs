@@ -62,7 +62,7 @@ router.get('/menu', function(req, res){
 		Menu.getMenuDrinks(req.query.menuID, function(drinks){
 			console.log(drinks);
 			if(drinks){
-				res.render('menu', {menu_id: req.query.menuID, drinks: drinks});
+				res.render('menu', {eventName: _event._title, menu_id: req.query.menuID, drinks: drinks});
 			}
 		});
    	});
