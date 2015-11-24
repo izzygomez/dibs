@@ -65,7 +65,7 @@ router.get('/events', isLoggedIn, function (req, res) {
 						} else if (!currentEvent.is_viewer_admin && !bool){
 							separatedEvents.attendingNotRegisteredEvents.push(currentEvent);
 						} else {
-							console.log('Error!');
+							console.log('Event does not qualify for anything! Error!');
 						}
 						if (i === userEvents.length -1){
 							res.render('allEvents', separatedEvents);
@@ -73,7 +73,7 @@ router.get('/events', isLoggedIn, function (req, res) {
 					});
 				});
 			} else {
-				console.log("Error!");
+				console.log("Error with the Facebook API. Rekt!");
 			}
 		});
 	});
