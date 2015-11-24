@@ -19,10 +19,8 @@ var loadNotificationPage = function(){
 };
 
 var loadQueuePage = function(queueID){
-	$.get('queues/', {queueID: queueID}, function(response) {
-		if (response.change){
-			loadPage(response);
-		}
+	$.get('/queues', {queueID: queueID}, function(response) {
+		loadPage(response);
 	});
 };
 
