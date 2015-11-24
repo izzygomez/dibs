@@ -15,8 +15,6 @@ var orderSchema = new Schema({
 	status: Number
 });
 
-var Order = mongoose.model('Order', orderSchema);
-
 /*
 Checks if the specified order exists in the database
 */
@@ -92,5 +90,7 @@ orderSchema.statics.changeStatus = function(orderID, newStatus, callback) {
 		}
 	});
 }
+
+var Order = mongoose.model('Order', orderSchema);
 
 module.exports = Order;

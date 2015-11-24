@@ -6,10 +6,10 @@ var loadDashboard = function(){
 	});
 };
 
-var loadWaitingPage = function(orderID){
-	$.get('/status'), {orderID: orderID, function(response) {
+var loadWaitingPage = function(){
+	$.get('/waiting', function(response) {
 		loadPage(response);
-	}}
+	});
 };
 
 var loadQueuePage = function(queueID){
@@ -21,10 +21,8 @@ var loadQueuePage = function(queueID){
 };
 
 var loadNotificationPage = function(orderID){
-	$.get('/status', {orderID: orderID}, function(response) {
-		if (response.change){
-			loadPage(response);
-		}
+	$.get('/notify', function(response) {
+		loadPage(response);
 	});
 };
 
