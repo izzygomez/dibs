@@ -9,12 +9,12 @@
   $(document).on('click', '#servedButton', function(evt) {
     evt.preventDefault();
     var item = $(this).parent();
-    var id = item[0].id;
+    var id = item.data('id');
     $.post(
         '/queues/served',
         { _id: id }
     ).done(function(response) {
-      console.log("drink served")
+        loadQueuePage(id);
     }).fail(function(responseObject) {
         var response = $.parseJSON(responseObject.responseText);
         $('.error').text(response.err);

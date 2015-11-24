@@ -36,7 +36,7 @@ Response:
   - err: on failure, an error message
 */
 router.post('/served', function(req, res) {
-	Order.changeStatus(req.orderID, 2, function(err) {
+	Order.changeStatus(req.body.orderID, 2, function(err) {
 		if (err) {
 			utils.sendErrResponse(res, 500, 'An unknown error occurred.');
 		} else {
@@ -54,7 +54,7 @@ Response:
   - err: on failure, an error message
 */
 router.post('/notified', function(req, res) {
-	Order.changeStatus(req.orderID, 1, function(err) {
+	Order.changeStatus(req.body.orderID, 1, function(err) {
 		if (err) {
 			utils.sendErrResponse(res, 500, 'An unknown error occurred.');
 		} else {
@@ -71,7 +71,7 @@ Response:
   - err: on failure, an error message
 */
 router.get('/status', function(req, res) {
-	Order.getOrder(req.orderID, function(order) {
+	Order.getOrder(req.body.orderID, function(order) {
 		if (order) {
 			utils.sendSuccessResponse(res, {status: order.status});
 		} else {

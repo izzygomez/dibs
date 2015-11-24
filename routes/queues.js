@@ -5,6 +5,7 @@ var router = express.Router();
 var utils = require('../utils/utils');
 var Queue = require('../models/Queue');
 var User = require('../models/User');
+var Order = require('../models/Order');
 
 /**
 POST /queue/served
@@ -15,6 +16,7 @@ POST /queue/served
     - err: on error, an error message
 **/
 router.post('/served', function(req, res) {
+  console.log(req.body._id)
   Queue.getNextOrder(req.body._id,
     function(err) {
       if (err) {
@@ -41,15 +43,18 @@ Response:
 router.get('/', function(req, res) {
   Queue.getQueue(req.query.queueID, function(queue) {
     if (queue) {
-      var orders = queue.orders;
+      var orderIDs = queue.orders;
       var orderAttributes = [];
-      orders.forEach(function(order, i, orders) {
-        User.getUser(order.from, function(exists, user) {
-          orderAttributes.push({drink: order.drink, timeStamp: order.timeStamp,
-                              fromUser: user.username});  
-        });
+      orderIDs.forEach(function(orderID, i, orderIDs) {
+          Order.getOrder(orderID, function(order) {
+              User.getUser(order.from, function(exists, user) {
+                  orderAttributes.push({drink: order.drink, timeStamp: order.timeStamp, fromUser: user.username});  
+                  if (i===orderIDs.length-1) {
+                    res.render('queue', {orderAttributes: orderAttributes, queueID: req.query.queueID});
+                  }
+              });
+          });
       });
-      res.render('queue', {orderAttributes: orderAttributes});
     } else {
       utils.sendErrResponse(res, 500, 'An unknown error occurred.');
     }
