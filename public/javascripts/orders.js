@@ -9,7 +9,6 @@
 			'/orders',
 			{drink: drink, eventID: eventID}
 		).done(function(response) {
-			console.log("HI");
 			loadWaitingPage(); // page that waits for notification
 			var ready = setInterval(function(){
 				$.get('/orders/status', function(response) {
