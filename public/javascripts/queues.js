@@ -11,7 +11,7 @@
     var item = $(this).parent();
     var id = item[0].id;
     $.post(
-        '/queue/served',
+        '/queues/served',
         { _id: id }
     ).done(function(response) {
       console.log("drink served")
