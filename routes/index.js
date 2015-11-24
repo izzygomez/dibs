@@ -44,19 +44,26 @@ router.get('/hostPreEvent', function(req, res) {
 });
 
 /* GET guest waiting page. */
-router.get('/waiting', function(req, res, next) {
-  var tarOrder = Order.getOrder(req.eventID)
-  if (tarOrder.status == 0){
-    res.render('waitPage');
-  }
-  else{
-    return false;
-  }
+router.get('/status', function(req, res) {
+  Order.getOrder(req.query.orderID, function(order){
+    if (order.status == 0){
+      res.render('waitPage');
+      utils.sendSuccessResponse(res, {change: true})
+    }
+    else if (order.status == 1){
+      res.render('notifyPage');
+      utils.sendSuccessResponse(res, {change: true})
+    }
+    else{
+      utils.sendSuccessResponse(res, {change: false})
+    }
+  });
 });
 
-/* GET guest notification page. */
-router.get('/notify', function(req, res, next) {
-  var tarOrder = Order.getOrder(req.eventID)
+/*
+GET guest notification page.
+router.get('/notify', function(req, res) {
+  var tarOrder = Order.getOrder(req.query.eventID)
   if (tarOrder.status == 1){
   	res.render('notifyPage');
   }
@@ -64,7 +71,7 @@ router.get('/notify', function(req, res, next) {
   	return false;
   }
 });
-
+*/
 function isLoggedIn(req, res, next) {
 	if (!req.isAuthenticated()) {
 		return next();	

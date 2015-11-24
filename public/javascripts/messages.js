@@ -4,21 +4,27 @@
 (function() {
   $(document).on('click', '#notify', function(evt) {
     evt.preventDefault();
-	$.get('/index/notify', function(response) {
-		if (response){
+    var item = $(this).parent();
+	var orderID = item.data('order-id');
+	$.get('/status', {orderID: orderID}, function(response) {
+		if (response.change){
 			loadPage(response);
 		}
 	});
   });
 
-  $(document).on('click', '#ordered', function(evt) {
+/*
+  $(document).on('click', '#dibs', function(evt) {
    	evt.preventDefault();
-	$.get('/index/waiting', function(response) {
-		if (response){
+   	var item = $(this).parent();
+	var orderID = item.data('order-id');
+	$.get('/status', {orderID: orderID}, function(response) {
+		if (response.change){
 			loadPage(response);
 		}
 	});
   });
+*/
 
   $(document).on('click', '.suggest-button', function(evt) {
     evt.preventDefault();

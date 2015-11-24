@@ -6,11 +6,17 @@ var loadDashboard = function(){
 	});
 };
 
-var loadWaitingPage = function(){};
+var loadWaitingPage = function(orderID){
+	$.get('/status'), {orderID: orderID, function(response) {
+		loadPage(response);
+	}}
+};
 
 var loadQueuePage = function(queueID){
 	$.get('queues/', {queueID: queueID}, function(response) {
-		loadPage(response);
+		if (response.change){
+			loadPage(response);
+		}
 	});
 };
 
