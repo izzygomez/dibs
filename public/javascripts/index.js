@@ -20,7 +20,13 @@ var loadQueuePage = function(queueID){
 	});
 };
 
-var loadNotificationPage = function(){};
+var loadNotificationPage = function(orderID){
+	$.get('/status', {orderID: orderID}, function(response) {
+		if (response.change){
+			loadPage(response);
+		}
+	});
+};
 
 var loadMenuPage = function(menuID){
 	$.get('events/menu', {menuID: menuID}, function(response) {
