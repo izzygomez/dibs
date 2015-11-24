@@ -7,6 +7,7 @@ var utils = require('../utils/utils');
 
 var Event = require('../models/Event');
 var User = require('../models/User');
+var Menu = require('../models/Menu');
 var FB = require('fb');
 
 // ***************************************
@@ -58,8 +59,12 @@ router.get('/registeredAttendEvents', function(req, res){
 // METHOD SPEC NEEDED -- renders display of menu for guest at event happening now
 router.get('/menu', function(req, res){
 	Event.findByID(req.query.menuID, function(err, _event){
-		console.log("rendering menu");
-		res.render('menu', {_event: _event, menu: _event.menu})
+		Menu.getMenuDrinks(req.query.menuID, function(drinks){
+			console.log(drinks);
+			if(drinks){
+				res.render('menu', {menu_id: req.query.menuID, drinks: drinks});
+			}
+		});
    	});
 });
 

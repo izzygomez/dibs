@@ -9,7 +9,7 @@ var loadDashboard = function(){
 var loadWaitingPage = function(){};
 
 var loadQueuePage = function(queueID){
-	$.get('queues', {queueID: queueID}, function(response) {
+	$.get('queues/', {queueID: queueID}, function(response) {
 		loadPage(response);
 	});
 };
