@@ -18,15 +18,15 @@
 						clearInterval(ready);
 					}
 				});
-			}, 3000);
+			}, 10000);
 			var served = setInterval(function(){
 				$.get('/orders/status', function(response) {
 					if (response.status === 2) {
-						loadMenuPage();
+						loadMenuPage(eventID);
 						clearInterval(served);
 					}
 				});
-			}, 3000);
+			}, 10000);
 		}).fail(function(responseObject) {
 			var response = $.parseJSON(responseObject.responseText);
 			$('.error').text(response.err);
