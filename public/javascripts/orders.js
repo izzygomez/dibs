@@ -3,16 +3,15 @@
 // Wrapped in an immediately invoked function expression.
 (function() {
 	$(document).on('click', '#submit-dibs', function(evt) {
-		var item = $(this).parent();
-		var drink = item.data('drink'); //get drink from menu item
-		var currentUser = req.user._id;
-		var eventID = item.data('id'); // get menuID
+		var drink = $(this).data('drink'); //get drink from menu item
+		var eventID = $(this).parent().parent().parent().data('id'); // get menuID
 		$.post(
 			'/orders',
-			{drink: drink, from: currentUser, eventID: eventID}
+			{drink: drink, eventID: eventID}
 		).done(function(response) {
+			console.log("HI");
 			loadWaitingPage(); // page that waits for notification
-			var isReady = false;
+			/*var isReady = false;
 			while (!isReady) {
 				$.get('/orders/status', function(response) {
 					if (response.status === 1) {
@@ -29,7 +28,7 @@
 					}
 				});
 			}
-			loadQueuePage();
+			loadQueuePage();*/
 		}).fail(function(responseObject) {
 			var response = $.parseJSON(responseObject.responseText);
 			$('.error').text(response.err);

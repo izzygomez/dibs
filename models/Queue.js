@@ -69,7 +69,7 @@ queueSchema.statics.getEventOrders = function(queueID, callback){
 **/
 queueSchema.statics.getNextOrder = function(queueID, callback)
 {
-	getEventOrders(queueID, function(orders){
+	Queue.getEventOrders(queueID, function(orders){
 		nextOrder = orders.shift()
 		Queue.update({_id: queueID}, {$pop: {orders: -1}});
 		callback(null, nextOrder)
@@ -80,12 +80,15 @@ queueSchema.statics.getNextOrder = function(queueID, callback)
 * Adds drink order to Queue, updates database
 **/
 // need a callback function in update?? peep user model
-queueSchema.statics.addDrinkOrder = function(queueID, order, callback){
-	getEventOrders(queueID, function(orders){
-		orders.push(order)
-		Queue.update({_id: queueID}, {$push: {orders: orders}});
-	})
-	callback(null)
+queueSchema.statics.addDrinkOrder = function(queueID, orderID, callback){
+	Queue.getEventOrders(queueID, function(orders){
+		orders.push(orderID);
+    console.log(orderID);
+    console.log(orders);
+		Queue.update({_id: queueID}, {$set: {orders: orders}}, function(){});
+    console.log("updated");
+    callback(null);
+	});
 }
 
 /**

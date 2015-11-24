@@ -16,15 +16,13 @@ Response:
   - err: on failure, an error message
 */
 router.post('/', function(req, res) {
-	Order.createOrder(req.drink, req.from, function(orderID){
-		Order.getOrder(orderID, function(order) {
-			Queue.addDrinkOrder(req.eventID, order, function(err){
-				if (err) {
-					utils.sendErrResponse(res, 500, 'An unknown error occurred.');
-				} else {
-					utils.sendSuccessResponse(res, {orderID: orderID});
-				}
-			});
+	Order.createOrder(req.body.drink, req.user._id, function(orderID){
+		Queue.addDrinkOrder(req.body.eventID, orderID, function(err){
+			if (err) {
+				utils.sendErrResponse(res, 500, 'An unknown error occurred.');
+			} else {
+				utils.sendSuccessResponse(res, {orderID: orderID});
+			}
 		});
 	});
 });
