@@ -11,24 +11,28 @@
 		).done(function(response) {
 			console.log("HI");
 			loadWaitingPage(); // page that waits for notification
-			/*var isReady = false;
-			while (!isReady) {
-				$.get('/orders/status', function(response) {
-					if (response.status === 1) {
-						isReady = true;
-					}
-				});
-			}
+			var ready = setInterval(function(){
+				if (!isReady){
+					$.get('/orders/status', function(response) {
+						if (response.status === 1) {
+							isReady = true;
+							clearInterval(ready);
+						}
+					});
+				} 
+			}, 3000);
 			loadNotificationPage();
-			var isServed = false;
-			while (!isServed) {
-				$.get('/orders/status', function(response) {
-					if (response.status === 2) {
-						isServed = true;
-					}
-				});
-			}
-			loadQueuePage();*/
+			var served = setInterval(function(){
+				if (!isServed){
+					$.get('/orders/status', function(response) {
+						if (response.status === 2) {
+							isServed = true;
+							clearInterval(served);
+						}
+					});
+				} 
+			}, 3000);
+			loadMenuPage();
 		}).fail(function(responseObject) {
 			var response = $.parseJSON(responseObject.responseText);
 			$('.error').text(response.err);
