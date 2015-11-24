@@ -12,27 +12,21 @@
 			console.log("HI");
 			loadWaitingPage(); // page that waits for notification
 			var ready = setInterval(function(){
-				if (!isReady){
-					$.get('/orders/status', function(response) {
-						if (response.status === 1) {
-							isReady = true;
-							clearInterval(ready);
-						}
-					});
-				} 
+				$.get('/orders/status', function(response) {
+					if (response.status === 1) {
+						loadNotificationPage();
+						clearInterval(ready);
+					}
+				});
 			}, 3000);
-			loadNotificationPage();
 			var served = setInterval(function(){
-				if (!isServed){
-					$.get('/orders/status', function(response) {
-						if (response.status === 2) {
-							isServed = true;
-							clearInterval(served);
-						}
-					});
-				} 
+				$.get('/orders/status', function(response) {
+					if (response.status === 2) {
+						loadMenuPage();
+						clearInterval(served);
+					}
+				});
 			}, 3000);
-			loadMenuPage();
 		}).fail(function(responseObject) {
 			var response = $.parseJSON(responseObject.responseText);
 			$('.error').text(response.err);
