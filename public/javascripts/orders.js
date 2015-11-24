@@ -35,11 +35,12 @@
 	$(document).on('click', '#servedButton', function(evt) {
 		var item = $(this).parent();
 		var orderID = item.data('order-id'); // need to give orders a data-order-id class
+		var eventID = $(this).parent().data('id');
 		$.post(
 			'/orders/served',
 			{orderID: orderID}
 		).done(function(response) {
-			loadQueuePage(); // reload queue page, order should be removed
+			loadQueuePage(eventID); // reload queue page, order should be removed
 		}).fail(function(responseObject) {
 			var response = $.parseJSON(responseObject.responseText);
 			$('.error').text(response.err);
@@ -49,11 +50,14 @@
 	$(document).on('click', '#notifyButton', function(evt) {
 		var item = $(this).parent();
 		var orderID = item.data('order-id');
+		var eventID = $(this).parent().data('id');
+		console.log(eventID);
 		$.post(
 			'/orders/notified',
 			{orderID: orderID}
 		).done(function(response) {
-			loadQueuePage(); // still same page
+			console.log('done '+ eventID);
+			loadQueuePage(eventID); // still same page
 		}).fail(function(responseObject) {
 			var response = $.parseJSON(responseObject.responseText);
 			$('.error').text(response.err);

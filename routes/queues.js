@@ -41,6 +41,7 @@ Response:
   - err: on failure, an error message
 */
 router.get('/', function(req, res) {
+  console.log('get ' + req.query.queueID);
   Queue.getQueue(req.query.queueID, function(queue) {
     if (queue) {
       var orderIDs = queue.orders;
