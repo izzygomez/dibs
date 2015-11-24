@@ -1,7 +1,7 @@
 <div class="queue">
 	<h1>Order Queue</h1>
 	<% for (var i=0; i<orderAttributes.length; i++) { %>
-		<div>
+		<div data-id = <%= queueID %>>
 			<li><%= orderAttributes[i].timeStamp %></li>
 			<li><%= orderAttributes[i].fromUser %></li>
 			<li><%= orderAttributes[i].drink %></li>

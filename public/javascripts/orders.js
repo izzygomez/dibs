@@ -56,7 +56,7 @@
 		).done(function(response) {
 			loadQueuePage(); // still same page
 		}).fail(function(responseObject) {
-			var response = $.parseJson(responseObject.responseText);
+			var response = $.parseJSON(responseObject.responseText);
 			$('.error').text(response.err);
 		});
 	});
