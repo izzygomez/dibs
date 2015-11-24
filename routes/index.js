@@ -29,7 +29,6 @@ router.get('/guestPreEvent', function(req, res, next) {
 
 /* GET hostPreEvent page. */
 router.get('/hostPreEvent', function(req, res) {
-  console.log("host pre event");
   Event.findByID(req.query.eventID, function(err, _event){
     Event.isHappening(req.query.eventID, function(err, result){
       if(result){

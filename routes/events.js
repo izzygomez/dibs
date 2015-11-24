@@ -60,7 +60,6 @@ router.get('/registeredAttendEvents', function(req, res){
 router.get('/menu', function(req, res){
 	Event.findByID(req.query.menuID, function(err, _event){
 		Menu.getMenuDrinks(req.query.menuID, function(drinks){
-			console.log(drinks);
 			if(drinks){
 				res.render('menu', {eventName: _event._title, menu_id: req.query.menuID, drinks: drinks});
 			}
