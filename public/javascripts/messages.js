@@ -13,19 +13,6 @@
 	});
   });
 
-/*
-  $(document).on('click', '#dibs', function(evt) {
-   	evt.preventDefault();
-   	var item = $(this).parent();
-	var orderID = item.data('order-id');
-	$.get('/status', {orderID: orderID}, function(response) {
-		if (response.change){
-			loadPage(response);
-		}
-	});
-  });
-*/
-
   $(document).on('click', '.suggest-button', function(evt) {
     evt.preventDefault();
     var item = $(this).parent();
