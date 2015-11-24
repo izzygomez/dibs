@@ -53,7 +53,7 @@ router.get('/', function(req, res) {
               User.getUser(order.from, function(exists, user) {
                   orderAttributes.push({drink: order.drink, timeStamp: order.timeStamp, fromUser: user.username});  
                   if (i===orderIDs.length-1) {
-                    res.render('queue', {orderAttributes: orderAttributes, queueID: req.query.queueID});
+                    res.render('queue', {orderAttributes: orderAttributes, queueID: req.query.queueID, orderID: orderID});
                   }
               });
           });
