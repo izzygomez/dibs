@@ -69,8 +69,6 @@ queueSchema.statics.getEventOrders = function(queueID, callback){
 **/
 queueSchema.statics.getNextOrder = function(queueID, callback) {
 	Queue.getEventOrders(queueID, function(orders){
-    console.log(queueID);
-    console.log(orders);
 		nextOrder = orders.shift()
 		Queue.update({_id: queueID}, {$pop: {orders: -1}}, function(){});
 		callback(null, nextOrder)
@@ -84,10 +82,7 @@ queueSchema.statics.getNextOrder = function(queueID, callback) {
 queueSchema.statics.addDrinkOrder = function(queueID, orderID, callback){
 	Queue.getEventOrders(queueID, function(orders){
 		orders.push(orderID);
-    console.log(orderID);
-    console.log(orders);
 		Queue.update({_id: queueID}, {$set: {orders: orders}}, function(){});
-    console.log("updated");
     callback(null);
 	});
 }

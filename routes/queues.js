@@ -16,11 +16,10 @@ POST /queue/served
     - err: on error, an error message
 **/
 router.post('/served', function(req, res) {
-  console.log(req.body._id)
   Queue.getNextOrder(req.body._id,
     function(err) {
       if (err) {
-          utils.sendErrResponse(res, 500, 'An unknown error has occurred.');
+          utils.sendErrResponse(res, 500, 'Drink Order not retrieved');
       } 
       else {
         utils.sendSuccessResponse(res, req.body._id);
@@ -41,7 +40,6 @@ Response:
   - err: on failure, an error message
 */
 router.get('/', function(req, res) {
-  console.log('get ' + req.query.queueID);
   Queue.getQueue(req.query.queueID, function(queue) {
     if (queue) {
       var orderIDs = queue.orders;
@@ -60,7 +58,7 @@ router.get('/', function(req, res) {
           });
       });
     } else {
-      utils.sendErrResponse(res, 500, 'An unknown error occurred.');
+      utils.sendErrResponse(res, 500, 'Queue not retrieved');
     }
   });
 });

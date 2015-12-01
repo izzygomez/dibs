@@ -2,7 +2,6 @@
 
 // Wrap in an immediately invoked function expression.
 (function() {
-
 /**
 * Sends command to pop next drink on queue now that it has been served. 
 **/
