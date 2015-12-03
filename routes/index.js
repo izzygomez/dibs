@@ -16,15 +16,19 @@ router.get('/guestPreEvent', function(req, res, next) {
   Event.findByID(req.query.eventID, function(err, _event){
     Event.isHappening(req.query.eventID, function(err, result){
       if (result){
-        var happen = {happening: true};
+        var happen = {happening: true, _event: _event};
         utils.sendSuccessResponse(res, happen);
       }
       else{
-        var happen = {happening: false};
-        res.render('guestPreEvent', happen);
+        var happen = {happening: false, _event: _event};
+        utils.sendSuccessResponse(res, happen);
       }
     });
   });
+});
+
+router.get('/guestSuggest', function(req, res, next) {
+  res.render('guestPreEvent', req.query);
 });
 
 /* GET hostPreEvent page. */

@@ -19,7 +19,7 @@
 	var eventID = item.data('event-id');
 	$.get('/guestPreEvent', {eventID: eventID}, function(response) {
 		if (response.content.happening != true){
-			loadPage(response);
+			loadGuestSuggestPage(response.content._event);
 		}
 		else{
 			loadMenuPage(eventID);

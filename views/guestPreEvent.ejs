@@ -1,8 +1,17 @@
 <div class="guestPreEvent" data-id = "<%= _event._id %>">
-        <h1><%= _event._title %></h1>
+        <h1><%= _event._title %> Suggestions</h1>
 
-        <p><%= _event._title %></p>
-        <p>Event starting at <%= _event.start %>!
-        <br>Come back then!</p>
-
+        <p>Make up to 3 suggestions for <%= _event._title %>:</p>
+        <form>
+		  Suggestion 1:<br>
+		  <input type="text" name="Suggestion">
+		  <br>
+		  Suggestion 2:<br>
+		  <input type="text" name="Suggestion">
+		  <br>
+		  Suggestion 3:<br>
+		  <input type="text" name="Suggestion">
+		  <br><br>
+		  <input type="submit" name="Submit">
+		</form>
 </div>
