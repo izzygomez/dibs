@@ -2,7 +2,6 @@
 
 // grab the things that we need
 var mongoose = require('mongoose');
-
 var Schema = mongoose.Schema;
 
 // create a schema
@@ -78,6 +77,25 @@ menuSchema.statics.addDrinkOrder = function(menuID, drink, callback){
 }
 
 /**
+* Removes drink from Menu, updates database
+**/
+menuSchema.statics.removeDrink = function(menuID, drinkName, callback){
+	var targetDrink;
+	Menu.getMenuDrinks(menuID, function(drinks){
+		drinks.forEach(function(drink){
+			if(drink.drink == drinkName){
+				targetDrink = drinkName;
+			}
+		});
+			var updated = drinks.filter(function(drink) {
+				return drink.drink !== targetDrink
+			})
+			Menu.update({_id: menuID}, {$set: {drinks: updated}}, function(){});
+			callback(null);
+	});
+}
+
+/**
 * Updates stock of drink on menu, reports to user if out of stock
 **/
 menuSchema.statics.updateStock = function(menuID, drinkName, callback)
@@ -90,7 +108,6 @@ menuSchema.statics.updateStock = function(menuID, drinkName, callback)
 			}
 		});
 		if (targetDrink.stock == 0){
-			console.log("hi");
 			callback({msg: "Sorry, we're out of that drink :("})
 		}
 		else{

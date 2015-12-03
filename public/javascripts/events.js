@@ -21,13 +21,22 @@
 		});
 	});
 
-	// Logic to go to an event 
-	$(document).on('click', '.gotoEvent', function(evt){
-		// TODO: Correct when the actual HTML format for this is figured out.
+
+	$(document).on('click', '.removeDrink', function(evt){
+		evt.preventDefault();
 		var item = $(this).parent();
-		var eventID = item.data('event-id');
-		// TODO: Need to get information from the Facebook api regarding the event's info
-		// Load the ejs templates for this.
+		var greatGrandpa = $(this).parent().parent().parent().parent();
+		var menuID = greatGrandpa.data('id');
+		var drinkName = item.data('drink');
+		$.post(
+			'/menus/removeDrink',
+			{drink: drinkName, menuID: menuID}
+		).done(function(response){
+			loadSuggestionsPage(response.content)
+		}).fail(function(responseObject){
+			var response = $.parseJSON(responseObject.responseText);
+			$('.error').text(response.err);
+		});
 	});
 
 })();
