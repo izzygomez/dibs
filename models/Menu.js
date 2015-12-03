@@ -83,21 +83,25 @@ menuSchema.statics.addDrinkOrder = function(menuID, drink, callback){
 menuSchema.statics.updateStock = function(menuID, drinkName, callback)
 {
 	var targetDrink;
-	getMenuDrinks(menuID, function(drinks){
+	Menu.getMenuDrinks(menuID, function(drinks){
 		drinks.forEach(function(drink){
 			if(drink.drink == drinkName){
-				targetDrink = drink
+				targetDrink = drink;
 			}
 		});
 		if (targetDrink.stock == 0){
+			console.log("hi");
 			callback({msg: "Sorry, we're out of that drink :("})
 		}
 		else{
-			targetDrink.stock = targetDrink.stock - 1;
-			var filtered = drinks.filter(function(drink){
-				return drink.drink != drinkName;
-			});
-			Menu.update({_id: menuID}, {$push: {drinks: filtered}}, function(){});
+			var updated = drinks.map(function(drink) {
+				if(drink.drink == drinkName) {
+					return {drink: drinkName, stock: drink.stock-1};
+				} else {
+					return drink;
+				}
+			})
+			Menu.update({_id: menuID}, {$set: {drinks: updated}}, function(){});
 			callback(null);
 		};
 	})

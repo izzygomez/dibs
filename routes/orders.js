@@ -5,6 +5,7 @@ var router = express.Router();
 var utils = require('../utils/utils');
 var Order = require('../models/Order');
 var Queue = require('../models/Queue');
+var Menu = require('../models/Menu');
 
 /*
 POST /orders
@@ -17,11 +18,17 @@ Response:
 */
 router.post('/', function(req, res) {
 	Order.createOrder(req.body.drink, req.user._id, function(orderID){
-		Queue.addDrinkOrder(req.body.eventID, orderID, function(err){
+		Menu.updateStock(req.body.eventID, req.body.drink, function(err){
 			if (err) {
-				utils.sendErrResponse(res, 500, 'An unknown error occurred.');
+				utils.sendErrResponse(res, 500, 'out of stock');
 			} else {
-				utils.sendSuccessResponse(res, {orderID: orderID});
+				Queue.addDrinkOrder(req.body.eventID, orderID, function(err){
+					if (err) {
+						utils.sendErrResponse(res, 500, 'An unknown error occurred.');
+					} else {
+						utils.sendSuccessResponse(res, {orderID: orderID});
+					}
+				});
 			}
 		});
 	});
