@@ -1,0 +1,32 @@
+<div class="hostSuggestions" data-id = <%= _event._id %>>
+    <h1>Menu</h1>
+
+    <p><%= _event._title %></p>
+    <div class = "menuSuggestions">
+    <h2>Suggestions</h2>
+	    <ul>
+	    <% if (_event.suggestions !== undefined){ 
+	    	for (var i = 0; i < _event.suggestions.length; i++){ %>
+	    		<li> <%= _event.suggestions[i].drink + ": " + _event.suggestions[i].count %>
+	    		<button id="addToMenu" data-drink="<%= _event.suggestions[i].drink %>">Add to Menu!
+	    		</button>
+	    		</li>
+	    	<% } %>
+		<% } %>
+		</ul>
+    </div>
+
+    <div class = "hostsMenu">
+    <h3>Current Menu</h3>
+        <ul>
+	    <% for (var i = 0; i < menu.drinks.length; i++){ %>
+	    		<li> <%= menu.drinks[i].drink %>
+	    		<button id="remove-drink" data-drink="<%= menu.drinks[i].drink %>">Remove</button><br><br>
+	    		<input type="text" id = "<%= menu.drinks[i].drink %>" data-drink= "<%= menu.drinks[i].drink %>" value="">
+	    		<button id="set-stock" data-drink="<%= menu.drinks[i].drink %>">Set Stock</button>
+	    		</li>
+	    		<br>
+		<% } %>
+		</ul>
+	</div>
+</div>

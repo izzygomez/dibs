@@ -18,6 +18,12 @@ var loadNotificationPage = function(){
 	});
 };
 
+var loadSuggestionsPage = function(eventData){
+	$.get('/suggestions', {eventData: eventData}, function(response) {
+		loadPage(response);
+	});
+};
+
 var loadQueuePage = function(queueID){
 	$.get('/queues', {queueID: queueID}, function(response) {
 		loadPage(response);

@@ -17,3 +17,12 @@ a {
 	margin-bottom: 2px;
 }
 
+.menuSuggestions {
+float:left;
+width:450px;
+}
+.hostsMenu{
+float:right;
+width:500px;
+}
+

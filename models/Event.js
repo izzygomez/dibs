@@ -13,6 +13,7 @@ var eventSchema = new Schema({
 	hosts: [{type: Number, ref: 'User'}],
 	drinkLimit: Number,
 	guests: [{type: Number, ref: 'User'}],
+	suggestions: [{drink:String, count: Number}],
 	menu: {type: Number, ref: 'Menu'},
 	queue: {type: Number, ref: 'Queue'},
 	_title: String, 
@@ -90,6 +91,7 @@ eventSchema.statics.createNewEvent = function(eventID, title, start, end, guests
 						hosts: hosts,
 						drinkLimit: limit,
 						guests: guests,
+						suggestions: [],
 						menu: eventID,
 						queue: eventID,
 						_title: title,
@@ -99,6 +101,14 @@ eventSchema.statics.createNewEvent = function(eventID, title, start, end, guests
 			callback(null);
 		}
 	});
+}
+
+eventSchema.statics.addSuggestion = function(eventID, suggestion, callback){
+	getSuggestions(eventID, function(suggestions){
+		suggestions.push(suggestion);
+		Event.update({_id: eventID}, {$push: {suggestions: suggestions}}, function(){});
+		callback(null);
+	})
 }
 
 /*
@@ -152,6 +162,16 @@ eventSchema.statics.getHosts = function(eventID, callback){
 	getEvent(eventID, function(thisEvent) {
 		var hosts = thisEvent.hosts; 
 		callback(null, hosts);
+	});
+}
+
+/*
+Gets the drink suggestions for an event
+*/
+eventSchema.statics.getSuggestions = function(eventID, callback){
+	getEvent(eventID, function(thisEvent) {
+		var suggests = thisEvent.suggestions; 
+		callback(null, suggests);
 	});
 }
 
