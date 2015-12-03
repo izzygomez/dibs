@@ -111,4 +111,20 @@ router.post('/', function(req, res){
 	});
 });
 
+router.post('/suggest', function(req, res) {
+	Event.addSuggestion(req.body.eventID, req.body.suggestion1, function(err){
+		if (err === null) {
+			Event.addSuggestion(req.body.eventID, req.body.suggestion2, function(err2){
+				if (err2 === null) {
+					Event.addSuggestion(req.body.eventID, req.body.suggestion3, function(err3){
+						if (err3 === null) {
+							utils.sendSuccessResponse(res);
+						}
+					});				
+				}
+			});
+		}
+	});
+});
+
 module.exports = router;

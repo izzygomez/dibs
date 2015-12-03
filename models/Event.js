@@ -104,11 +104,28 @@ eventSchema.statics.createNewEvent = function(eventID, title, start, end, guests
 }
 
 eventSchema.statics.addSuggestion = function(eventID, suggestion, callback){
-	getSuggestions(eventID, function(suggestions){
-		suggestions.push(suggestion);
-		Event.update({_id: eventID}, {$push: {suggestions: suggestions}}, function(){});
-		callback(null);
-	})
+	Event.getSuggestions(eventID, function(err, suggestions){
+		var count = suggestions.length;
+		var lowerSuggestion = suggestion.toLowerCase();
+		var drinks = suggestions.map(function(suggest){
+			return suggest.drink;
+		});
+		if (drinks.indexOf(suggestion) == -1) {
+			suggestions.push({drink: suggestion, count: 1});
+			Event.update({_id: eventID}, {$set: {suggestions: suggestions}}, function(){});
+			callback(null);
+		} else {
+			var updated = suggestions.map(function(suggest) {
+				if (lowerSuggestion == suggest.drink) {
+					return {drink: lowerSuggestion, count: suggest.count + 1};
+				} else {
+					return suggest;
+				}
+			});
+			Event.update({_id: eventID}, {$set: {suggestions: updated}}, function(){});
+			callback(null);
+		}
+	});
 }
 
 /*
