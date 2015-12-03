@@ -72,6 +72,10 @@ router.get('/events', isLoggedIn, function (req, res) {
 						}
 					});
 				});
+
+				if (userEvents.length === 0) {
+					res.render('noEvents');
+				}
 			} else {
 				console.log("Error with the Facebook API. Rekt!");
 			}
