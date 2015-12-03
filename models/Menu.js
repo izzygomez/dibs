@@ -72,9 +72,9 @@ menuSchema.statics.getMenuDrinks = function(menuID, callback){
 menuSchema.statics.addDrinkOrder = function(menuID, drink, callback){
 	getMenuDrinks(menuID, function(drinks){
 		drinks.push(drink);
-		Menu.update({_id: menuID}, {$push: {drinks: drinks}});
+		Menu.update({_id: menuID}, {$push: {drinks: drinks}}, function(){});
+		callback(null);
 	});
-	callback(null);
 }
 
 /**
@@ -88,7 +88,7 @@ menuSchema.statics.updateStock = function(menuID, drinkName, callback)
 			if(drink.drink == drinkName){
 				targetDrink = drink
 			}
-		})
+		});
 		if (targetDrink.stock == 0){
 			callback({msg: "Sorry, we're out of that drink :("})
 		}
@@ -97,10 +97,10 @@ menuSchema.statics.updateStock = function(menuID, drinkName, callback)
 			var filtered = drinks.filter(function(drink){
 				return drink.drink != drinkName;
 			});
-			Menu.update({_id: menuID}, {$push: {drinks: filtered}});
+			Menu.update({_id: menuID}, {$push: {drinks: filtered}}, function(){});
+			callback(null);
 		};
 	})
-	callback(null);
 }
 
 /**
@@ -119,7 +119,5 @@ menuSchema.statics.createMenu = function(menuID, callback){
   });
 }
 
-
 var Menu = mongoose.model('Menu', menuSchema);
-
 module.exports = Menu;
