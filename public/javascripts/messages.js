@@ -33,7 +33,8 @@
 	var eventID = item.data('event-id');
 	$.get('/hostPreEvent', {eventID: eventID}, function(response) {
 		if (response.content.happening != true){
-			loadPage(response);
+			var eventData = {_event: response.content._event, menu: response.content.menu};
+			loadSuggestionsPage(eventData);
 		}
 		else{
 			loadQueuePage(eventID);
