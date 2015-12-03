@@ -34,7 +34,7 @@
 
 	$(document).on('click', '#servedButton', function(evt) {
 		var item = $(this).parent();
-		var orderID = item.data('order-id'); // need to give orders a data-order-id class
+		var orderID = item.data('order-id'); 
 		var eventID = $(this).parent().data('id');
 		$.post(
 			'/orders/served',
