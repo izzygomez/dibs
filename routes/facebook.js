@@ -14,12 +14,10 @@ router.get('/events', isLoggedIn, function (req, res) {
 			if (response && !response.error){
 				// Get user events
 				var userEvents = response.data;
-				// console.log(userEvents);
 
 				var filteredUserEvents = [];
 
 				var rightNow = Date.now(); // in ms since Jan 1, 1970 00:00:00 UTC
-				// console.log("Date.now() :" + rightNow);
 
 				userEvents.forEach(function (currentEvent, i, userEvents) {
 					if (currentEvent.end_time) {
@@ -48,7 +46,6 @@ router.get('/events', isLoggedIn, function (req, res) {
 				});
 
 				userEvents = filteredUserEvents;
-				// console.log(userEvents);
 
 				var separatedEvents = {hostNotRegisteredEvents: [], hostRegisteredEvents: [],
 									   attendingNotRegisteredEvents: [], attendingRegisteredEvents: []};
@@ -65,13 +62,19 @@ router.get('/events', isLoggedIn, function (req, res) {
 						} else if (!currentEvent.is_viewer_admin && !bool){
 							separatedEvents.attendingNotRegisteredEvents.push(currentEvent);
 						} else {
-							console.log('Event does not qualify for anything! Error!');
 						}
-						if (i === userEvents.length -1){
+						if (userEvents.length === separatedEvents.hostNotRegisteredEvents.length + 
+												separatedEvents.hostRegisteredEvents.length + 
+												separatedEvents.attendingNotRegisteredEvents.length +
+												separatedEvents.attendingRegisteredEvents.length){
 							res.render('allEvents', separatedEvents);
 						}
 					});
 				});
+
+				if (userEvents.length === 0) {
+					res.render('noEvents');
+				}
 			} else {
 				console.log("Error with the Facebook API. Rekt!");
 			}

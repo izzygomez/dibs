@@ -21,7 +21,6 @@
 		});
 	});
 
-
 	$(document).on('click', '.removeDrink', function(evt){
 		evt.preventDefault();
 		var item = $(this).parent();
@@ -34,9 +33,33 @@
 		).done(function(response){
 			loadSuggestionsPage(response.content)
 		}).fail(function(responseObject){
+
+	// // Logic to go to an event 
+	// $(document).on('click', '.gotoEvent', function(evt){
+	// 	// TODO: Correct when the actual HTML format for this is figured out.
+	// 	var item = $(this).parent();
+	// 	var eventID = item.data('event-id');
+	// 	// TODO: Need to get information from the Facebook api regarding the event's info
+	// 	// Load the ejs templates for this.
+	// });
+	
+	/*
+	Submits guest suggestions before an event
+	*/
+	$(document).on('submit', '#suggest-form', function(evt) {
+		evt.preventDefault();
+		var item = $(this).parent();
+		var eventID = item.data('id');
+		var formData = helpers.getFormData(this);
+		formData["eventID"] = eventID;
+		$.post(
+			'/events/suggest',
+			formData
+		).done(function(response) {
+			loadDashboard();
+		}).fail(function(responseObject) {
 			var response = $.parseJSON(responseObject.responseText);
 			$('.error').text(response.err);
 		});
 	});
-
 })();
