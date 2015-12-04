@@ -3,32 +3,35 @@
 
     <p><%= _event._title %></p>
     <div class = "menuSuggestions">
-    <h2>Suggestions</h2>
-	    <ul>
-	    <% if (_event.suggestions !== undefined){ 
-	    	for (var i = 0; i < _event.suggestions.length; i++){ %>
-	    		<li> <%= _event.suggestions[i].drink + ": " + _event.suggestions[i].count %>
-	    		<button id="addToMenu" data-drink="<%= _event.suggestions[i].drink %>">Add to Menu!
-	    		</button>
-	    		</li>
-	    	<% } %>
-		<% } %>
-		</ul>
-    </div>
+	    <form id = "menuSuggestions">
+	    <h2>Suggestions</h2>
+		    <ul>
+		    <% if (_event.suggestions !== undefined){ 
+		    	for (var i = 0; i < _event.suggestions.length; i++){ %>
+		    		<li> <%= _event.suggestions[i].drink + ": " + _event.suggestions[i].count %>
+		    		<input type="submit" name="addToMenu" data-drink="<%= _event.suggestions[i].drink %>" value="Add to Menu">
+		    		</li>
+		    	<% } %>
+			<% } %>
+			</ul>
+	    </form>
+	</div>
 
     <div class = "hostsMenu">
-    <h2>Current Menu</h2>
-        <ul>
-	    <% if (menu.drinks !== undefined){
-	    	for (var i = 0; i < menu.drinks.length; i++){ %>
-	    		<li data-drink="<%= menu.drinks[i].drink %>"> <%= menu.drinks[i].drink %>
-	    		<button class = "removeDrink" id="remove-drink">Remove</button><br><br>
-	    		<input type="text" id = "<%= menu.drinks[i].drink %>" data-drink= "<%= menu.drinks[i].drink %>" value="">
-	    		<button id="set-stock" data-drink="<%= menu.drinks[i].drink %>">Set Stock</button>
-	    		</li>
-	    		<br>
-	    	<% } %>
-		<% } %>
-		</ul>
+	    <form id = "hostsMenu">
+	    <h2>Current Menu</h2>
+	        <ul>
+		    <% if (menu.drinks !== undefined){
+		    	for (var i = 0; i < menu.drinks.length; i++){ %>
+		    		<li data-drink="<%= menu.drinks[i].drink %>"> <%= menu.drinks[i].drink %>
+		    		<input type='button' class = "removeDrink" id="remove-drink" value = "Remove"><br><br>
+		    		<input type="text" id="<%=menu.drinks[i].drink%>"name="<%=menu.drinks[i].drink + "stock"%>" value="">
+		    		<input type="button" id="setStock" data-drink="<%= menu.drinks[i].drink %>" data-menu-id="<%= _event._id %>" value="Set Stock">
+		    		</li>
+		    		<br>
+		    	<% } %>
+			<% } %>
+			</ul>
+		</form>
 	</div>
 </div>
