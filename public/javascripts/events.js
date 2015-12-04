@@ -20,15 +20,6 @@
 			$('.error').text(response.err);
 		});
 	});
-
-	// // Logic to go to an event 
-	// $(document).on('click', '.gotoEvent', function(evt){
-	// 	// TODO: Correct when the actual HTML format for this is figured out.
-	// 	var item = $(this).parent();
-	// 	var eventID = item.data('event-id');
-	// 	// TODO: Need to get information from the Facebook api regarding the event's info
-	// 	// Load the ejs templates for this.
-	// });
 	
 	/*
 	Submits guest suggestions before an event
