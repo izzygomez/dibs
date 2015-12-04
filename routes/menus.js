@@ -36,6 +36,20 @@ router.post('/removeDrink', function(req, res) {
 	});
 });
 
+router.post('/addDrink', function(req, res) {
+	Menu.addDrinkOrder(req.body.menuID, {drink: req.body.drink, stock: req.body.stock}, function(err) {
+		if (err != null) {
+			Event.findByID(req.body.menuID, function(err, _event) {
+				Menu.getMenu(req.body.menuID, function(menu) {
+					console.log('routes' + menu);
+					var eventData = {_event: _event, menu: menu};
+					utils.sendSuccessResponse(res, eventData);
+				});
+			});
+		}
+	});
+});
+
 router.post('/updatePreStock', function(req, res) {
 	var stock = req.body.stock;
 	var menuID = req.body.menuID;

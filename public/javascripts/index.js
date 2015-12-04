@@ -26,6 +26,7 @@ var loadGuestSuggestPage = function(_event){
 
 var loadSuggestionsPage = function(eventData){
 	$.get('/suggestions', {eventData: eventData}, function(response) {
+		console.log('index' + response);
 		loadPage(response);
 	});
 };

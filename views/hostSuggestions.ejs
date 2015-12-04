@@ -3,18 +3,16 @@
 
     <p><%= _event._title %></p>
     <div class = "menuSuggestions">
-	    <form id = "menuSuggestions">
 	    <h2>Suggestions</h2>
-		    <ul>
-		    <% if (_event.suggestions !== undefined){ 
-		    	for (var i = 0; i < _event.suggestions.length; i++){ %>
-		    		<li> <%= _event.suggestions[i].drink + ": " + _event.suggestions[i].count %>
-		    		<input type="submit" name="addToMenu" data-drink="<%= _event.suggestions[i].drink %>" value="Add to Menu">
-		    		</li>
-		    	<% } %>
-			<% } %>
-			</ul>
-	    </form>
+	    <ul>
+	    <% if (_event.suggestions !== undefined){ 
+	    	for (var i = 0; i < _event.suggestions.length; i++){ %>
+	    		<li> <%= _event.suggestions[i].drink + ": " + _event.suggestions[i].count %>
+	    		<button id="addToMenu" data-drink="<%= _event.suggestions[i].drink %>">Add to Menu</button>
+	    		</li>
+	    	<% } %>
+		<% } %>
+		</ul>
 	</div>
 
     <div class = "hostsMenu">

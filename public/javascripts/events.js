@@ -56,14 +56,24 @@
 		});
 	});
 
-	// // Logic to go to an event 
-	// $(document).on('click', '.gotoEvent', function(evt){
-	// 	// TODO: Correct when the actual HTML format for this is figured out.
-	// 	var item = $(this).parent();
-	// 	var eventID = item.data('event-id');
-	// 	// TODO: Need to get information from the Facebook api regarding the event's info
-	// 	// Load the ejs templates for this.
-	// });
+	/*
+	When the host clicks Add to Menu from suggestions
+	*/
+	$(document).on('click', '#addToMenu', function(evt) {
+		evt.preventDefault();
+		var drink = $(this).data('drink');
+		var menuID = $('.hostSuggestions').data('id');
+		$.post(
+			'/menus/addDrink',
+			{drink: drink, menuID: menuID, stock: 0}
+		).done(function(response) {
+			console.log('handler' + response.content);
+			loadSuggestionsPage(response.content);
+		}).fail(function(responseObject) {
+			var response = $.parseJSON(responseObject.responseText);
+			$('.error').text(response.err);
+		});
+	});
 	
 	/*
 	Submits guest suggestions before an event
