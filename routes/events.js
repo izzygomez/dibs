@@ -14,48 +14,6 @@ var FB = require('fb');
 // The event routes go here.
 // ***************************************
 
-/* 
-	GET /registeredHostEvents
-	No request parameters
-	Response: 
-		- success: True if the server succeeded in getting the user's dibs 
-				   registered events they are hosting
-		- content: On success, an object with one field: hostRegisteredEvents, 
-				   hosted events that are registered, in the form of a list.
-		- err: On failure, an error message
-*/
-router.get('/registeredHostEvents', function(req, res){
-	// TODO: Get the UserID for the following function
-	User.getEventsHosting(userID, function(err, hostRegisteredEvents){
-		if (err){
-			utils.sendErrResponse(res, 500, 'An unknown error occurred.');
-		} else{
-			utils.sendSuccessResponse(res, {hostRegisteredEvents: hostRegisteredEvents});
-		}
-	});
-});
-
-/*
-	GET /registeredAttendEvents
-	No request parameters
-	Response:
-		- success: True if the server succeeded in getting the user's dibs 
-				   registered events they are attending.
-		- content: On success, an object with one field: attendRegisteredEvents,
-				   attending events that are registered, in the form of a list.
-		- err: On failure, an error message
-*/
-router.get('/registeredAttendEvents', function(req, res){
-	// TODO: Get the UserID for the following function
-	User.getEventsAttending(userID, function(err, attendRegisteredEvents){
-		if (err){
-			utils.sendErrResponse(res, 500, 'An unknown error occurred.');
-		} else{
-			utils.sendSuccessResponse(res, {attendRegisteredEvents: attendRegisteredEvents});
-		}
-	});
-});
-
 // METHOD SPEC NEEDED -- renders display of menu for guest at event happening now
 router.get('/menu', function(req, res){
 	Event.findByID(req.query.menuID, function(err, _event){
