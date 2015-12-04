@@ -67,7 +67,6 @@
 			'/menus/addDrink',
 			{drink: drink, menuID: menuID, stock: 0}
 		).done(function(response) {
-			console.log('handler' + response.content);
 			loadSuggestionsPage(response.content);
 		}).fail(function(responseObject) {
 			var response = $.parseJSON(responseObject.responseText);
@@ -79,7 +78,7 @@
 		evt.preventDefault();
 		var item = $(this).parent();
 		var drinkName = $("#customName").val();
-		var menuID = $("#customDrink").data("menu-id");
+		var menuID = $("#customStock").data("menu-id");
 		var stock = $("#customStock").val();
 
 		$.post(

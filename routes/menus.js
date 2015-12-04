@@ -43,7 +43,6 @@ router.post('/addDrink', function(req, res) {
 		} else {
 			Event.findByID(req.body.menuID, function(err, _event) {
 				Menu.getMenu(req.body.menuID, function(menu) {
-					console.log('routes' + menu);
 					var eventData = {_event: _event, menu: menu};
 					utils.sendSuccessResponse(res, eventData);
 				});
