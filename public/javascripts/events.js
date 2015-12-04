@@ -43,11 +43,11 @@
 		var item = $(this).parent();
 		var drinkName = item.data('drink');
 		var stock = $("#" + drinkName).val();
-		var menuID = $("#setStock").data('menu-id')
+		var menuID = $("#setStock").data('menu-id');
 
 		$.post(
 			'/menus/updatePreStock',
-			{drink: drinkName, menuID: menuID, stock: stock  }
+			{drink: drinkName, menuID: menuID, stock: stock}
 		).done(function(response){
 			loadSuggestionsPage(response.content)
 		}).fail(function(responseObject){
@@ -70,6 +70,24 @@
 			console.log('handler' + response.content);
 			loadSuggestionsPage(response.content);
 		}).fail(function(responseObject) {
+			var response = $.parseJSON(responseObject.responseText);
+			$('.error').text(response.err);
+		});
+	});
+
+	$(document).on('click', '#addCustomDrink', function(evt){
+		evt.preventDefault();
+		var item = $(this).parent();
+		var drinkName = $("#customName").val();
+		var menuID = $("#customDrink").data("menu-id");
+		var stock = $("#customStock").val();
+
+		$.post(
+			'/menus/addDrink',
+			{drink: drinkName, menuID: menuID, stock: stock  }
+		).done(function(response){
+			loadSuggestionsPage(response.content)
+		}).fail(function(responseObject){
 			var response = $.parseJSON(responseObject.responseText);
 			$('.error').text(response.err);
 		});

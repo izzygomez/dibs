@@ -10,8 +10,6 @@ var userSchema = new Schema({
 	_id: Number,					// Will be the Facebook ID assigned to the user
 	username: String,
 	token: String,	// Facebook Credentials, not sure if this will be needed. 
-	eventsHosting: [{type: Number, ref: 'Event'}],
-  	eventsAttending: [{type: Number, ref: 'Event'}],
 });
 
 /*
@@ -74,26 +72,6 @@ userSchema.statics.createNewUser = function(userID, token, hostedEvents, attendi
 	});
 }
 
-userSchema.statics.getEventsHosting = function(userID, callback){
-	User.getUser(userID, function(bool, actualUser){
-		if (bool){
-			callback(null, actualUser.eventsHosting);
-		} else{
-			callback({msg: 'Invalid user'});
-		}
-	});
-}
-
-userSchema.statics.getEventsAttending = function(userID, callback){
-	User.getUser(userID, function(bool, actualUser){
-		if (bool){
-			callback(null, actualUser.eventsAttending);
-		} else{
-			callback({msg: 'Invalid user'});
-		}
-	});
-}
-
 userSchema.statics.getToken = function(userID, callback){
 	User.getUser(userID, function(bool, actualUser){
 		if (bool){
@@ -108,32 +86,6 @@ userSchema.statics.getUsername = function(userID, callback){
 	User.getUser(userID, function(bool, actualUser){
 		if (bool){
 			callback(null, actualUser.username);
-		} else{
-			callback({msg: 'Invalid user'});
-		}
-	});
-}
-
-userSchema.statics.addHostedEvent = function(userID, hostedEvent, callback){
-	User.getUser(userID, function(bool, actualUser){
-		if (bool){
-			var hostedEvents = actualUser.eventsHosting;
-			hostedEvents.push(hostedEvent);
-			User.update({_id: userID}, {$set: {eventsHosting: hostedEvents}}, {upsert: true}, function(){});
-			callback(null);
-		} else{
-			callback({msg: 'Invalid user'});
-		}
-	});
-}
-
-userSchema.statics.addAttendingEvent = function(userID, attendingEvent, callback){
-	User.getUser(userID, function(bool, actualUser){
-		if (bool){
-			var attendingEvents = actualUser.eventsAttending;
-			attendingEvents.push(attendingEvent);
-			User.update({_id: userID}, {$set: {eventsAttending: attendingEvents}}, {upsert: true}, function(){});
-			callback(null);
 		} else{
 			callback({msg: 'Invalid user'});
 		}

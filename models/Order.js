@@ -37,17 +37,13 @@ var orderExists = function(orderID, callback) {
 Gets an order, given the order ID
 */
 orderSchema.statics.getOrder = function(orderID, callback) {
-	var order = null;
 	orderExists(orderID, function(exists) {
 		if (exists) {
 			Order.findOne({_id: orderID}, function(err, found) {
-				if (found === null) {
-					order = null;
-				} else {
-					order = found;
-				}
-				callback(order);
+				callback(found);
 			});
+		} else {
+			callback(null);
 		}
 	});
 }
