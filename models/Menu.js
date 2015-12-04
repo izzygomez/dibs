@@ -125,6 +125,31 @@ menuSchema.statics.updateStock = function(menuID, drinkName, callback)
 }
 
 /**
+* Updates stock of drink on menu, reports to user if out of stock
+**/
+menuSchema.statics.updatePreStock = function(menuID, drinkName, stock, callback)
+{
+	var targetDrink;
+	Menu.getMenuDrinks(menuID, function(drinks){
+		drinks.forEach(function(drink){
+			if(drink.drink == drinkName){
+				targetDrink = drink;
+			}
+		});
+
+		var updated = drinks.map(function(drink) {
+			if(drink.drink == drinkName) {
+				return {drink: drinkName, stock: stock};
+			} else {
+				return drink;
+			}
+		});
+		Menu.update({_id: menuID}, {$set: {drinks: updated}}, function(){});
+		callback(null);
+	})
+}
+
+/**
 * Creates new Menu for event
 **/
 menuSchema.statics.createMenu = function(menuID, callback){
