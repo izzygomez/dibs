@@ -78,8 +78,6 @@ Response:
   - err: on failure, an error message
 */
 router.get('/status', function(req, res) {
-	// console.log("here's req.query.orderID");
-	// console.log(req.query.orderID);
 	Order.getOrder(req.query.orderID, function(order) {
 		if (order) {
 			utils.sendSuccessResponse(res, {_status: order._status});

@@ -9,34 +9,41 @@
 			'/orders',
 			{drink: drink, eventID: eventID}
 		).done(function(response) {
+			// console.log("Successfully posted drink!");
 			var orderID = response.content.orderID;
-			// console.log("The orderID is : " + orderID);
 			loadWaitingPage(); // page that waits for notification
 
 			var isReadyFunc = function(){
+				// console.log("calling isReadyFunc...");
 				$.get('/orders/status', {orderID: orderID}, function(response) {
-					// console.log("Successfully returned from GET orders/status");
-					if (response._status === 1) {
-						// console.log("Drink notification sent");
+					// console.log("here's a sample response object");
+					// console.log(response);
+					// console.log("Successfully returned from GET orders/status to isReadyFunc");
+					// console.log("Here's the current status: " + response.content._status);
+					if (response.content._status === 1) {
+						// console.log("DRINK NOTIFIED! Should load notification page and stop this interval call");
 						loadNotificationPage();
 						clearInterval(ready);
 					}
 				});
 			}
 
-			var ready = setInterval(isReadyFunc, 10000);
+			var ready = setInterval(isReadyFunc, 5000);
 
 			var isServedFunc = function(){
+				// console.log("calling isServedFunc...");
 				$.get('/orders/status', {orderID: orderID}, function(response) {
-					// console.log("Inside isServedFunc callback function.");
-					if (response._status === 2) {
+					// console.log("Successfully returned from GET orders/status to isServedFunc");
+					// console.log("Here's the current status: " + response.content._status);
+					if (response.content._status === 2) {
+						// console.log("DRINK SERVED! Should load menu page and stop this interval call")
 						loadMenuPage(eventID);
 						clearInterval(served);
 					}
 				});
 			}
 
-			var served = setInterval(isServedFunc, 10000);
+			var served = setInterval(isServedFunc, 5000);
 
 		}).fail(function(responseObject) {
 			var response = $.parseJSON(responseObject.responseText);
