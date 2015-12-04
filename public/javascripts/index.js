@@ -25,6 +25,7 @@ var loadGuestSuggestPage = function(_event){
 }
 
 var loadSuggestionsPage = function(eventData){
+	console.log(eventData);
 	$.get('/suggestions', {eventData: eventData}, function(response) {
 		loadPage(response);
 	});

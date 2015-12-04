@@ -43,11 +43,11 @@
 		var item = $(this).parent();
 		var drinkName = item.data('drink');
 		var stock = $("#" + drinkName).val();
-		var menuID = $("#setStock").data('menu-id')
+		var menuID = $("#setStock").data('menu-id');
 
 		$.post(
 			'/menus/updatePreStock',
-			{drink: drinkName, menuID: menuID, stock: stock  }
+			{drink: drinkName, menuID: menuID, stock: stock}
 		).done(function(response){
 			loadSuggestionsPage(response.content)
 		}).fail(function(responseObject){
@@ -56,14 +56,23 @@
 		});
 	});
 
-	// // Logic to go to an event 
-	// $(document).on('click', '.gotoEvent', function(evt){
-	// 	// TODO: Correct when the actual HTML format for this is figured out.
-	// 	var item = $(this).parent();
-	// 	var eventID = item.data('event-id');
-	// 	// TODO: Need to get information from the Facebook api regarding the event's info
-	// 	// Load the ejs templates for this.
-	// });
+	$(document).on('click', '#addCustomDrink', function(evt){
+		evt.preventDefault();
+		var item = $(this).parent();
+		var drinkName = $("#customName").val();
+		var menuID = $("#customDrink").data("menu-id");
+		var stock = $("#customStock").val();
+
+		$.post(
+			'/menus/addDrink',
+			{drink: drinkName, menuID: menuID, stock: stock  }
+		).done(function(response){
+			loadSuggestionsPage(response.content)
+		}).fail(function(responseObject){
+			var response = $.parseJSON(responseObject.responseText);
+			$('.error').text(response.err);
+		});
+	});
 	
 	/*
 	Submits guest suggestions before an event

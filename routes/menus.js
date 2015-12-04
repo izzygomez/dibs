@@ -41,19 +41,19 @@ router.post('/updatePreStock', function(req, res) {
 	var menuID = req.body.menuID;
 	var drink = req.body.drink;
 	Menu.updatePreStock(menuID, drink, stock, function(err) {
-	if (err) {
-		utils.sendErrResponse(res, 500, 'Unable to update drink stock: ' + drink);
-	} 
-	if (isNaN(stock)){
-		utils.sendErrResponse(res, 400, 'Invalid stock input')
-	}
-	else {
-		Event.findByID(menuID, function(err, _event){
-			Menu.getMenu(menuID, function(menu){
-				var eventData = {_event: _event, menu: menu};
-				utils.sendSuccessResponse(res, eventData);
+		if (err) {
+			utils.sendErrResponse(res, 500, 'Unable to update drink stock: ' + drink);
+		} 
+		if (isNaN(stock)){
+			utils.sendErrResponse(res, 400, 'Invalid stock input')
+		}
+		else {
+			Event.findByID(menuID, function(err, _event){
+				Menu.getMenu(menuID, function(menu){
+					var eventData = {_event: _event, menu: menu};
+					utils.sendSuccessResponse(res, eventData);
+					});
 				});
-			});
 		}
 	});
 });
