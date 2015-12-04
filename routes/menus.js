@@ -38,7 +38,9 @@ router.post('/removeDrink', function(req, res) {
 
 router.post('/addDrink', function(req, res) {
 	Menu.addDrinkOrder(req.body.menuID, {drink: req.body.drink, stock: req.body.stock}, function(err) {
-		if (err != null) {
+		if (err) {
+			utils.sendErrResponse(res, 500, 'Drink cannot be added');
+		} else {
 			Event.findByID(req.body.menuID, function(err, _event) {
 				Menu.getMenu(req.body.menuID, function(menu) {
 					console.log('routes' + menu);
