@@ -38,7 +38,6 @@
 		});
 	});
 
-
 	$(document).on('click', '#setStock', function(evt){
 		evt.preventDefault();
 		var item = $(this).parent();
