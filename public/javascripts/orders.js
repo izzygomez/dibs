@@ -10,22 +10,29 @@
 			{drink: drink, eventID: eventID}
 		).done(function(response) {
 			loadWaitingPage(); // page that waits for notification
-			var ready = setInterval(function(){
+
+			var isReadyFunc = function(){
 				$.get('/orders/status', function(response) {
 					if (response._status === 1) {
 						loadNotificationPage();
 						clearInterval(ready);
 					}
 				});
-			}, 10000);
-			var served = setInterval(function(){
+			}
+
+			var ready = setInterval(isReadyFunc, 10000);
+
+			var isServedFunc = function(){
 				$.get('/orders/status', function(response) {
 					if (response._status === 2) {
 						loadMenuPage(eventID);
 						clearInterval(served);
 					}
 				});
-			}, 10000);
+			}
+
+			var served = setInterval(isServedFunc, 10000);
+			
 		}).fail(function(responseObject) {
 			var response = $.parseJSON(responseObject.responseText);
 			$('.error').text(response.err);
