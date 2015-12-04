@@ -12,7 +12,7 @@
 			loadWaitingPage(); // page that waits for notification
 			var ready = setInterval(function(){
 				$.get('/orders/status', function(response) {
-					if (response.status === 1) {
+					if (response._status === 1) {
 						loadNotificationPage();
 						clearInterval(ready);
 					}
@@ -20,7 +20,7 @@
 			}, 10000);
 			var served = setInterval(function(){
 				$.get('/orders/status', function(response) {
-					if (response.status === 2) {
+					if (response._status === 2) {
 						loadMenuPage(eventID);
 						clearInterval(served);
 					}

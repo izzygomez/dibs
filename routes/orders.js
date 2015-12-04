@@ -80,7 +80,7 @@ Response:
 router.get('/status', function(req, res) {
 	Order.getOrder(req.body.orderID, function(order) {
 		if (order) {
-			utils.sendSuccessResponse(res, {status: order.status});
+			utils.sendSuccessResponse(res, {_status: order._status});
 		} else {
 			utils.sendErrResponse(res, 500, 'An unknown error occurred.');
 		}

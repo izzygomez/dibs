@@ -12,7 +12,7 @@ var orderSchema = new Schema({
 	drink: String,
 	from: {type: Number, ref: 'User'},
 	timeStamp: Date,
-	status: Number
+	_status: Number
 });
 
 /*
@@ -62,7 +62,7 @@ orderSchema.statics.createOrder = function(drink, fromUser, callback) {
 		} else {
 			var orderID = orderList.length;
 			var data = {_id: orderID, drink: drink, from: fromUser, 
-						timeStamp: Date.now(), status: 0};
+						timeStamp: Date.now(), _status: 0};
 			Order.create(data);
 			callback(orderID);
 		}
@@ -78,7 +78,7 @@ Order status can be changed to:
 orderSchema.statics.changeStatus = function(orderID, newStatus, callback) {
 	orderExists(orderID, function(exists) {
 		if (exists) {
-			Order.update({_id: orderID}, {status: newStatus},
+			Order.update({_id: orderID}, {_status: newStatus},
 						 {upsert: true}, function(){});
 			callback(null);
 		} else {
