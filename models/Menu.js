@@ -71,8 +71,9 @@ menuSchema.statics.getMenuDrinks = function(menuID, callback){
 menuSchema.statics.addDrinkOrder = function(menuID, drink, callback){
 	Menu.getMenuDrinks(menuID, function(drinks){
 		drinks.push(drink);
-		Menu.update({_id: menuID}, {$set: {drinks: drinks}}, function(){});
-		callback(null);
+		Menu.update({_id: menuID}, {$set: {drinks: drinks}}, function(){
+			callback(null);
+		});
 	});
 }
 
