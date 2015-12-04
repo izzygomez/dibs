@@ -1,28 +1,28 @@
 <!-- Main author: Brian Saavedra-->
 
 <div id = "allEvents">
-	<div id = 'hostNotRegisteredEvents' class = 'event-container'>
-		<h3>Non-Registered Events You Are a Host For</h3>
-		<% for(var i = 0; i<hostNotRegisteredEvents.length; i++) { %>
-			<% include ./hostNotRegisteredEvent %>
-		<% } %>
-	</div>
 	<div id = 'hostRegisteredEvents' class = 'event-container'>
-		<h3>Registered Events You Are a Host For</h3>
+		<h3>Dibs Events You're Hosting</h3>
 		<% for(var i = 0; i<hostRegisteredEvents.length; i++) { %>
 			<% include ./hostRegisteredEvent %>	
 		<% } %>
 	</div>
-	<div id = 'attendingNotRegisteredEvents' class = 'event-container'>
-		<h3>Non-Registered Events You Are Attending</h3>
-		<% for(var i = 0; i<attendingNotRegisteredEvents.length; i++) { %>
-			<% include ./attendingNotRegisteredEvent %>
+	<div id = 'hostNotRegisteredEvents' class = 'event-container'>
+		<h3>Other Events You're Hosting</h3>
+		<% for(var i = 0; i<hostNotRegisteredEvents.length; i++) { %>
+			<% include ./hostNotRegisteredEvent %>
 		<% } %>
 	</div>
 	<div id = 'attendingRegisteredEvents' class = 'event-container'>
-		<h3>Registered Events You Are Attending</h3>
+		<h3>Dibs Events You're Attending</h3>
 		<% for(var i = 0; i<attendingRegisteredEvents.length; i++) { %>
 			<% include ./attendingRegisteredEvent %>
+		<% } %>
+	</div>
+	<div id = 'attendingNotRegisteredEvents' class = 'event-container'>
+		<h3>Other Events You're Attending</h3>
+		<% for(var i = 0; i<attendingNotRegisteredEvents.length; i++) { %>
+			<% include ./attendingNotRegisteredEvent %>
 		<% } %>
 	</div>
 </div>

@@ -159,7 +159,7 @@ menuSchema.statics.createMenu = function(menuID, callback){
       callback({taken: true});
     }
     else{
-      var data = {_id: menuID, drinks: [{drink: "Orange Juice", stock: 3} ,{drink: "Milk", stock: 3}, {drink: "Water", stock: 3}]};
+      var data = {_id: menuID, drinks: []};
       Menu.create(data);
       callback(null);
     }
