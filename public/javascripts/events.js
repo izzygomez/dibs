@@ -20,6 +20,23 @@
 			$('.error').text(response.err);
 		});
 	});
+
+	$(document).on('click', '.removeDrink', function(evt){
+		evt.preventDefault();
+		var item = $(this).parent();
+		var greatGrandpa = $(this).parent().parent().parent().parent();
+		var menuID = greatGrandpa.data('id');
+		var drinkName = item.data('drink');
+		$.post(
+			'/menus/removeDrink',
+			{drink: drinkName, menuID: menuID}
+		).done(function(response){
+			loadSuggestionsPage(response.content)
+		}).fail(function(responseObject){
+			var response = $.parseJSON(responseObject.responseText);
+			$('.error').text(response.err);
+		});
+	});
 	
 	/*
 	Submits guest suggestions before an event

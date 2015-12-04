@@ -17,15 +17,17 @@
     </div>
 
     <div class = "hostsMenu">
-    <h3>Current Menu</h3>
+    <h2>Current Menu</h2>
         <ul>
-	    <% for (var i = 0; i < menu.drinks.length; i++){ %>
-	    		<li> <%= menu.drinks[i].drink %>
-	    		<button id="remove-drink" data-drink="<%= menu.drinks[i].drink %>">Remove</button><br><br>
+	    <% if (menu.drinks !== undefined){
+	    	for (var i = 0; i < menu.drinks.length; i++){ %>
+	    		<li data-drink="<%= menu.drinks[i].drink %>"> <%= menu.drinks[i].drink %>
+	    		<button class = "removeDrink" id="remove-drink">Remove</button><br><br>
 	    		<input type="text" id = "<%= menu.drinks[i].drink %>" data-drink= "<%= menu.drinks[i].drink %>" value="">
 	    		<button id="set-stock" data-drink="<%= menu.drinks[i].drink %>">Set Stock</button>
 	    		</li>
 	    		<br>
+	    	<% } %>
 		<% } %>
 		</ul>
 	</div>
