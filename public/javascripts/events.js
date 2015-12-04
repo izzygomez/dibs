@@ -33,6 +33,10 @@
 		).done(function(response){
 			loadSuggestionsPage(response.content)
 		}).fail(function(responseObject){
+			var response = $.parseJSON(responseObject.responseText);
+			$('.error').text(response.err);
+		});
+	});
 
 	// // Logic to go to an event 
 	// $(document).on('click', '.gotoEvent', function(evt){
