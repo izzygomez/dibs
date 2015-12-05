@@ -21,6 +21,12 @@ a {
 float:left;
 width:400px;
 }
+
+.eventQueue {
+float:left;
+width:400px;
+}
+
 .hostsMenu{
 float:right;
 width:500px;

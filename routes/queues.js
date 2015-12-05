@@ -4,8 +4,10 @@ var express = require('express');
 var router = express.Router();
 var utils = require('../utils/utils');
 var Queue = require('../models/Queue');
+var Menu = require('../models/Menu');
 var User = require('../models/User');
 var Order = require('../models/Order');
+var Event = require('../models/Event');
 
 /**
 POST /queue/served
@@ -42,22 +44,25 @@ Response:
 router.get('/', function(req, res) {
   Queue.getQueue(req.query.queueID, function(queue) {
     if (queue) {
-      var orderIDs = queue.orders;
-      var orderAttributes = [];
-      if (orderIDs.length === 0){
-        res.render('blankQueue');
-      }
-      orderIDs.forEach(function(orderID, i, orderIDs) {
-          Order.getOrder(orderID, function(order) {
-              User.getUser(order.from, function(exists, user) {
-                  orderAttributes.push({drink: order.drink, timeStamp: order.timeStamp, fromUser: user.username});  
-                  if (i===orderIDs.length-1) {
-                    res.render('queue', {orderAttributes: orderAttributes, queueID: req.query.queueID, orderID: orderID});
-                  }
-              });
-          });
+      Menu.getMenu(req.query.queueID, function(menu) {
+        var orderIDs = queue.orders;
+        var orderAttributes = [];
+        if (orderIDs.length === 0){
+          res.render('blankQueue', {menu: menu, queueID: req.query.queueID});
+        }
+        orderIDs.forEach(function(orderID, i, orderIDs) {
+            Order.getOrder(orderID, function(order) {
+                User.getUser(order.from, function(exists, user) {
+                    orderAttributes.push({drink: order.drink, timeStamp: order.timeStamp, fromUser: user.username});  
+                    if (i===orderIDs.length-1) {
+                      res.render('queue', {menu: menu, orderAttributes: orderAttributes, queueID: req.query.queueID, orderID: orderID});
+                    }
+                });
+            });
+        });
       });
-    } else {
+    } 
+    else {
       utils.sendErrResponse(res, 500, 'Queue not retrieved');
     }
   });

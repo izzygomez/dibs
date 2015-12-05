@@ -24,14 +24,18 @@
 	$(document).on('click', '.removeDrink', function(evt){
 		evt.preventDefault();
 		var item = $(this).parent();
-		var greatGrandpa = $(this).parent().parent().parent().parent().parent();
-		var menuID = greatGrandpa.data('id');
+		var menuID = $("#setStock").data('menu-id');
 		var drinkName = item.data('drink');
 		$.post(
 			'/menus/removeDrink',
 			{drink: drinkName, menuID: menuID}
 		).done(function(response){
-			loadSuggestionsPage(response.content)
+			if (response.content.happening){
+				loadQueuePage(menuID);
+			}
+			else{
+				loadSuggestionsPage(response.content);
+			}
 		}).fail(function(responseObject){
 			var response = $.parseJSON(responseObject.responseText);
 			$('.error').text(response.err);
@@ -49,7 +53,12 @@
 			'/menus/updatePreStock',
 			{drink: drinkName, menuID: menuID, stock: stock}
 		).done(function(response){
-			loadSuggestionsPage(response.content)
+			if (response.content.happening){
+				loadQueuePage(menuID);
+			}
+			else{
+				loadSuggestionsPage(response.content);
+			}
 		}).fail(function(responseObject){
 			var response = $.parseJSON(responseObject.responseText);
 			$('.error').text(response.err);
@@ -85,7 +94,12 @@
 			'/menus/addDrink',
 			{drink: drinkName, menuID: menuID, stock: stock  }
 		).done(function(response){
-			loadSuggestionsPage(response.content)
+			if (response.content.happening){
+				loadQueuePage(menuID);
+			}
+			else{
+				loadSuggestionsPage(response.content);
+			}		
 		}).fail(function(responseObject){
 			var response = $.parseJSON(responseObject.responseText);
 			$('.error').text(response.err);

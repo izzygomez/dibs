@@ -1,4 +1,5 @@
-<div class="queue">
+
+<div class = "eventQueue">
 	<h1>Order Queue</h1>
 	<% for (var i=0; i<orderAttributes.length; i++) { %>
 		<div data-id = <%= queueID %> data-order-id = <%= orderID %>>
@@ -9,4 +10,25 @@
 			<button id="notifyButton">Notify</button>
 		</div>
 	<% } %>
+</div>
+
+<div class = "hostsMenu">
+    <form id = "hostsMenu">
+    <h2>Current Menu</h2>
+        <ul>
+	    <% if (menu.drinks !== undefined){
+	    	for (var i = 0; i < menu.drinks.length; i++){ %>
+	    		<li data-drink="<%= menu.drinks[i].drink %>"> <%= menu.drinks[i].drink + " (" + menu.drinks[i].stock + ")"%>
+	    		<input type='button' class = "removeDrink" id="remove-drink" value = "Remove"><br><br>
+	    		<input type="text" id="<%=menu.drinks[i].drink%>"name="<%=menu.drinks[i].drink + "stock"%>" value="">
+	    		<input type="button" id="setStock" data-drink="<%= menu.drinks[i].drink %>" data-menu-id="<%= queueID %>" value="Set Stock">
+	    		</li>
+	    		<br>
+	    	<% } %>
+		<% } %>
+		</ul>
+		<input type="text" id="customName" data-menu-id="<%= queueID %>" value="Enter Drink">
+		<input type="text" id="customStock" data-menu-id="<%= queueID %>" value="Enter Stock">
+		<input type="button" id="addCustomDrink" value="Add Drink">
+	</form>
 </div>
