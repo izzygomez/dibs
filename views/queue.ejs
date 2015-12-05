@@ -3,7 +3,7 @@
 	<h1>Order Queue</h1>
 	<% for (var i=0; i<orderAttributes.length; i++) { %>
 		<div data-id = <%= queueID %> data-order-id = <%= orderID %>>
-			<li><img src="//graph.facebook.com/" + "<% =orderAttributes[i].fromUserID %> " + "/picture"></li>
+			<li><img src="//graph.facebook.com/" + "<%= orderAttributes[i].fromUserID %> " + "/picture"></li>
 			<li><%= orderAttributes[i].timeStamp %></li>
 			<li><%= orderAttributes[i].fromUser %></li>
 			<li><%= orderAttributes[i].drink %></li>
