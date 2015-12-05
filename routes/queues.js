@@ -53,7 +53,7 @@ router.get('/', function(req, res) {
         orderIDs.forEach(function(orderID, i, orderIDs) {
             Order.getOrder(orderID, function(order) {
                 User.getUser(order.from, function(exists, user) {
-                    orderAttributes.push({drink: order.drink, timeStamp: order.timeStamp, fromUser: user.username});  
+                    orderAttributes.push({drink: order.drink, timeStamp: order.timeStamp, fromUser: user.username, fromUserID: user._id});  
                     if (i===orderIDs.length-1) {
                       res.render('queue', {menu: menu, orderAttributes: orderAttributes, queueID: req.query.queueID, orderID: orderID});
                     }
