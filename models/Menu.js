@@ -70,10 +70,19 @@ menuSchema.statics.getMenuDrinks = function(menuID, callback){
 **/
 menuSchema.statics.addDrinkOrder = function(menuID, drink, callback){
 	Menu.getMenuDrinks(menuID, function(drinks){
-		drinks.push(drink);
-		Menu.update({_id: menuID}, {$set: {drinks: drinks}}, function(){
-			callback(null);
+		var pushDrink = true;
+		drinks.forEach(function(savedDrink){
+			if (savedDrink.drink.toLowerCase() === drink.drink.toLowerCase()){
+				pushDrink = false;
+				callback({msg: "Drink has already been added to Menu"})
+			}
 		});
+		if (pushDrink){
+			drinks.push(drink);
+			Menu.update({_id: menuID}, {$set: {drinks: drinks}}, function(){
+				callback(null);
+			});
+		}
 	});
 }
 
