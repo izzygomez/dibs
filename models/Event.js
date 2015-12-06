@@ -190,7 +190,7 @@ eventSchema.statics.updateEvent = function(eventID, newTitle, newStart, newEnd, 
 		guests: newGuests}}, function(){
 			callback(null);
 		});
-	}
+	});
 }
 
 eventSchema.statics.setLimit = function(eventID, newLimit, callback) {
