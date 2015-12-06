@@ -18,6 +18,11 @@
     <div class = "hostsMenu">
 	    <form id = "hostsMenu">
 	    <h2>Current Menu</h2>
+	    	<p>Drink Limit Per Guest: <%= _event.drinkLimit %></p>
+	    	<div>
+		    	<input type="text" id="limitBox" value="Guest Drink Limit">
+		    	<button id="setDrinkLimit">Set Limit</button>
+	    	</div>
 	        <ul>
 		    <% if (menu.drinks !== undefined){
 		    	for (var i = 0; i < menu.drinks.length; i++){ %>

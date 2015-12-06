@@ -142,7 +142,7 @@ eventSchema.statics.isHappening = function(eventID, callback){
 		} else {
 			callback(null, false);
 		}
-	})
+	});
 }
 
 /*
@@ -157,12 +157,8 @@ eventSchema.statics.getSuggestions = function(eventID, callback) {
 
 eventSchema.statics.checkLimit = function(userID, eventID, callback) {
 	getEvent(eventID, function(thisEvent) {
-		console.log("first");
-		console.log(thisEvent.guests);
 		thisEvent.guests.forEach(function(guestObject) {
-			console.log("second");
 			if (guestObject.user === userID) {
-				console.log("here");
 				callback(guestObject.drinksOrdered === thisEvent.drinkLimit);
 			}
 		});
@@ -179,6 +175,14 @@ eventSchema.statics.decreaseLimit = function(userID, eventID, callback) {
 			}
 		});
 		Event.update({_id: eventID}, {$set: {guests: newGuestList}}, function() {
+			callback(null);
+		});
+	});
+}
+
+eventSchema.statics.setLimit = function(eventID, newLimit, callback) {
+	getEvent(eventID, function(thisEvent) {
+		Event.update({_id: eventID}, {drinkLimit: newLimit}, function() {
 			callback(null);
 		});
 	});
