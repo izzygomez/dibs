@@ -65,6 +65,21 @@
 		});
 	});
 
+	$(document).on('click', '#setDrinkLimit', function(evt) {
+		evt.preventDefault();
+		var drinkLimit = $('#limitBox').val();
+		var eventID = $('.hostSuggestions').data('id');
+		$.post(
+			'/menus/setDrinkLimit',
+			{eventID: eventID, limit: drinkLimit}
+		).done(function(response) {
+			loadSuggestionsPage(response.content);
+		}).fail(function(responseObject) {
+			var response = $.parseJSON(responseObject.responseText);
+			$('.error').text(response.err);
+		});
+	});
+
 	/*
 	When the host clicks Add to Menu from suggestions
 	*/

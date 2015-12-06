@@ -80,6 +80,26 @@ router.post('/updatePreStock', function(req, res) {
 	});
 });
 
+router.post('/setDrinkLimit', function(req, res) {
+	if (!isNaN(req.body.limit)) {
+		Event.setLimit(req.body.eventID, req.body.limit, function(err) {
+			if (err) {
+				utils.sendErrResponse(res, 500, 'An unknown error occurred.');
+			} else {
+				Event.findByID(req.body.eventID, function(err, _event) {
+					Menu.getMenu(req.body.eventID, function(menu) {
+						Event.isHappening(req.body.eventID, function(err, happening) {
+							var eventData = {_event: _event, menu: menu, happening: happening};
+							utils.sendSuccessResponse(res, eventData);
+						});
+					});
+				});
+			}
+		});
+	} else {
+		utils.sendErrResponse(res, 400, 'Must input a number.');
+	}
+});
 module.exports = router;
 
 
