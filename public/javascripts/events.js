@@ -113,13 +113,22 @@
 		evt.preventDefault();
 		var item = $(this).parent();
 		var eventID = item.data('id');
+		var userID = $("#userID").data()
 		var formData = helpers.getFormData(this);
 		formData["eventID"] = eventID;
+		formData["userID"] = userID;
+		console.log(userID);
 		$.post(
 			'/events/suggest',
 			formData
 		).done(function(response) {
+			if (response.noSuggestions){
+				alert("You are out of suggestions for this event!");
+				loadDashboard();
+			}
+			else{
 			loadDashboard();
+			}
 		}).fail(function(responseObject) {
 			var response = $.parseJSON(responseObject.responseText);
 			$('.error').text(response.err);
