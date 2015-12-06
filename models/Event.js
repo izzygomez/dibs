@@ -145,46 +145,6 @@ eventSchema.statics.isHappening = function(eventID, callback){
 	})
 }
 
-// /*
-// Gets the menu for an event
-// */
-// eventSchema.statics.getMenu = function(eventID, callback){
-// 	getEvent(eventID, function(thisEvent) {
-// 		var menu = thisEvent.menu;
-// 		callback(null, menu);
-// 	});
-// }
-
-// /*
-// Gets the queue for an event
-// */
-// eventSchema.statics.getQueue = function(eventID, callback){
-// 	getEvent(eventID, function(thisEvent) {
-// 		var queue = thisEvent.queue;
-// 		callback(null, queue);
-// 	});
-// }
-
-// /*
-// Gets the guests of an event
-// */
-// eventSchema.statics.getGuests = function(eventID, callback){
-// 	getEvent(eventID, function(thisEvent) {
-// 		var guests = thisEvent.guests;
-// 		callback(null, guests);
-// 	});
-// }
-
-// /*
-// Gets the hosts of an event
-// */
-// eventSchema.statics.getHosts = function(eventID, callback){
-// 	getEvent(eventID, function(thisEvent) {
-// 		var hosts = thisEvent.hosts; 
-// 		callback(null, hosts);
-// 	});
-// }
-
 /*
 Gets the drink suggestions for an event
 */
