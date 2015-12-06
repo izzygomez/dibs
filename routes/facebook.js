@@ -71,9 +71,9 @@ router.get('/events', isLoggedIn, function (req, res) {
 								updatedGuestList = [];
 								// Now, look at the old guests and see if any of them were deleted.
 								currentGuestList.forEach(function(guest, i){
-									if (newGuests.indexOf(currentGuestList[i].user._id) !== -1){
+									if (newGuests.indexOf(currentGuestList[i].user) !== -1){
 										updatedGuestList.push(currentGuestList[i]);
-										updatedGuestListIDs.push(currentGuestList[i].user._id);
+										updatedGuestListIDs.push(currentGuestList[i].user);
 									}
 								});
 								// Now, look at the new guests and see if any of them were added.
