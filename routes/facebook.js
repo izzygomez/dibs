@@ -10,7 +10,7 @@ var FB = require('fb');
 router.get('/events', isLoggedIn, function (req, res) {
 	User.getToken(req.user._id, function(err, token){
 		FB.setAccessToken(token);
-		FB.api('/me/events?fields=name,start_time,end_time,is_viewer_admin,title', function(response){
+		FB.api('/me/events?fields=name,start_time,end_time,is_viewer_admin, admins, attending, title', function(response){
 			if (response && !response.error){
 				// Get user events
 				var userEvents = response.data;
@@ -54,24 +54,41 @@ router.get('/events', isLoggedIn, function (req, res) {
 					Event.eventExists(currentEvent.id, function(bool){
 						if (bool){
 							// Separate the guests and the hosts of the events if the event is already registered with the app.
-							var guests = currentEvent.attending.map(function(attendee) {
+							var guests = currentEvent.attending.data.map(function(attendee) {
 								return attendee.id;
 							});
-							var hosts = response.admins.map(function(admin) {
+							var hosts = currentEvent.admins.data.map(function(admin) {
 								return admin.id;
 							});
 							var newGuests = guests.filter(function(attendee) {
 								return hosts.indexOf(attendee) === -1;
 							});
-							// Update the event in the database everytime this FB api call is made.
-							Event.updateEvent(currentEvent.id, currentEvent.name, currentEvent.start_time, 
-							currentEvent.end_time, newGuests, hosts, function(err){
-								if (err){
-									utils.sendErrResponse(null, 500, 'There was an error in the modification of this event');
-								} else{
-									utils.sendSuccessResponse(null);
-								}
-							});
+							// Get the actual event and look at that guest list
+							Event.findByID(currentEvent.id, function(err, eventObject){
+								var currentGuestList = eventObject.guests;
+								updatedGuestListIDs = []
+								updatedGuestList = [];
+								// Now, look at the old guests and see if any of them were deleted.
+								currentGuestList.forEach(function(guest, i){
+									if (newGuests.indexOf(currentGuestList[i].user) !== -1){
+										updatedGuestList.push(currentGuestList[i]);
+										updatedGuestListIDs.push(currentGuestList[i].user);
+									}
+								});
+								// Now, look at the new guests and see if any of them were added.
+								newGuests.forEach(function(guest, i){
+									if (updatedGuestListIDs.indexOf(newGuests[i]) === -1){
+										updatedGuestList.push({user: newGuests[i], drinksOrdered: 0});
+									}
+								});
+								// Now that we have the corrected guest list, update the database.
+								Event.updateEvent(currentEvent.id, currentEvent.name, currentEvent.start_time, 
+								currentEvent.end_time, updatedGuestList, hosts, function(err){
+									if (err){
+										console.log('Event was not updated correctly! Facebook.js route')
+									} 
+								});
+							});		
 						}
 						// Check to see what type of event it is.
 						if (currentEvent.is_viewer_admin && bool){

@@ -7,6 +7,11 @@ a {
   color: #00B7FF;
 }
 
+#welcomeBody {
+	background-image: url("background.jpg");
+ 	background-repeat: no-repeat;
+}
+
 .date {
 	margin-top: 15px;
 	font-size: 50%;
@@ -18,17 +23,17 @@ a {
 }
 
 .menuSuggestions {
-float:left;
-width:400px;
+	float:left;
+	width:400px;
 }
 
 .eventQueue {
-float:left;
-width:400px;
+	float:left;
+	width:400px;
 }
 
 .hostsMenu{
-float:right;
-width:500px;
+	float:right;
+	width:500px;
 }
 
