@@ -40,5 +40,6 @@ a {
 .singleEvent {
 	background: green;
 	border-radius: 25px;
+	text-align: center;
 }
 
