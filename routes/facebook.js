@@ -64,7 +64,7 @@ router.get('/events', isLoggedIn, function (req, res) {
 								return hosts.indexOf(attendee) === -1;
 							});
 							// Get the actual event and look at that guest list
-							Event.getEvent(currentEvent.id, function(eventObject){
+							Event.findByID(currentEvent.id, function(eventObject){
 								var drinkLimit = eventObject.drinkLimit;
 								var currentGuestList = eventObject.guests;
 								updatedGuestListIDs = []
