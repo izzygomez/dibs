@@ -51,8 +51,29 @@ router.get('/events', isLoggedIn, function (req, res) {
 									   attendingNotRegisteredEvents: [], attendingRegisteredEvents: []};
 
 				userEvents.forEach(function(currentEvent, i, userEvents){
-					// Check to see what type of event it is.
 					Event.eventExists(currentEvent.id, function(bool){
+						if (bool){
+							// Separate the guests and the hosts of the events if the event is already registered with the app.
+							var guests = currentEvent.attending.map(function(attendee) {
+								return attendee.id;
+							});
+							var hosts = response.admins.map(function(admin) {
+								return admin.id;
+							});
+							var newGuests = guests.filter(function(attendee) {
+								return hosts.indexOf(attendee) === -1;
+							});
+							// Update the event in the database everytime this FB api call is made.
+							Event.updateEvent(currentEvent.id, currentEvent.name, currentEvent.start_time, 
+							currentEvent.end_time, newGuests, hosts, function(err){
+								if (err){
+									utils.sendErrResponse(null, 500, 'There was an error in the modification of this event');
+								} else{
+									utils.sendSuccessResponse(null);
+								}
+							});
+						}
+						// Check to see what type of event it is.
 						if (currentEvent.is_viewer_admin && bool){
 							separatedEvents.hostRegisteredEvents.push(currentEvent);
 						} else if (currentEvent.is_viewer_admin && !bool){

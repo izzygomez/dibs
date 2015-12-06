@@ -142,7 +142,7 @@ eventSchema.statics.isHappening = function(eventID, callback){
 		} else {
 			callback(null, false);
 		}
-	})
+	});
 }
 
 /*
@@ -202,6 +202,27 @@ eventSchema.statics.decreaseLimit = function(userID, eventID, callback) {
 			}
 		});
 		Event.update({_id: eventID}, {$set: {guests: newGuestList}}, function() {
+			callback(null);
+		});
+	});
+}
+
+/* 
+Change some of the information regarding the event, so that the event's information is updated to
+what is on Facebook
+*/
+eventSchema.statics.updateEvent = function(eventID, newTitle, newStart, newEnd, newGuests, newHosts, callback){
+	getEvent(eventID, function(thisEvent) {
+		Event.update({_id: eventID}, {$set: {_title: newTitle, startTime: newStart, endTime: newEnd, hosts: newHosts, 
+		guests: newGuests}}, function(){
+			callback(null);
+		});
+	});
+}
+
+eventSchema.statics.setLimit = function(eventID, newLimit, callback) {
+	getEvent(eventID, function(thisEvent) {
+		Event.update({_id: eventID}, {drinkLimit: newLimit}, function() {
 			callback(null);
 		});
 	});

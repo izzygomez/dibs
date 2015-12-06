@@ -27,7 +27,6 @@ router.post('/', function(req, res) {
 					} else {
 						Menu.updateStock(req.body.eventID, req.body.drink, function(err){
 							if (err) {
-								alert("Sorry, we don't have any more of that.");
 								utils.sendErrResponse(res, 500, 'out of stock');
 							} else {
 								Queue.addDrinkOrder(req.body.eventID, orderID, function(err){
