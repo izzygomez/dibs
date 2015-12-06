@@ -63,15 +63,35 @@ router.get('/events', isLoggedIn, function (req, res) {
 							var newGuests = guests.filter(function(attendee) {
 								return hosts.indexOf(attendee) === -1;
 							});
-							// Update the event in the database everytime this FB api call is made.
-							Event.updateEvent(currentEvent.id, currentEvent.name, currentEvent.start_time, 
-							currentEvent.end_time, newGuests, hosts, function(err){
-								if (err){
-									utils.sendErrResponse(null, 500, 'There was an error in the modification of this event');
-								} else{
-									utils.sendSuccessResponse(null);
-								}
-							});
+							// Get the actual event and look at that guest list
+							Event.getEvent(currentEvent.id, function(eventObject){
+								var drinkLimit = eventObject.drinkLimit;
+								var currentGuestList = eventObject.guests;
+								updatedGuestListIDs = []
+								updatedGuestList = [];
+								// Now, look at the old guests and see if any of them were deleted.
+								currentGuestList.forEach(function(guest, i){
+									if (newGuests.indexOf(currentGuestList[i].user._id) !== -1){
+										updatedGuestList.push(currentGuestList[i]);
+										updatedGuestListIDs.push(currentGuestList[i].user._id);
+									}
+								});
+								// Now, look at the new guests and see if any of them were added.
+								newGuests.forEach(function(guest, i){
+									if (updatedGuestListIDs.indexOf(newGuests[i]) === -1){
+										updatedGuestList.push({user: newGuests[i], drinksOrdered: drinkLimit});
+									}
+								});
+								// Now that we have the corrected guest list, update the database.
+								Event.updateEvent(currentEvent.id, currentEvent.name, currentEvent.start_time, 
+								currentEvent.end_time, updatedGuestList, hosts, function(err){
+									if (err){
+										utils.sendErrResponse(null, 500, 'There was an error in the modification of this event');
+									} else{
+										utils.sendSuccessResponse(null);
+									}
+								});
+							});		
 						}
 						// Check to see what type of event it is.
 						if (currentEvent.is_viewer_admin && bool){
