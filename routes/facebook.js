@@ -10,7 +10,7 @@ var FB = require('fb');
 router.get('/events', isLoggedIn, function (req, res) {
 	User.getToken(req.user._id, function(err, token){
 		FB.setAccessToken(token);
-		FB.api('/me/events?fields=name,start_time,end_time,is_viewer_admin,title', function(response){
+		FB.api('/me/events?fields=name,start_time,end_time,is_viewer_admin, admins, attending, title', function(response){
 			if (response && !response.error){
 				// Get user events
 				var userEvents = response.data;
@@ -57,7 +57,7 @@ router.get('/events', isLoggedIn, function (req, res) {
 							var guests = currentEvent.attending.data.map(function(attendee) {
 								return attendee.id;
 							});
-							var hosts = response.admins.data.map(function(admin) {
+							var hosts = currentEvent.admins.data.map(function(admin) {
 								return admin.id;
 							});
 							var newGuests = guests.filter(function(attendee) {
