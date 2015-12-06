@@ -12,7 +12,7 @@ var eventSchema = new Schema({
 	_id: Number,
 	hosts: [{type: Number, ref: 'User'}],
 	drinkLimit: Number,
-	guests: [{user: {type: Number, ref: 'User'}, drinksOrdered: Number}],
+	guests: [{user: {type: Number, ref: 'User'}, drinksOrdered: Number, suggestions: Number}],
 	suggestions: [{drink:String, count: Number}],
 	menu: {type: Number, ref: 'Menu'},
 	queue: {type: Number, ref: 'Queue'},
@@ -88,8 +88,9 @@ eventSchema.statics.createNewEvent = function(eventID, title, start, end, guests
 				}
 			});
 			var newGuests = guests.map(function(guest){
-				return {user: guest, drinksOrdered: 0};
+				return {user: guest, drinksOrdered: 0, suggestions: 3};
 			});
+			console.log(newGuests);
 			var data = {_id: eventID,
 						hosts: hosts,
 						drinkLimit: limit,
@@ -100,6 +101,7 @@ eventSchema.statics.createNewEvent = function(eventID, title, start, end, guests
 						_title: title,
 						startTime: start,
 						endTime: end};
+			console.log(data.guests);
 			Event.create(data);
 			callback(null);
 		}
@@ -161,6 +163,45 @@ eventSchema.statics.checkLimit = function(userID, eventID, callback) {
 			if (guestObject.user === userID) {
 				callback(guestObject.drinksOrdered === thisEvent.drinkLimit);
 			}
+		});
+	});
+}
+
+eventSchema.statics.checkSuggestionLimit = function(userID, eventID, callback) {
+	console.log("zero");
+	getEvent(eventID, function(thisEvent) {
+		console.log("one");
+		thisEvent.guests.forEach(function(guestObject) {
+			console.log("two");
+			if (guestObject.user === userID) {
+				console.log('three');
+				console.log(guestObject);
+				callback(guestObject.suggestions > 0);
+			}
+		});
+	});
+}
+
+eventSchema.statics.decreaseSuggestionCount = function(userID, eventID, callback) {
+	console.log("hi");
+	getEvent(eventID, function(thisEvent) {
+		console.log("found evnet");
+		var newGuestList = thisEvent.guests.map(function(guestObject) {
+			console.log("guest List");
+			if (guestObject.user === userID) {
+				console.log("user matched");
+				if (guestObject.suggestions > 0){
+					console.log("suggestion valid");
+					return {user: guestObject.user, drinksOrdered: guestObject.drinksOrdered, suggestions: guestObject.suggestions - 1};
+				}
+			} else {
+				console.log("guest object");
+				console.log(guestObject);
+				return guestObject;
+			}
+		});
+		Event.update({_id: eventID}, {$set: {guests: newGuestList}}, function() {
+			callback(null);
 		});
 	});
 }

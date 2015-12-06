@@ -37,3 +37,10 @@ a {
 	width:500px;
 }
 
+.singleEvent {
+	background: #B0C4DE;
+	border-radius: 10px;
+	text-align: center;
+	border-style: solid;
+}
+
