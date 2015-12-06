@@ -3,24 +3,44 @@
 <div id = "allEvents">
 	<div id = 'hostRegisteredEvents' class = 'event-container'>
 		<h3>Dibs Events You're Hosting</h3>
+
+		<% if(hostRegisteredEvents.length===0) { %>
+			<p>No events that you're hosting are using dibs :(</p>
+		<% } %>
+
 		<% for(var i = 0; i<hostRegisteredEvents.length; i++) { %>
 			<% include ./hostRegisteredEvent %>	
 		<% } %>
 	</div>
-	<div id = 'hostNotRegisteredEvents' class = 'event-container'>
-		<h3>Other Events You're Hosting</h3>
-		<% for(var i = 0; i<hostNotRegisteredEvents.length; i++) { %>
-			<% include ./hostNotRegisteredEvent %>
-		<% } %>
-	</div>
 	<div id = 'attendingRegisteredEvents' class = 'event-container'>
 		<h3>Dibs Events You're Attending</h3>
+
+		<% if(attendingRegisteredEvents.length===0) { %>
+			<p>No events that you're attending are using dibs. Contact event hosts to enable dibs integration!</p>
+		<% } %>
+
 		<% for(var i = 0; i<attendingRegisteredEvents.length; i++) { %>
 			<% include ./attendingRegisteredEvent %>
 		<% } %>
 	</div>
+	<div id = 'hostNotRegisteredEvents' class = 'event-container'>
+		<h3>Other Events You're Hosting - <b>register them with dibs!</b></h3>
+
+		<% if(hostNotRegisteredEvents.length===0) { %>
+			<p>You're not hosting any events that aren't already registered with dibs.</p>
+		<% } %>
+
+		<% for(var i = 0; i<hostNotRegisteredEvents.length; i++) { %>
+			<% include ./hostNotRegisteredEvent %>
+		<% } %>
+	</div>
 	<div id = 'attendingNotRegisteredEvents' class = 'event-container'>
-		<h3>Other Events You're Attending</h3>
+		<h3>Other Events You're Attending - <b>contact hosts to support dibs integration!</b></h3>
+
+		<% if(attendingNotRegisteredEvents.length===0) { %>
+			<p>You're not attending any events that aren't already registered with dibs.</p>
+		<% } %>
+
 		<% for(var i = 0; i<attendingNotRegisteredEvents.length; i++) { %>
 			<% include ./attendingNotRegisteredEvent %>
 		<% } %>
