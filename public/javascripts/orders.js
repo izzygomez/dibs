@@ -40,9 +40,6 @@
 		var orderID = item.data('order-id'); 
 		var eventID = $(this).parent().data('id');
 
-		// Make this button disappear, to avoid accidental double clicks
-		$(this).css('display', 'none');
-		
 		$.post(
 			'/orders/served',
 			{orderID: orderID}
@@ -58,11 +55,6 @@
 		var item = $(this).parent();
 		var orderID = item.data('order-id');
 		var eventID = $(this).parent().data('id');
-
-		// Make this button disappear, and have served button appear
-		// TODO
-		$(this).parent().children('#servedButton').css('display', 'inline'); // serve appear
-		$(this).css('display', 'none');
 
 		// console.log(eventID);
 		$.post(
