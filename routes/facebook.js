@@ -86,10 +86,8 @@ router.get('/events', isLoggedIn, function (req, res) {
 								Event.updateEvent(currentEvent.id, currentEvent.name, currentEvent.start_time, 
 								currentEvent.end_time, updatedGuestList, hosts, function(err){
 									if (err){
-										utils.sendErrResponse(null, 500, 'There was an error in the modification of this event');
-									} else{
-										utils.sendSuccessResponse(null);
-									}
+										console.log('Event was not updated correctly! Facebook.js route')
+									} 
 								});
 							});		
 						}
