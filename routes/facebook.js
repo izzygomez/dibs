@@ -78,7 +78,7 @@ router.get('/events', isLoggedIn, function (req, res) {
 								// Now, look at the new guests and see if any of them were added.
 								newGuests.forEach(function(guest){
 									if (updatedGuestListIDs.indexOf(parseInt(guest)) === -1){
-										updatedGuestList.push({user: guest, drinksOrdered: 0});
+										updatedGuestList.push({user: guest, drinksOrdered: 0, suggestions: 0});
 									}
 								});
 								// Now that we have the corrected guest list, update the database.
