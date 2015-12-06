@@ -69,24 +69,18 @@ router.post('/', function(req, res){
 router.post('/suggest', function(req, res) {
 	console.log("suggesting");
 	console.log(req.user._id);
-	User.checkSuggestionsLimit(req.user._id, function(result){
+	Event.checkSuggestionLimit(req.user._id, req.body.eventID, function(result){
 		if (result){
-			Event.addSuggestion(req.body.eventID, req.body.suggestion1, function(err){
-				if (err === null) {
-					Event.addSuggestion(req.body.eventID, req.body.suggestion2, function(err2){
-						if (err2 === null) {
-							Event.addSuggestion(req.body.eventID, req.body.suggestion3, function(err3){
-								if (err3 === null) {
-									utils.sendSuccessResponse(res, {noSuggestions: false});
-								}
-							});				
-						}
-					});
-				}
-			});
+			Event.decreaseSuggestionCount(req.user._id, req.body.eventID, function(result){
+				Event.addSuggestion(req.body.eventID, req.body.suggestion1, function(err){
+					if (err === null) {
+						utils.sendSuccessResponse(res);
+					}
+				});
+			})
 		}
 		else{
-			utils.sendSuccessResponse(res, {noSuggestions: true});
+			utils.sendErrResponse(res, 500, 'You are already out of suggestions!');
 		}
 	});
 });

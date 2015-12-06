@@ -12,7 +12,7 @@ var eventSchema = new Schema({
 	_id: Number,
 	hosts: [{type: Number, ref: 'User'}],
 	drinkLimit: Number,
-	guests: [{user: {type: Number, ref: 'User'}, drinksOrdered: Number}],
+	guests: [{user: {type: Number, ref: 'User'}, drinksOrdered: Number, suggestions: Number},
 	suggestions: [{drink:String, count: Number}],
 	menu: {type: Number, ref: 'Menu'},
 	queue: {type: Number, ref: 'Queue'},
@@ -88,7 +88,7 @@ eventSchema.statics.createNewEvent = function(eventID, title, start, end, guests
 				}
 			});
 			var newGuests = guests.map(function(guest){
-				return {user: guest, drinksOrdered: 0};
+				return {user: guest, drinksOrdered: 0, suggestions: 3};
 			});
 			var data = {_id: eventID,
 						hosts: hosts,
@@ -157,14 +157,37 @@ eventSchema.statics.getSuggestions = function(eventID, callback) {
 
 eventSchema.statics.checkLimit = function(userID, eventID, callback) {
 	getEvent(eventID, function(thisEvent) {
-		console.log("first");
-		console.log(thisEvent.guests);
 		thisEvent.guests.forEach(function(guestObject) {
-			console.log("second");
 			if (guestObject.user === userID) {
-				console.log("here");
 				callback(guestObject.drinksOrdered === thisEvent.drinkLimit);
 			}
+		});
+	});
+}
+
+eventSchema.statics.checkSuggestionLimit = function(userID, eventID, callback) {
+	getEvent(eventID, function(thisEvent) {
+		thisEvent.guests.forEach(function(guestObject) {
+			if (guestObject.user === userID) {
+				callback(guestObject.suggestions > 0);
+			}
+		});
+	});
+}
+
+eventSchema.statics.decreaseSuggestionCount = function(userID, eventID, callback) {
+	getEvent(eventID, function(thisEvent) {
+		var newGuestList = thisEvent.guests.map(function(guestObject) {
+			if (guestObject.user === userID) {
+				if (guestObject.suggestions > 0){
+					return {user: guestObject.user, drinksOrdered: guestObject.drinksOrdered, suggestions: guestObject.suggestions  - 1};
+				}
+			} else {
+				return guestObject;
+			}
+		});
+		Event.update({_id: eventID}, {$set: {guests: newGuestList}}, function() {
+			callback(null);
 		});
 	});
 }
