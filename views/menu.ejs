@@ -1,14 +1,24 @@
-<div class="menu" data-id = <%= menu_id %>>
-    <h1>Menu</h1>
+<div class="guestMenu">
+    <div class="menu" data-id = <%= menu_id %>>
+        <h1>Menu</h1>
 
-    <p><%= eventName %></p>
-    <ul>
-    <% for (var i = 0; i < drinks.length; i++){ %>
-    	<% if (drinks[i].stock > 0) { %>
-    		<li> <%= drinks[i].drink + ": " + drinks[i].stock %>
-    		<button id="submit-dibs" data-drink="<%=drinks[i].drink %>">Dibs!</button>
-    		</li>
+        <p><%= eventName %></p>
+        <ul>
+        <% for (var i = 0; i < drinks.length; i++){ %>
+        	<% if (drinks[i].stock > 0) { %>
+        		<li> <%= drinks[i].drink + ": " + drinks[i].stock %>
+        		<button id="submit-dibs" data-drink="<%=drinks[i].drink %>">Dibs!</button>
+        		</li>
+        	<% } %>
     	<% } %>
-	<% } %>
-	</ul>
+    	</ul>
+    </div>
+    <div class="currentOrders">
+        <h1>Your Current Orders</h1>
+        <% for (var i=0; i<orders.length; i++) { %>
+            <div>
+                <p><%= orders[i].ordered %>: <%= orders[i]._status %></p>
+            </div>
+        <% } %>
+    </div>
 </div>
