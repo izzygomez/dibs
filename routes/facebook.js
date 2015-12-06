@@ -54,10 +54,10 @@ router.get('/events', isLoggedIn, function (req, res) {
 					Event.eventExists(currentEvent.id, function(bool){
 						if (bool){
 							// Separate the guests and the hosts of the events if the event is already registered with the app.
-							var guests = currentEvent.attending.map(function(attendee) {
+							var guests = currentEvent.attending.data.map(function(attendee) {
 								return attendee.id;
 							});
-							var hosts = response.admins.map(function(admin) {
+							var hosts = response.admins.data.map(function(admin) {
 								return admin.id;
 							});
 							var newGuests = guests.filter(function(attendee) {
