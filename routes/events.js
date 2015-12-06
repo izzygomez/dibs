@@ -2,9 +2,7 @@
 
 var express = require('express');
 var router = express.Router();
-
 var utils = require('../utils/utils');
-
 var Event = require('../models/Event');
 var User = require('../models/User');
 var Menu = require('../models/Menu');
@@ -98,17 +96,24 @@ router.post('/', function(req, res){
 });
 
 router.post('/suggest', function(req, res) {
-	Event.addSuggestion(req.body.eventID, req.body.suggestion1, function(err){
-		if (err === null) {
-			Event.addSuggestion(req.body.eventID, req.body.suggestion2, function(err2){
-				if (err2 === null) {
-					Event.addSuggestion(req.body.eventID, req.body.suggestion3, function(err3){
-						if (err3 === null) {
-							utils.sendSuccessResponse(res);
-						}
-					});				
-				}
-			});
+	Event.checkSuggestionLimit(req.user._id, req.body.eventID, function(result){
+		console.log("able to suggest?");
+		console.log(result);
+		if (result){
+			console.log("decreaseSuggestionCount");
+			Event.decreaseSuggestionCount(req.user._id, req.body.eventID, function(result){
+				console.log("decreased suggestion count?");
+				console.log(result)
+				Event.addSuggestion(req.body.eventID, req.body.suggestion1, function(err){
+					console.log("adding suggestion")
+					if (err === null) {
+						utils.sendSuccessResponse(res);
+					}
+				});
+			})
+		}
+		else{
+			utils.sendErrResponse(res, 500, 'You are already out of suggestions!');
 		}
 	});
 });

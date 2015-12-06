@@ -39,6 +39,7 @@
 		var item = $(this).parent();
 		var orderID = item.data('order-id'); 
 		var eventID = $(this).parent().data('id');
+
 		$.post(
 			'/orders/served',
 			{orderID: orderID}
@@ -54,6 +55,7 @@
 		var item = $(this).parent();
 		var orderID = item.data('order-id');
 		var eventID = $(this).parent().data('id');
+
 		// console.log(eventID);
 		$.post(
 			'/orders/notified',

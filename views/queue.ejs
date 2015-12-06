@@ -2,13 +2,18 @@
 <div class = "eventQueue">
 	<h1>Order Queue</h1>
 	<% for (var i=0; i<orderAttributes.length; i++) { %>
-		<div data-id = <%= queueID %> data-order-id = <%= orderID %>>
+		<div data-id = <%= queueID %> data-order-id = <%= orderAttributes[i].orderID %>>
 			<li><img src="//graph.facebook.com/<%= orderAttributes[i].fromUserID %>/picture"></li>
 			<li><%= orderAttributes[i].timeStamp %></li>
 			<li><%= orderAttributes[i].fromUser %></li>
 			<li><%= orderAttributes[i].drink %></li>
-			<button id="servedButton">Served</button>
-			<button id="notifyButton">Notify</button>
+			<% if (orderAttributes[i]._status===0) { %>
+				<button id="notifyButton">Notify</button>
+			<% } %>
+			<% if (orderAttributes[i]._status===1) { %>
+				<button id="servedButton">Served</button>
+			<% } %>
+			
 		</div>
 	<% } %>
 </div>
