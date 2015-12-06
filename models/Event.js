@@ -184,6 +184,20 @@ eventSchema.statics.decreaseLimit = function(userID, eventID, callback) {
 	});
 }
 
+/* 
+Change some of the information regarding the event, so that the event's information is updated to
+what is on Facebook
+*/
+eventSchema.statics.updateEvent = function(eventID, newTitle, newStart, newEnd, newGuests, newHosts, callback){
+	getEvent(eventID, function(thisEvent) {
+		Event.update({_id: eventID}, {$set: {_title: newTitle, startTime: newStart, endTime: newEnd, hosts: newHosts, 
+		guests: newGuests}}, function(){
+			callback(null);
+		});
+	}
+}
+
+
 var Event = mongoose.model('Event', eventSchema);
 
 module.exports = Event;
