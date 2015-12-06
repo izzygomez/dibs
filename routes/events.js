@@ -67,12 +67,16 @@ router.post('/', function(req, res){
 });
 
 router.post('/suggest', function(req, res) {
-	console.log("suggesting");
-	console.log(req.user._id);
 	Event.checkSuggestionLimit(req.user._id, req.body.eventID, function(result){
+		console.log("able to suggest?");
+		console.log(result);
 		if (result){
+			console.log("decreaseSuggestionCount");
 			Event.decreaseSuggestionCount(req.user._id, req.body.eventID, function(result){
+				console.log("decreased suggestion count?");
+				console.log(result)
 				Event.addSuggestion(req.body.eventID, req.body.suggestion1, function(err){
+					console.log("adding suggestion")
 					if (err === null) {
 						utils.sendSuccessResponse(res);
 					}

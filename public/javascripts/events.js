@@ -128,11 +128,8 @@
 		evt.preventDefault();
 		var item = $(this).parent();
 		var eventID = item.data('id');
-		var userID = $("#userID").data()
 		var formData = helpers.getFormData(this);
 		formData["eventID"] = eventID;
-		formData["userID"] = userID;
-		console.log(userID);
 		$.post(
 			'/events/suggest',
 			formData
