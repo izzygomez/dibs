@@ -183,26 +183,24 @@ eventSchema.statics.checkSuggestionLimit = function(userID, eventID, callback) {
 }
 
 eventSchema.statics.decreaseSuggestionCount = function(userID, eventID, callback) {
-	console.log("hi");
 	getEvent(eventID, function(thisEvent) {
-		console.log("found evnet");
 		var newGuestList = thisEvent.guests.map(function(guestObject) {
-			console.log("guest List");
 			if (guestObject.user === userID) {
 				console.log("user matched");
 				if (guestObject.suggestions > 0){
 					console.log("suggestion valid");
 					return {user: guestObject.user, drinksOrdered: guestObject.drinksOrdered, suggestions: guestObject.suggestions - 1};
 				}
-			} else {
-				console.log("guest object");
-				console.log(guestObject);
-				return guestObject;
 			}
+			else{
+					return guestObject;
+				} 
 		});
+		console.log(newGuestList);
 		Event.update({_id: eventID}, {$set: {guests: newGuestList}}, function() {
 			callback(null);
 		});
+		console.log("Done");
 	});
 }
 
