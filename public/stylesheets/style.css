@@ -37,3 +37,8 @@ a {
 	width:500px;
 }
 
+.singleEvent {
+	background: green;
+	border-radius: 25px;
+}
+
