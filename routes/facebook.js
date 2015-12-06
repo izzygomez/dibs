@@ -66,19 +66,19 @@ router.get('/events', isLoggedIn, function (req, res) {
 							// Get the actual event and look at that guest list
 							Event.findByID(currentEvent.id, function(err, eventObject){
 								var currentGuestList = eventObject.guests;
-								updatedGuestListIDs = []
+								updatedGuestListIDs = [];
 								updatedGuestList = [];
 								// Now, look at the old guests and see if any of them were deleted.
-								currentGuestList.forEach(function(guest, i){
-									if (newGuests.indexOf(currentGuestList[i].user) !== -1){
-										updatedGuestList.push(currentGuestList[i]);
-										updatedGuestListIDs.push(currentGuestList[i].user);
+								currentGuestList.forEach(function(guest){
+									if (newGuests.indexOf(guest.user.toString()) !== -1){
+										updatedGuestList.push(guest);
+										updatedGuestListIDs.push(guest.user);
 									}
 								});
 								// Now, look at the new guests and see if any of them were added.
-								newGuests.forEach(function(guest, i){
-									if (updatedGuestListIDs.indexOf(newGuests[i]) === -1){
-										updatedGuestList.push({user: newGuests[i], drinksOrdered: 0});
+								newGuests.forEach(function(guest){
+									if (updatedGuestListIDs.indexOf(parseInt(guest)) === -1){
+										updatedGuestList.push({user: guest, drinksOrdered: 0});
 									}
 								});
 								// Now that we have the corrected guest list, update the database.
