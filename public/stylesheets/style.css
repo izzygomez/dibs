@@ -7,7 +7,7 @@ a {
   color: #00B7FF;
 }
 
-.container {
+#welcomeBody {
 	background-image: url("background.jpg");
  	background-repeat: no-repeat;
 }
