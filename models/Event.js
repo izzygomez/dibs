@@ -211,7 +211,7 @@ eventSchema.statics.checkLimit = function(userID, eventID, callback) {
 
 eventSchema.statics.decreaseLimit = function(userID, eventID, callback) {
 	getEvent(eventID, function(thisEvent) {
-		var newGuestList = thisEvent.guests.map(function() {
+		var newGuestList = thisEvent.guests.map(function(guestObject) {
 			if (guestObject.user === userID) {
 				return {user: guestObject.user, drinksOrdered: guestObject.drinksOrdered + 1};
 			} else {
