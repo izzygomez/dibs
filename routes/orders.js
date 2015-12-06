@@ -6,6 +6,7 @@ var utils = require('../utils/utils');
 var Order = require('../models/Order');
 var Queue = require('../models/Queue');
 var Menu = require('../models/Menu');
+var Event = require('../models/Event');
 
 /*
 POST /orders
@@ -17,20 +18,33 @@ Response:
   - err: on failure, an error message
 */
 router.post('/', function(req, res) {
-	Order.createOrder(req.body.drink, req.user._id, function(orderID){
-		Menu.updateStock(req.body.eventID, req.body.drink, function(err){
-			if (err) {
-				utils.sendErrResponse(res, 500, 'out of stock');
-			} else {
-				Queue.addDrinkOrder(req.body.eventID, orderID, function(err){
+	Event.checkLimit(req.user._id, req.body.eventID, function(noneLeft) {
+		if (!noneLeft) {
+			Order.createOrder(req.body.drink, req.user._id, function(orderID){
+				Event.decreaseLimit(req.user._id, req.body.eventID, function(err) {
 					if (err) {
-						utils.sendErrResponse(res, 500, 'An unknown error occurred.');
+						utils.sendErrResponse(res, 500, 'An unknown error occurred');
 					} else {
-						utils.sendSuccessResponse(res, {orderID: orderID});
+						Menu.updateStock(req.body.eventID, req.body.drink, function(err){
+							if (err) {
+								alert("Sorry, we don't have any more of that.");
+								utils.sendErrResponse(res, 500, 'out of stock');
+							} else {
+								Queue.addDrinkOrder(req.body.eventID, orderID, function(err){
+									if (err) {
+										utils.sendErrResponse(res, 500, 'An unknown error occurred.');
+									} else {
+										utils.sendSuccessResponse(res, {orderID: orderID});
+									}
+								});
+							}
+						});						
 					}
 				});
-			}
-		});
+			});
+		} else {
+			utils.sendErrResponse(res, 500, 'reached limit');
+		}
 	});
 });
 

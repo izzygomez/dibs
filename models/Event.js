@@ -12,7 +12,7 @@ var eventSchema = new Schema({
 	_id: Number,
 	hosts: [{type: Number, ref: 'User'}],
 	drinkLimit: Number,
-	guests: [{type: Number, ref: 'User'}],
+	guests: [{user: {type: Number, ref: 'User'}, drinksOrdered: Number}],
 	suggestions: [{drink:String, count: Number}],
 	menu: {type: Number, ref: 'Menu'},
 	queue: {type: Number, ref: 'Queue'},
@@ -87,10 +87,13 @@ eventSchema.statics.createNewEvent = function(eventID, title, start, end, guests
 					console.log(err);
 				}
 			});
+			var newGuests = guests.map(function(guest){
+				return {user: guest, drinksOrdered: 0};
+			});
 			var data = {_id: eventID,
 						hosts: hosts,
 						drinkLimit: limit,
-						guests: guests,
+						guests: newGuests,
 						suggestions: [],
 						menu: eventID,
 						queue: eventID,
@@ -110,13 +113,13 @@ eventSchema.statics.addSuggestion = function(eventID, suggestion, callback){
 		var drinks = suggestions.map(function(suggest){
 			return suggest.drink;
 		});
-		if (drinks.indexOf(suggestion) == -1) {
+		if (drinks.indexOf(suggestion) === -1) {
 			suggestions.push({drink: suggestion, count: 1});
 			Event.update({_id: eventID}, {$set: {suggestions: suggestions}}, function(){});
 			callback(null);
 		} else {
 			var updated = suggestions.map(function(suggest) {
-				if (lowerSuggestion == suggest.drink) {
+				if (lowerSuggestion === suggest.drink) {
 					return {drink: lowerSuggestion, count: suggest.count + 1};
 				} else {
 					return suggest;
@@ -142,53 +145,82 @@ eventSchema.statics.isHappening = function(eventID, callback){
 	})
 }
 
-/*
-Gets the menu for an event
-*/
-eventSchema.statics.getMenu = function(eventID, callback){
-	getEvent(eventID, function(thisEvent) {
-		var menu = thisEvent.menu;
-		callback(null, menu);
-	});
-}
+// /*
+// Gets the menu for an event
+// */
+// eventSchema.statics.getMenu = function(eventID, callback){
+// 	getEvent(eventID, function(thisEvent) {
+// 		var menu = thisEvent.menu;
+// 		callback(null, menu);
+// 	});
+// }
 
-/*
-Gets the queue for an event
-*/
-eventSchema.statics.getQueue = function(eventID, callback){
-	getEvent(eventID, function(thisEvent) {
-		var queue = thisEvent.queue;
-		callback(null, queue);
-	});
-}
+// /*
+// Gets the queue for an event
+// */
+// eventSchema.statics.getQueue = function(eventID, callback){
+// 	getEvent(eventID, function(thisEvent) {
+// 		var queue = thisEvent.queue;
+// 		callback(null, queue);
+// 	});
+// }
 
-/*
-Gets the guests of an event
-*/
-eventSchema.statics.getGuests = function(eventID, callback){
-	getEvent(eventID, function(thisEvent) {
-		var guests = thisEvent.guests;
-		callback(null, guests);
-	});
-}
+// /*
+// Gets the guests of an event
+// */
+// eventSchema.statics.getGuests = function(eventID, callback){
+// 	getEvent(eventID, function(thisEvent) {
+// 		var guests = thisEvent.guests;
+// 		callback(null, guests);
+// 	});
+// }
 
-/*
-Gets the hosts of an event
-*/
-eventSchema.statics.getHosts = function(eventID, callback){
-	getEvent(eventID, function(thisEvent) {
-		var hosts = thisEvent.hosts; 
-		callback(null, hosts);
-	});
-}
+// /*
+// Gets the hosts of an event
+// */
+// eventSchema.statics.getHosts = function(eventID, callback){
+// 	getEvent(eventID, function(thisEvent) {
+// 		var hosts = thisEvent.hosts; 
+// 		callback(null, hosts);
+// 	});
+// }
 
 /*
 Gets the drink suggestions for an event
 */
-eventSchema.statics.getSuggestions = function(eventID, callback){
+eventSchema.statics.getSuggestions = function(eventID, callback) {
 	getEvent(eventID, function(thisEvent) {
 		var suggests = thisEvent.suggestions; 
 		callback(null, suggests);
+	});
+}
+
+eventSchema.statics.checkLimit = function(userID, eventID, callback) {
+	getEvent(eventID, function(thisEvent) {
+		console.log("first");
+		console.log(thisEvent.guests);
+		thisEvent.guests.forEach(function(guestObject) {
+			console.log("second");
+			if (guestObject.user === userID) {
+				console.log("here");
+				callback(guestObject.drinksOrdered === thisEvent.drinkLimit);
+			}
+		});
+	});
+}
+
+eventSchema.statics.decreaseLimit = function(userID, eventID, callback) {
+	getEvent(eventID, function(thisEvent) {
+		var newGuestList = thisEvent.guests.map(function() {
+			if (guestObject.user === userID) {
+				return {user: guestObject.user, drinksOrdered: guestObject.drinksOrdered + 1};
+			} else {
+				return guestObject;
+			}
+		});
+		Event.update({_id: eventID}, {$set: {guests: newGuestList}}, function() {
+			callback(null);
+		});
 	});
 }
 
