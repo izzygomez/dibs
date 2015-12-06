@@ -17,6 +17,9 @@ var FB = require('fb');
 // METHOD SPEC NEEDED -- renders display of menu for guest at event happening now
 router.get('/menu', function(req, res){
 	Event.findByID(req.query.menuID, function(err, _event){
+		var currentGuest = _event.guests.filter(function(guest) {
+			return guest.user === req.user._id;
+		});
 		Menu.getMenuDrinks(req.query.menuID, function(drinks){
 			if(drinks){
 				Queue.getEventOrders(req.query.menuID, function(orders) {
@@ -38,7 +41,9 @@ router.get('/menu', function(req, res){
 									}
 									myOrders.push({ordered: order.drink, _status: status});
 									if (i === orders.length-1) {
-										res.render('menu', {eventName: _event._title, menu_id: req.query.menuID, drinks: drinks, orders: myOrders});
+										var showMenu = currentGuest[0].drinksOrdered < _event.drinkLimit;
+										res.render('menu', {eventName: _event._title, menu_id: req.query.menuID, 
+															drinks: drinks, orders: myOrders, showMenu: showMenu});
 									}
 								}
 							});
