@@ -90,7 +90,6 @@ eventSchema.statics.createNewEvent = function(eventID, title, start, end, guests
 			var newGuests = guests.map(function(guest){
 				return {user: guest, drinksOrdered: 0, suggestions: 3};
 			});
-			console.log(newGuests);
 			var data = {_id: eventID,
 						hosts: hosts,
 						drinkLimit: limit,
@@ -101,7 +100,6 @@ eventSchema.statics.createNewEvent = function(eventID, title, start, end, guests
 						_title: title,
 						startTime: start,
 						endTime: end};
-			console.log(data.guests);
 			Event.create(data);
 			callback(null);
 		}
@@ -168,14 +166,9 @@ eventSchema.statics.checkLimit = function(userID, eventID, callback) {
 }
 
 eventSchema.statics.checkSuggestionLimit = function(userID, eventID, callback) {
-	console.log("zero");
 	getEvent(eventID, function(thisEvent) {
-		console.log("one");
 		thisEvent.guests.forEach(function(guestObject) {
-			console.log("two");
 			if (guestObject.user === userID) {
-				console.log('three');
-				console.log(guestObject);
 				callback(guestObject.suggestions > 0);
 			}
 		});
@@ -186,9 +179,7 @@ eventSchema.statics.decreaseSuggestionCount = function(userID, eventID, callback
 	getEvent(eventID, function(thisEvent) {
 		var newGuestList = thisEvent.guests.map(function(guestObject) {
 			if (guestObject.user === userID) {
-				console.log("user matched");
 				if (guestObject.suggestions > 0){
-					console.log("suggestion valid");
 					return {user: guestObject.user, drinksOrdered: guestObject.drinksOrdered, suggestions: guestObject.suggestions - 1};
 				}
 			}
@@ -196,11 +187,9 @@ eventSchema.statics.decreaseSuggestionCount = function(userID, eventID, callback
 					return guestObject;
 				} 
 		});
-		console.log(newGuestList);
 		Event.update({_id: eventID}, {$set: {guests: newGuestList}}, function() {
 			callback(null);
 		});
-		console.log("Done");
 	});
 }
 
@@ -227,7 +216,7 @@ eventSchema.statics.updateEvent = function(eventID, newTitle, newStart, newEnd, 
 	getEvent(eventID, function(thisEvent) {
 		Event.update({_id: eventID}, {$set: {_title: newTitle, startTime: newStart, endTime: newEnd, hosts: newHosts, 
 		guests: newGuests}}, function(){
-			callback(null);
+			callback(null)
 		});
 	});
 }
