@@ -10,7 +10,7 @@ var userSchema = new Schema({
 	_id: Number,					// Will be the Facebook ID assigned to the user
 	username: String,
 	token: String,	// Facebook Credentials, not sure if this will be needed. 
-	suggestions: Number,
+	suggestions: Number
 });
 
 /*
@@ -66,7 +66,7 @@ userSchema.statics.createNewUser = function(userID, token, username, callback){
 		} else{
 			User.create({_id: userID,
 						token: token,
-						username: username
+						username: username,
 						suggestions: 3});
 			callback(null);
 		}
