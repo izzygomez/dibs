@@ -1,10 +1,12 @@
 // Main Author: Daniel Lerner
 
-// grab the things that we need
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-// create a schema
+/* Create the Menu schema 
+* Defined by id, and a list of drinks.
+* Each drink has a name and stock value
+*/
 var menuSchema = new Schema({
   _id: Number,
   drinks: [{drink: String, stock: Number}]
@@ -13,6 +15,8 @@ var menuSchema = new Schema({
 
 /**
 * Checks if menu exists in database
+* @param: menuID: ID of menu to check database for
+* returns true if menu stored in database, false otherwise
 **/
 var menuExists = function(menuID, callback){
   var exists = null;
@@ -27,7 +31,9 @@ var menuExists = function(menuID, callback){
 }
 
 /**
-* Get Queue using inputted id
+* Get target Menu using inputted id
+* @param: menuID: ID of menu to check database for
+* returns menu object if found in database, null otherwise
 **/
 menuSchema.statics.getMenu = function(menuID, callback){
   var result;
@@ -44,6 +50,9 @@ menuSchema.statics.getMenu = function(menuID, callback){
 
 /*
 * Gets list of drinks on Menu
+* @param: menuID: ID of menu to check database for
+* returns list of drinks for acquired menu
+* Error message thrown if menu ID invalid
 */
 menuSchema.statics.getMenuDrinks = function(menuID, callback){
 	var drinks;
@@ -67,6 +76,9 @@ menuSchema.statics.getMenuDrinks = function(menuID, callback){
 
 /**
 * Adds drink to Menu, updates database
+* @param: menuID: ID of menu to check database for
+* @param: drink: name of drink to add to menu
+* returns error message if drink already added to menu, null otherwise
 **/
 menuSchema.statics.addDrinkOrder = function(menuID, drink, callback){
 	Menu.getMenuDrinks(menuID, function(drinks){
@@ -88,6 +100,8 @@ menuSchema.statics.addDrinkOrder = function(menuID, drink, callback){
 
 /**
 * Removes drink from Menu, updates database
+* @param: menuID: ID of menu to check database for
+* @param: drinkName: name of drink to remove from menu
 **/
 menuSchema.statics.removeDrink = function(menuID, drinkName, callback){
 	var targetDrink;
@@ -106,7 +120,10 @@ menuSchema.statics.removeDrink = function(menuID, drinkName, callback){
 }
 
 /**
-* Updates stock of drink on menu, reports to user if out of stock
+* Updates stock of drink on menu during event, reports to user if out of stock
+* @param: menuID: ID of menu to check database for
+* @param: drinkName: name of drink to update stock of
+* returns error message if drink out of stock, null otherwise
 **/
 menuSchema.statics.updateStock = function(menuID, drinkName, callback)
 {
@@ -135,7 +152,10 @@ menuSchema.statics.updateStock = function(menuID, drinkName, callback)
 }
 
 /**
-* Updates stock of drink on menu, reports to user if out of stock
+* Updates stock of drink on menu before an event is happening
+* @param: menuID: ID of menu to check database for
+* @param: drinkName: name of drink to update stock of
+* @param: stock: new stock to update inputted drink
 **/
 menuSchema.statics.updatePreStock = function(menuID, drinkName, stock, callback)
 {
@@ -161,6 +181,7 @@ menuSchema.statics.updatePreStock = function(menuID, drinkName, stock, callback)
 
 /**
 * Creates new Menu for event
+* menuID: ID of menu to check database for
 **/
 menuSchema.statics.createMenu = function(menuID, callback){
   menuExists(menuID, function(result){

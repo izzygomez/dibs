@@ -5,7 +5,19 @@ var User = require('../models/User.js');
 var FB = require('fb');
 
 /*
-  GET /facebook/events
+  GET /tweets
+  Purpose:     
+  	- Gets all fb events and filters to see what is happening now or in the future 
+  	- Filters resulting list for events that have already happened
+    - Filters remaining events based on whether you are a host or guest of an event and whether event is registered with dibs
+    - Updates user's information in database
+  Request user:
+  	- _id: id of user currently logged into dibs
+  Response:
+    - success: true if the server succeeded in acquiring a user's events and adding/updating their information in database
+    - content: on success, renders display with all the events related to logged in user
+    user's tweets
+    - err: on failure, an error message
 */
 router.get('/events', isLoggedIn, function (req, res) {
 	User.getToken(req.user._id, function(err, token){
@@ -89,7 +101,7 @@ router.get('/events', isLoggedIn, function (req, res) {
 								Event.updateEvent(currentEvent.id, currentEvent.name, currentEvent.start_time, 
 								currentEvent.end_time, updatedGuestList, hosts, function(err){
 									if (err){
-										console.log('Event was not updated correctly! Facebook.js route')
+										utils.sendErrResponse(res, 500, 'Event not updated correctly');
 									}
 								});
 							});		
@@ -118,13 +130,14 @@ router.get('/events', isLoggedIn, function (req, res) {
 					res.render('noEvents');
 				}
 			} else {
-				console.log("Error with the Facebook API. Rekt!");
+				utils.sendErrResponse(res, 500, 'Problem with Facebook API');
 			}
 		});
 	});
 		
 });
 
+/* Verifies if user is logged in currently*/
 function isLoggedIn(req, res, next) {
 	if (req.isAuthenticated()) {
 		return next();
