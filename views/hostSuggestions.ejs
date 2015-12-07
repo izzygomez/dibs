@@ -8,7 +8,7 @@
 	    <% if (_event.suggestions !== undefined){ 
 	    	for (var i = 0; i < _event.suggestions.length; i++){ %>
 	    		<li> <%= _event.suggestions[i].drink + ": " + _event.suggestions[i].count %>
-	    		<button class="btn btn-sm btn-success" id="addToMenu" data-drink="<%= _event.suggestions[i].drink %>">Add to Menu</button>
+	    		<button class="btn btn-xs btn-primary" id="addToMenu" data-drink="<%= _event.suggestions[i].drink %>">Add to Menu</button>
 	    		</li>
 	    	<% } %>
 		<% } %>
@@ -21,23 +21,32 @@
 	    	<p>Drink Limit Per Guest: <%= _event.drinkLimit %></p>
 	    	<div>
 		    	<input type="text" id="limitBox" value="Guest Drink Limit">
-		    	<button class="btn btn-sm btn-success" id="setDrinkLimit">Set Limit</button>
+		    	<button class="btn btn-xs btn-primary" id="setDrinkLimit">Set Limit</button>
 	    	</div>
-	        <ul>
+
 		    <% if (menu.drinks !== undefined){
 		    	for (var i = 0; i < menu.drinks.length; i++){ %>
-		    		<li data-drink="<%= menu.drinks[i].drink %>"> <%= menu.drinks[i].drink + " (" + menu.drinks[i].stock + ")"%>
-		    		<input type='button' class = "btn btn-sm btn-success removeDrink" id="remove-drink" value = "Remove"><br><br>
-		    		<input type="text" id="<%=menu.drinks[i].drink%>"name="<%=menu.drinks[i].drink + "stock"%>" value="">
-		    		<input type="button" class="btn btn-sm btn-success" id="setStock" data-drink="<%= menu.drinks[i].drink %>" data-menu-id="<%= _event._id %>" value="Set Stock">
-		    		</li>
-		    		<br>
+		    		<div class="panel panel-primary">
+			    		<div class="panel-heading" data-drink="<%= menu.drinks[i].drink %>"> 
+			    			<%= menu.drinks[i].drink + " (" + menu.drinks[i].stock + ")"%>
+			    			<input type='button' class = "btn btn-xs btn-default removeDrink" id="remove-drink" value = "Remove">
+			    		</div>
+			    		<div class="panel-body">
+				    		<input type="text" id="<%=menu.drinks[i].drink%>"name="<%=menu.drinks[i].drink + "stock"%>" value="">
+				    		<input type="button" class="btn btn-sm btn-primary" id="setStock" data-drink="<%= menu.drinks[i].drink %>" data-menu-id="<%= _event._id %>" value="Set Stock">
+			    		</div>
+			    	</div>
+	    			<br>		    		
 		    	<% } %>
 			<% } %>
-			</ul>
-			<input type="text" id="customName" data-menu-id="<%= _event._id %>" value="Enter Drink">
-			<input type="text" id="customStock" data-menu-id="<%= _event._id %>" value="Enter Stock">
-			<input type="button" class="btn btn-sm btn-success" id="addCustomDrink" value="Add Drink">
+
+			<div class="panel panel-primary"> 
+				<div class="panel-body">
+					<input type="text" id="customName" data-menu-id="<%= _event._id %>" value="Enter Drink">
+					<input type="text" id="customStock" data-menu-id="<%= _event._id %>" value="Enter Stock">
+					<input type="button" class="btn btn-sm btn-primary" id="addCustomDrink" value="Add Drink">
+				</div>
+			</div> 
 		</form>
 	</div>
 </div>

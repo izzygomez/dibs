@@ -8,7 +8,7 @@
             <% for (var i = 0; i < drinks.length; i++){ %>
             	<% if (drinks[i].stock > 0) { %>
             		<li> <%= drinks[i].drink + ": " + drinks[i].stock %>
-            		<button class="btn btn-sm btn-success" id="submit-dibs" data-drink="<%=drinks[i].drink %>">Dibs!</button>
+            		<button class="btn btn-sm btn-primary" id="submit-dibs" data-drink="<%=drinks[i].drink %>">Dibs!</button>
             		</li>
             	<% } %>
         	<% } %>
