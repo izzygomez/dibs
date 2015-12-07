@@ -20,8 +20,8 @@ var FB = require('fb');
     - err: on failure, an error message
 */
 router.get('/events', isLoggedIn, function (req, res) {
-	User.getToken(req.user._id, function(err, token){
-		FB.setAccessToken(token);
+	// User.getToken(req.user._id, function(err, token){
+		FB.setAccessToken(req.user.token);
 		FB.api('/me/events?fields=name,start_time,end_time,is_viewer_admin, admins, attending, title', function(response){
 			if (response && !response.error){
 				// Get user events
@@ -86,7 +86,7 @@ router.get('/events', isLoggedIn, function (req, res) {
 										updatedGuestList.push(guest);
 										updatedGuestListIDs.push(guest.user);
 									}
-									if (guest.suggestions < 3){
+									if (guest.suggestions < 3 && updatedGuestListIDs.indexOf(guest.user) == -1){
 										updatedGuestList.push(guest);
 										updatedGuestListIDs.push(guest.user);
 									}
@@ -133,7 +133,7 @@ router.get('/events', isLoggedIn, function (req, res) {
 				utils.sendErrResponse(res, 500, 'Problem with Facebook API');
 			}
 		});
-	});
+	//});
 		
 });
 

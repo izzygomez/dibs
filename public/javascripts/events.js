@@ -133,6 +133,7 @@
 	*/
 	$(document).on('submit', '#suggest-form', function(evt) {
 		evt.preventDefault();
+		console.log("suggested hit");
 		var item = $(this).parent();
 		var eventID = item.data('id');
 		var formData = helpers.getFormData(this);
