@@ -27,9 +27,9 @@
 		    <% if (menu.drinks !== undefined){
 		    	for (var i = 0; i < menu.drinks.length; i++){ %>
 		    		<li data-drink="<%= menu.drinks[i].drink %>"> <%= menu.drinks[i].drink + " (" + menu.drinks[i].stock + ")"%>
-		    		<input type='button' class = "removeDrink" id="remove-drink" value = "Remove"><br><br>
+		    		<input type='button' class = "btn btn-sm btn-success removeDrink" id="remove-drink" value = "Remove"><br><br>
 		    		<input type="text" id="<%=menu.drinks[i].drink%>"name="<%=menu.drinks[i].drink + "stock"%>" value="">
-		    		<input type="button" id="setStock" data-drink="<%= menu.drinks[i].drink %>" data-menu-id="<%= _event._id %>" value="Set Stock">
+		    		<input type="button" class="btn btn-sm btn-success" id="setStock" data-drink="<%= menu.drinks[i].drink %>" data-menu-id="<%= _event._id %>" value="Set Stock">
 		    		</li>
 		    		<br>
 		    	<% } %>
@@ -37,7 +37,7 @@
 			</ul>
 			<input type="text" id="customName" data-menu-id="<%= _event._id %>" value="Enter Drink">
 			<input type="text" id="customStock" data-menu-id="<%= _event._id %>" value="Enter Stock">
-			<input type="button" id="addCustomDrink" value="Add Drink">
+			<input type="button" class="btn btn-sm btn-success" id="addCustomDrink" value="Add Drink">
 		</form>
 	</div>
 </div>
