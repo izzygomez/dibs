@@ -47,8 +47,7 @@
 	// Reloads updated menu page if successful (shows Queue if event is happening now, Suggestions page otherwise)
 	$(document).on('click', '#setStock', function(evt){
 		evt.preventDefault();
-		var item = $(this).parent();
-		var drinkName = item.data('drink');
+		var drinkName = $(this).data('drink');
 		var stock = $("#" + drinkName).val();
 		var menuID = $("#setStock").data('menu-id');
 

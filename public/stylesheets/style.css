@@ -67,3 +67,22 @@ a {
 	float:right;
 }
 
+.page-header {
+	border-bottom: 1px solid #000000;
+}
+
+.see-suggestions-button {
+	float:right;
+}
+
+.register-button {
+	float:right;
+}
+
+.suggest-button {
+	float:right;
+}
+
+.home {
+	width: 815px;
+}

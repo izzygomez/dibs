@@ -2,52 +2,55 @@
 
 <div id = "allEvents">
 	<div id = 'hostRegisteredEvents' class = 'event-container'>
-		<div class="page-header"><h3>Dibs events you're hosting</h3></div>
+		<h3>Dibs events you're hosting</h3>
 
 		<% if(hostRegisteredEvents.length===0) { %>
 			<p>No events that you're hosting are using dibs :(</p>
 		<% } %>
-		<ul class="list-group">
+		
 		<% for(var i = 0; i<hostRegisteredEvents.length; i++) { %>
-			<% include ./hostRegisteredEvent %>	
-		</ul>
+			<div class="panel panel-primary home">
+				<% include ./hostRegisteredEvent %>	
+			</div>
 		<% } %>
 	</div>
 	<div id = 'attendingRegisteredEvents' class = 'event-container'>
-		<div class="page-header"><h3>Dibs events you're attending</h3></div>
+		<h3>Dibs events you're attending</h3>
 
 		<% if(attendingRegisteredEvents.length===0) { %>
 			<p>No events that you're attending are using dibs. Contact event hosts to enable dibs integration!</p>
 		<% } %>
-		<ul class="list-group">
+
 		<% for(var i = 0; i<attendingRegisteredEvents.length; i++) { %>
-			<% include ./attendingRegisteredEvent %>
-		</ul>
+			<div class="panel panel-primary home">
+				<% include ./attendingRegisteredEvent %>
+			</div>
 		<% } %>
 	</div>
 	<div id = 'hostNotRegisteredEvents' class = 'event-container'>
-		<div class="page-header"><h3>Other events you're hosting - <b>register them with dibs!</b></h3></div>
+		<h3>Other events you're hosting - <b>register them with dibs!</b></h3>
 
 		<% if(hostNotRegisteredEvents.length===0) { %>
 			<p>You're not hosting any events that aren't already registered with dibs.</p>
 		<% } %>
-		<ul class="list-group">
+		
 		<% for(var i = 0; i<hostNotRegisteredEvents.length; i++) { %>
-			<% include ./hostNotRegisteredEvent %>
-		</ul>
+			<div class="panel panel-primary home">
+				<% include ./hostNotRegisteredEvent %>
+			</div>
 		<% } %>
 	</div>
 	<div id = 'attendingNotRegisteredEvents' class = 'event-container'>
-		<div class="page-header"><h3>Other events you're attending - <b>contact hosts to support dibs integration!</b></h3></div>
+		<h3>Other events you're attending - <b>contact hosts to support dibs integration!</b></h3>
 
 		<% if(attendingNotRegisteredEvents.length===0) { %>
 			<p>You're not attending any events that aren't already registered with dibs.</p>
 		<% } else { %>
-			<ul class="list-group">
+			<div class="panel panel-primary home">
 			<% for(var i = 0; i<attendingNotRegisteredEvents.length; i++) { %>
 				<% include ./attendingNotRegisteredEvent %>
 			<% } %>
-			</ul>
+			</div>
 		<% } %>
 		
 	</div>
