@@ -47,11 +47,9 @@ router.post('/removeDrink', function(req, res) {
 router.post('/addDrink', function(req, res) {
 	Menu.addDrinkOrder(req.body.menuID, {drink: req.body.drink, stock: req.body.stock}, function(err) {
 		if (err) {
-			utils.sendErrResponse(res, 500, 'Drink cannot be added');
+			console.log(err);
+			utils.sendErrResponse(res, 500, err.msg);
 		} 
-		if (isNaN(req.body.stock)){
-			utils.sendErrResponse(res, 400, 'Invalid stock input')
-		}
 		else {
 			Event.findByID(req.body.menuID, function(err, _event) {
 				Menu.getMenu(req.body.menuID, function(menu) {
@@ -59,7 +57,6 @@ router.post('/addDrink', function(req, res) {
 						var eventData = {_event: _event, menu: menu, happening: happening};
 						utils.sendSuccessResponse(res, eventData);
 					})
-
 				});
 			});
 		}

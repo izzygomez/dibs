@@ -89,7 +89,11 @@ menuSchema.statics.addDrinkOrder = function(menuID, drink, callback){
 				callback({msg: "Drink has already been added to Menu"})
 			}
 		});
-		if (pushDrink){
+		if (isNaN(drink.stock)){
+			callback({msg: "Invalid stock input"});
+			pushDrink = false;
+		}
+		if(pushDrink){
 			drinks.push(drink);
 			Menu.update({_id: menuID}, {$set: {drinks: drinks}}, function(){
 				callback(null);

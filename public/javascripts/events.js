@@ -86,7 +86,7 @@
 	});
 
 	/*
-	When the host clicks Add to Menu from suggestions
+	Sends request
 	*/
 	$(document).on('click', '#addToMenu', function(evt) {
 		evt.preventDefault();
@@ -100,6 +100,7 @@
 		}).fail(function(responseObject) {
 			var response = $.parseJSON(responseObject.responseText);
 			$('.error').text(response.err);
+
 		});
 	});
 
@@ -112,7 +113,7 @@
 
 		$.post(
 			'/menus/addDrink',
-			{drink: drinkName, menuID: menuID, stock: stock  }
+			{drink: drinkName, menuID: menuID, stock: stock}
 		).done(function(response){
 			if (response.content.happening){
 				loadQueuePage(menuID);
@@ -123,6 +124,7 @@
 		}).fail(function(responseObject){
 			var response = $.parseJSON(responseObject.responseText);
 			$('.error').text(response.err);
+
 		});
 	});
 	
