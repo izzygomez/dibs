@@ -1,13 +1,10 @@
 // Main author: Sara Stiklickas
 
-// grab the things that we need
 var mongoose = require('mongoose');
 var Menu = require('./Menu');
 var Queue = require('./Queue');
-
 var Schema = mongoose.Schema;
 
-// create a schema
 var eventSchema = new Schema({
 	_id: Number,
 	hosts: [{type: Number, ref: 'User'}],
@@ -23,6 +20,10 @@ var eventSchema = new Schema({
 
 /* 
 Checks if an event exists in the database
+params: 
+	eventID: the ID of the event to check
+returns: 
+	boolean value indicating whether the event exists
 */
 eventSchema.statics.eventExists = function(eventID, callback) {
 	var exists = null;
@@ -41,6 +42,10 @@ eventSchema.statics.eventExists = function(eventID, callback) {
 
 /*
 Gets an event from the database
+params: 
+	eventID: the ID of the event to get
+returns:
+	the event with the given ID, or an error if the ID is invalid
 */
 var getEvent = function(eventID, callback) {
 	var thisEvent = null;
@@ -62,6 +67,10 @@ var getEvent = function(eventID, callback) {
 
 /*
 Gets an event given the eventID
+params: 
+	eventID: the ID of the event to find
+returns: 
+	an error if one occurred, and the event that was found
 */
 eventSchema.statics.findByID = function(eventID, callback) {
 	getEvent(eventID, function(thisEvent) {
@@ -71,6 +80,14 @@ eventSchema.statics.findByID = function(eventID, callback) {
 
 /*
 Creates a new event and adds it to the database.
+params: 
+	eventID: the ID of the event to add
+	title: the title of the event
+	start: the time the event starts (javascript Date)
+	end: the time the event ends (javascript Date)
+	guests: a list of guest IDs
+	hosts: a list of host IDs
+	limit: the per-person drink limit of the event 
 */
 eventSchema.statics.createNewEvent = function(eventID, title, start, end, guests, hosts, limit, callback) {
 	Event.eventExists(eventID, function(exists) {
@@ -106,6 +123,12 @@ eventSchema.statics.createNewEvent = function(eventID, title, start, end, guests
 	});
 }
 
+/*
+Adds a suggestion made by a guest to the database
+params: 
+	eventID: the ID of the event to get the suggestion
+	suggestion: a String representing the drink suggested
+*/
 eventSchema.statics.addSuggestion = function(eventID, suggestion, callback){
 	Event.getSuggestions(eventID, function(err, suggestions){
 		var count = suggestions.length;
@@ -133,6 +156,10 @@ eventSchema.statics.addSuggestion = function(eventID, suggestion, callback){
 
 /*
 Checks if an event is currently happening
+params:
+	eventID: the ID of the event to check
+returns:
+	an error if one occurs, and the boolean indicating whether the event is happening
 */
 eventSchema.statics.isHappening = function(eventID, callback){
 	var now = Date.now();
@@ -147,6 +174,10 @@ eventSchema.statics.isHappening = function(eventID, callback){
 
 /*
 Gets the drink suggestions for an event
+params:
+	eventID: the ID of the event to get suggestions from
+returns: 
+	an error if one occurs, and the list of suggestions of the form {drink, count}
 */
 eventSchema.statics.getSuggestions = function(eventID, callback) {
 	getEvent(eventID, function(thisEvent) {
@@ -155,6 +186,14 @@ eventSchema.statics.getSuggestions = function(eventID, callback) {
 	});
 }
 
+/*
+Checks whether a guest has reached the drink limit
+params: 
+	userID: the ID of the user whose limit will be checked
+	eventID: the ID of the event where it will check
+returns:
+	boolean that is true if the guest has reached the drink limit, else false
+*/
 eventSchema.statics.checkLimit = function(userID, eventID, callback) {
 	getEvent(eventID, function(thisEvent) {
 		thisEvent.guests.forEach(function(guestObject) {
@@ -165,6 +204,14 @@ eventSchema.statics.checkLimit = function(userID, eventID, callback) {
 	});
 }
 
+/*
+Checks whether a guest has reached the suggestion limit
+params: 
+	userID: the ID of the user whose suggestion limit will be checked
+	eventID: the ID of the event where it will check
+returns: 
+	boolean that is true if suggestions limit has not been reached, else false
+*/
 eventSchema.statics.checkSuggestionLimit = function(userID, eventID, callback) {
 	getEvent(eventID, function(thisEvent) {
 		thisEvent.guests.forEach(function(guestObject) {
@@ -175,6 +222,12 @@ eventSchema.statics.checkSuggestionLimit = function(userID, eventID, callback) {
 	});
 }
 
+/*
+Decreases the number of suggestions left for a guest to make
+params:
+	userID: the ID of the user with the count to decrease
+	eventID: the ID of the event with the count to decrease
+*/
 eventSchema.statics.decreaseSuggestionCount = function(userID, eventID, callback) {
 	getEvent(eventID, function(thisEvent) {
 		var newGuestList = thisEvent.guests.map(function(guestObject) {
@@ -193,6 +246,12 @@ eventSchema.statics.decreaseSuggestionCount = function(userID, eventID, callback
 	});
 }
 
+/*
+Adds a drink to the number of drinks ordered by a guest
+params:
+	userID: the ID of the user who ordered a drink
+	eventID: the ID of the event where they ordered a drink
+*/
 eventSchema.statics.decreaseLimit = function(userID, eventID, callback) {
 	getEvent(eventID, function(thisEvent) {
 		var newGuestList = thisEvent.guests.map(function(guestObject) {
@@ -211,6 +270,13 @@ eventSchema.statics.decreaseLimit = function(userID, eventID, callback) {
 /* 
 Change some of the information regarding the event, so that the event's information is updated to
 what is on Facebook
+params:
+	eventID: the ID of the event to update
+	newTitle: the new title for the event
+	newStart: the new start time for the event
+	newEnd: the new end time for the event
+	newGuests: the new list of guest IDs for the event
+	newHosts: the new list of host IDs for the event
 */
 eventSchema.statics.updateEvent = function(eventID, newTitle, newStart, newEnd, newGuests, newHosts, callback){
 	getEvent(eventID, function(thisEvent) {
@@ -221,6 +287,12 @@ eventSchema.statics.updateEvent = function(eventID, newTitle, newStart, newEnd, 
 	});
 }
 
+/*
+Sets the individual drink limit (drinks allowed per guest) for an event
+params: 
+	eventID: the ID of the event getting the new limit
+	newLimit: the new drink limit that is being set
+*/
 eventSchema.statics.setLimit = function(eventID, newLimit, callback) {
 	getEvent(eventID, function(thisEvent) {
 		Event.update({_id: eventID}, {drinkLimit: newLimit}, function() {
