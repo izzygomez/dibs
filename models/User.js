@@ -8,6 +8,7 @@ var Schema = mongoose.Schema;
 // User schema is created
 var userSchema = new Schema({
 	_id: Number,					// Will be the Facebook ID assigned to the user
+	username: String,
 	token: String,	// Facebook Credentials, not sure if this will be needed. 
 	suggestions: Number,
 });
@@ -58,13 +59,14 @@ userSchema.statics.getUser = function(userID, callback){
 	});
 }
 
-userSchema.statics.createNewUser = function(userID, token, callback){
+userSchema.statics.createNewUser = function(userID, token, username, callback){
 	User.userExists(userID, function(bool){
 		if (bool){
 			callback({taken: true});
 		} else{
 			User.create({_id: userID,
 						token: token,
+						username: username
 						suggestions: 3});
 			callback(null);
 		}
@@ -85,6 +87,16 @@ userSchema.statics.getSuggestions = function(userID, callback){
 	User.getUser(userID, function(bool, actualUser){
 		if (bool){
 			callback(null, actualUser.suggestions);
+		} else{
+			callback({msg: 'Invalid user'});
+		}
+	});
+}
+
+userSchema.statics.getUsername = function(userID, callback){
+	User.getUser(userID, function(bool, actualUser){
+		if (bool){
+			callback(null, actualUser.username);
 		} else{
 			callback({msg: 'Invalid user'});
 		}
