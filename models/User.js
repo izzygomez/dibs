@@ -8,7 +8,6 @@ var Schema = mongoose.Schema;
 // User schema is created
 var userSchema = new Schema({
 	_id: Number,					// Will be the Facebook ID assigned to the user
-	username: String,
 	token: String,	// Facebook Credentials, not sure if this will be needed. 
 	suggestions: Number,
 });
@@ -59,15 +58,13 @@ userSchema.statics.getUser = function(userID, callback){
 	});
 }
 
-userSchema.statics.createNewUser = function(userID, token, hostedEvents, attendingEvents, callback){
+userSchema.statics.createNewUser = function(userID, token, callback){
 	User.userExists(userID, function(bool){
 		if (bool){
 			callback({taken: true});
 		} else{
 			User.create({_id: userID,
 						token: token,
-						eventsHosting: hostedEvents,
-						eventsAttending: attendingEvents,
 						suggestions: 3});
 			callback(null);
 		}
@@ -84,50 +81,10 @@ userSchema.statics.getToken = function(userID, callback){
 	});
 }
 
-userSchema.statics.getUsername = function(userID, callback){
-	User.getUser(userID, function(bool, actualUser){
-		if (bool){
-			callback(null, actualUser.username);
-		} else{
-			callback({msg: 'Invalid user'});
-		}
-	});
-}
-
 userSchema.statics.getSuggestions = function(userID, callback){
 	User.getUser(userID, function(bool, actualUser){
 		if (bool){
 			callback(null, actualUser.suggestions);
-		} else{
-			callback({msg: 'Invalid user'});
-		}
-	});
-}
-
-userSchema.statics.checkSuggestionsLimit = function(userID, callback){
-	User.getUser(userID, function(bool, actualUser){
-		console.log("found user");
-		if (bool){
-			User.getSuggestions(userID, function(suggestions){
-				console.log("found suggestions");
-				console.log(suggestions);
-				var newCount;
-				if (suggestions >= 1){
-					console.log("updating suggestions");
-					newCount = suggestions - 1
-					User.update({_id: userID}, {$set: {suggestions: newCount}}, function(){});
-					callback(true)
-				}
-				if (suggestions === 1){
-					newCount - 1;
-					User.update({_id: userID}, {$set: {suggestions: newCount}}, function(){});
-					callback(true)
-				}
-				else{
-					console.log("failed");
-					callback(false);
-				}
-			});
 		} else{
 			callback({msg: 'Invalid user'});
 		}
