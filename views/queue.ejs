@@ -8,10 +8,10 @@
 			<li><%= orderAttributes[i].fromUser %></li>
 			<li><%= orderAttributes[i].drink %></li>
 			<% if (orderAttributes[i]._status===0) { %>
-				<button id="notifyButton">Notify</button>
+				<button class="btn btn-sm btn-success" id="notifyButton">Notify</button>
 			<% } %>
 			<% if (orderAttributes[i]._status===1) { %>
-				<button id="servedButton">Served</button>
+				<button class="btn btn-sm btn-success" id="servedButton">Served</button>
 			<% } %>
 			
 		</div>

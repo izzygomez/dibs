@@ -8,7 +8,7 @@
 	    <% if (_event.suggestions !== undefined){ 
 	    	for (var i = 0; i < _event.suggestions.length; i++){ %>
 	    		<li> <%= _event.suggestions[i].drink + ": " + _event.suggestions[i].count %>
-	    		<button id="addToMenu" data-drink="<%= _event.suggestions[i].drink %>">Add to Menu</button>
+	    		<button class="btn btn-sm btn-success" id="addToMenu" data-drink="<%= _event.suggestions[i].drink %>">Add to Menu</button>
 	    		</li>
 	    	<% } %>
 		<% } %>
@@ -21,7 +21,7 @@
 	    	<p>Drink Limit Per Guest: <%= _event.drinkLimit %></p>
 	    	<div>
 		    	<input type="text" id="limitBox" value="Guest Drink Limit">
-		    	<button id="setDrinkLimit">Set Limit</button>
+		    	<button class="btn btn-sm btn-success" id="setDrinkLimit">Set Limit</button>
 	    	</div>
 	        <ul>
 		    <% if (menu.drinks !== undefined){
