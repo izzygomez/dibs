@@ -1,10 +1,12 @@
 // Main Author: Daniel Lerner
 
-// grab the things that we need
 var mongoose = require('mongoose');
-
 var Schema = mongoose.Schema;
 
+/* Create the Queue schema 
+* Defined by id, and a list of drink orders.
+* Each drink has an id referncing an Order
+*/
 var queueSchema = new Schema({
   _id: Number,
 	orders: [{type: Number, ref: 'Order'}]
@@ -12,6 +14,8 @@ var queueSchema = new Schema({
 
 /**
 * Checks if queue exists in database
+* @param: queueID: ID of queue to check database for
+* returns true if queue stored in database, false otherwise
 **/
 var queueExists = function(queueID, callback){
   var exists = null;
@@ -26,7 +30,9 @@ var queueExists = function(queueID, callback){
 }
 
 /**
-* Get Queue using inputted id
+* Get target Queue using inputted id
+* @param: queueID: ID of queue to check database for
+* returns queue object if found in database, null otherwise
 **/
 queueSchema.statics.getQueue = function(queueID, callback){
   var result;
@@ -42,7 +48,10 @@ queueSchema.statics.getQueue = function(queueID, callback){
 }
 
 /*
-* Gets list of orders currently in Queue for event
+* Gets list of drink orders on Queue
+* @param: queueID: ID of queue to check database for
+* returns list of drink orders for desired queue
+* Error message thrown if queue ID invalid
 */
 queueSchema.statics.getEventOrders = function(queueID, callback){
 	var orders;
@@ -66,6 +75,8 @@ queueSchema.statics.getEventOrders = function(queueID, callback){
 
 /**
 * Gets next drink order on Queue, updates database
+* @param: queueID: ID of queue to check database for
+returns an Order that is next up in the Queue order
 **/
 queueSchema.statics.getNextOrder = function(queueID, callback) {
 	Queue.getEventOrders(queueID, function(orders){
@@ -77,8 +88,9 @@ queueSchema.statics.getNextOrder = function(queueID, callback) {
 
 /**
 * Adds drink order to Queue, updates database
+* @param: queueID: ID of queue to check database for
+* orderID: ID of drink order to add to queue
 **/
-// need a callback function in update?? peep user model
 queueSchema.statics.addDrinkOrder = function(queueID, orderID, callback){
 	Queue.getEventOrders(queueID, function(orders){
 		orders.push(orderID);
@@ -89,6 +101,7 @@ queueSchema.statics.addDrinkOrder = function(queueID, orderID, callback){
 
 /**
 * Creates new Queue for event
+* @param: queueID: ID for new Queue to be added to database
 **/
 queueSchema.statics.createQueue = function(queueID, callback){
   queueExists(queueID, function(result){

@@ -50,22 +50,12 @@ router.get('/hostPreEvent', function(req, res) {
   });
 });
 
-/* GET guest waiting page */
-router.get('/waiting', function(req, res) {
-  res.render('waitPage');
-});
-
-/* GET guest notification page */
-router.get('/notify', function(req, res) {
-  res.render('notifyPage');
-});
-
 /* GET guest notification page */
 router.get('/suggestions', function(req, res) {
   res.render('hostSuggestions', {_event: req.query.eventData._event, menu: req.query.eventData.menu});
 });
 
-
+/* Verifies if user is logged in currently and redirects to their dashboard if logged in*/
 function isLoggedIn(req, res, next) {
 	if (!req.isAuthenticated()) {
 		return next();	

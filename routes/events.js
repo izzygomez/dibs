@@ -10,11 +10,16 @@ var Queue = require('../models/Queue');
 var Order = require('../models/Order');
 var FB = require('fb');
 
-// ***************************************
-// The event routes go here.
-// ***************************************
-
-// METHOD SPEC NEEDED -- renders display of menu for guest at event happening now
+/* 
+	POST /events/menu
+	Request query: 
+		- menuID: ID of desired menu
+	Request user:
+		- _id: id of user currently logged into Dibs
+	Response:
+		- success: True if the server succeeded in gathering data for menus.ejs
+		- success: renders menus.ejs file for guest to see information regarding event
+*/
 router.get('/menu', function(req, res){
 	Event.findByID(req.query.menuID, function(err, _event){
 		var currentGuest = _event.guests.filter(function(guest) {
@@ -57,9 +62,6 @@ router.get('/menu', function(req, res){
    	});
 });
 
-// TODO: Possibly not in this file, but somewhere, write routes that will fetch the events 
-// a user is going to that are not registered with dibs. 
-
 /* 
 	POST /events
 	Request body:
@@ -69,9 +71,6 @@ router.get('/menu', function(req, res){
 		- err: On failure, an error message
 */
 router.post('/', function(req, res){
-	// TODO: Get all the information needed to create the event using the FB API
-	// TODO: Set the drink limit for a specific event, which for the MVP, will be
-	// 		 a fixed number.
 	var eventID = req.body.eventID;
 	User.getToken(req.user._id, function(err, token){
 		FB.setAccessToken(token);
@@ -94,23 +93,26 @@ router.post('/', function(req, res){
 					}
 				});
 			} else {
-				console.log(response.error);
+				utils.sendErrResponse(res, 500, 'Unable to register event');
 			}
 		});
 	});
 });
 
+/*
+  POST /events/suggest
+  Request body:
+  - eventID: id of event to check/modify suggestions of
+  - suggestion1: name of suggestion submitted
+  Response:
+    - success: true if the server succeeded in adding suggestion to an event
+    - err: on failure, an error message noting a user is out of suggestions
+*/
 router.post('/suggest', function(req, res) {
 	Event.checkSuggestionLimit(req.user._id, req.body.eventID, function(result){
-		console.log("able to suggest?");
-		console.log(result);
 		if (result){
-			console.log("decreaseSuggestionCount");
 			Event.decreaseSuggestionCount(req.user._id, req.body.eventID, function(result){
-				console.log("decreased suggestion count?");
-				console.log(result)
 				Event.addSuggestion(req.body.eventID, req.body.suggestion1, function(err){
-					console.log("adding suggestion")
 					if (err === null) {
 						utils.sendSuccessResponse(res);
 					}
