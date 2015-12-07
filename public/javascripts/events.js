@@ -137,8 +137,7 @@
 			loadDashboard();
 		}).fail(function(responseObject) {
 			alert("You are out of suggestions for this event!");
-			var response = $.parseJSON(responseObject.responseText);
-			$('.error').text(response.err);
+			loadDashboard();
 		});
 	});
 })();

@@ -74,11 +74,15 @@ router.get('/events', isLoggedIn, function (req, res) {
 										updatedGuestList.push(guest);
 										updatedGuestListIDs.push(guest.user);
 									}
+									if (guest.suggestions < 3){
+										updatedGuestList.push(guest);
+										updatedGuestListIDs.push(guest.user);
+									}
 								});
 								// Now, look at the new guests and see if any of them were added.
 								newGuests.forEach(function(guest){
 									if (updatedGuestListIDs.indexOf(parseInt(guest)) === -1){
-										updatedGuestList.push({user: guest, drinksOrdered: 0, suggestions: 3});
+										updatedGuestList.push({user: parseInt(guest), drinksOrdered: 0, suggestions: 3});
 									}
 								});
 								// Now that we have the corrected guest list, update the database.
@@ -86,7 +90,7 @@ router.get('/events', isLoggedIn, function (req, res) {
 								currentEvent.end_time, updatedGuestList, hosts, function(err){
 									if (err){
 										console.log('Event was not updated correctly! Facebook.js route')
-									} 
+									}
 								});
 							});		
 						}
