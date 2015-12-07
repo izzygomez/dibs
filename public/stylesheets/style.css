@@ -1,6 +1,7 @@
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: #e6e6e6;
 }
 
 a {
@@ -29,12 +30,12 @@ a {
 
 .eventQueue {
 	float:left;
-	width:400px;
+	width: 500px;
 }
 
 .hostsMenu{
 	float:right;
-	width:500px;
+	width: 500px;
 }
 
 .singleEvent {
@@ -52,5 +53,17 @@ a {
 .currentOrders {
 	float:right;
 	width: 500px;
+}
+
+#notifyButton {
+	float:right;
+}
+
+#servedButton {
+	float:right;
+}
+
+.removeDrink {
+	float:right;
 }
 
