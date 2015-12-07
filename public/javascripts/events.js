@@ -4,12 +4,11 @@
 
 // Wrapped in an immediately invoked function expression.
 (function() {
-	// Logic to register an event with the DIBS app.
-	// Only the host can see this.
+
+	// Calls route to register an event on dibs and reloads the user's dashboard if successful
 	$(document).on('click', '.register-button', function(evt){
 		var item = $(this).parent();
 		var eventID = item.data('event-id');
-		// Post to the events
 		$.post(
 			'/events',
 			{eventID: eventID}
@@ -21,6 +20,8 @@
 		});
 	});
 
+	// Calls route to remove drink from specified menu page
+	// Reloads updated menu page if successful (shows Queue if event is happening now, Suggestions page otherwise)
 	$(document).on('click', '.removeDrink', function(evt){
 		evt.preventDefault();
 		var item = $(this).parent();
@@ -42,6 +43,8 @@
 		});
 	});
 
+	// Calls route to set stock for a specified drink
+	// Reloads updated menu page if successful (shows Queue if event is happening now, Suggestions page otherwise)
 	$(document).on('click', '#setStock', function(evt){
 		evt.preventDefault();
 		var item = $(this).parent();
@@ -65,6 +68,8 @@
 		});
 	});
 
+	// Calls route to set drink limit for an event
+	// Reloads suggestions page if successful
 	$(document).on('click', '#setDrinkLimit', function(evt) {
 		evt.preventDefault();
 		var drinkLimit = $('#limitBox').val();
@@ -81,7 +86,7 @@
 	});
 
 	/*
-	When the host clicks Add to Menu from suggestions
+	Sends request
 	*/
 	$(document).on('click', '#addToMenu', function(evt) {
 		evt.preventDefault();
@@ -95,6 +100,7 @@
 		}).fail(function(responseObject) {
 			var response = $.parseJSON(responseObject.responseText);
 			$('.error').text(response.err);
+
 		});
 	});
 
@@ -107,7 +113,7 @@
 
 		$.post(
 			'/menus/addDrink',
-			{drink: drinkName, menuID: menuID, stock: stock  }
+			{drink: drinkName, menuID: menuID, stock: stock}
 		).done(function(response){
 			if (response.content.happening){
 				loadQueuePage(menuID);
@@ -118,6 +124,7 @@
 		}).fail(function(responseObject){
 			var response = $.parseJSON(responseObject.responseText);
 			$('.error').text(response.err);
+
 		});
 	});
 	
