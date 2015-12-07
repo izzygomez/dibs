@@ -55,7 +55,8 @@ router.get('/menu', function(req, res){
 							});
 						});
 					} else {
-						res.render('menu', {eventName: _event._title, menu_id: req.query.menuID, drinks: drinks, orders: myOrders});
+						res.render('menu', {eventName: _event._title, menu_id: req.query.menuID, drinks: drinks, orders: myOrders,
+											showMenu: currentGuest[0].drinksOrdered < _event.drinkLimit});
 					}
 				});
 			}
