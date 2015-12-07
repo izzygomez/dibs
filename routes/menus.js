@@ -48,7 +48,11 @@ router.post('/addDrink', function(req, res) {
 	Menu.addDrinkOrder(req.body.menuID, {drink: req.body.drink, stock: req.body.stock}, function(err) {
 		if (err) {
 			utils.sendErrResponse(res, 500, 'Drink cannot be added');
-		} else {
+		} 
+		if (isNaN(req.body.stock)){
+			utils.sendErrResponse(res, 400, 'Invalid stock input')
+		}
+		else {
 			Event.findByID(req.body.menuID, function(err, _event) {
 				Menu.getMenu(req.body.menuID, function(menu) {
 					Event.isHappening(req.body.menuID, function(err, happening){
