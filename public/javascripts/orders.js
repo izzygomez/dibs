@@ -10,11 +10,11 @@
 			{drink: drink, eventID: eventID}
 		).done(function(response) {
 			var orderID = response.content.orderID;
-			loadWaitingPage(); // page that waits for notification
+			loadMenuPage(eventID); // page that waits for notification
 			var isReadyFunc = function(){
 				$.get('/orders/status', {orderID: orderID}, function(response) {
 					if (response.content._status === 1) {
-						loadNotificationPage();
+						loadMenuPage(eventID);
 						clearInterval(ready);
 					}
 				});

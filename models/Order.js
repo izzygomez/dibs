@@ -63,8 +63,10 @@ orderSchema.statics.createOrder = function(drink, fromUser, callback) {
 			var orderID = orderList.length;
 			var data = {_id: orderID, drink: drink, from: fromUser, 
 						timeStamp: Date.now(), _status: 0};
-			Order.create(data);
-			callback(orderID);
+			Order.create(data, function(){
+				console.log('created');
+				callback(orderID);
+			});
 		}
 	});
 }

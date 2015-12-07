@@ -6,6 +6,8 @@ var utils = require('../utils/utils');
 var Event = require('../models/Event');
 var User = require('../models/User');
 var Menu = require('../models/Menu');
+var Queue = require('../models/Queue');
+var Order = require('../models/Order');
 var FB = require('fb');
 
 // ***************************************
@@ -15,9 +17,41 @@ var FB = require('fb');
 // METHOD SPEC NEEDED -- renders display of menu for guest at event happening now
 router.get('/menu', function(req, res){
 	Event.findByID(req.query.menuID, function(err, _event){
+		var currentGuest = _event.guests.filter(function(guest) {
+			return guest.user === req.user._id;
+		});
 		Menu.getMenuDrinks(req.query.menuID, function(drinks){
 			if(drinks){
-				res.render('menu', {eventName: _event._title, menu_id: req.query.menuID, drinks: drinks});
+				Queue.getEventOrders(req.query.menuID, function(orders) {
+					var myOrders = [];
+					if (orders.length !== 0) {
+						orders.forEach(function(orderID, i) {
+							Order.getOrder(orderID, function(order) {
+								if (order.from === req.user._id && order._status != 2) {
+									var status = "not set";
+									switch(order._status) {
+										case 0:
+											status = "Queued";
+											break;
+										case 1:
+											status = "Ready!";
+											break;
+										default: 
+											status = "Status Error";
+									}
+									myOrders.push({ordered: order.drink, _status: status});
+									if (i === orders.length-1) {
+										var showMenu = currentGuest[0].drinksOrdered < _event.drinkLimit;
+										res.render('menu', {eventName: _event._title, menu_id: req.query.menuID, 
+															drinks: drinks, orders: myOrders, showMenu: showMenu});
+									}
+								}
+							});
+						});
+					} else {
+						res.render('menu', {eventName: _event._title, menu_id: req.query.menuID, drinks: drinks, orders: myOrders});
+					}
+				});
 			}
 		});
    	});

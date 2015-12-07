@@ -44,3 +44,13 @@ a {
 	border-style: solid;
 }
 
+.menu {
+	float:left;
+	width: 400px;
+}
+
+.currentOrders {
+	float:right;
+	width: 500px;
+}
+
