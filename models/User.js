@@ -91,36 +91,6 @@ userSchema.statics.getSuggestions = function(userID, callback){
 	});
 }
 
-userSchema.statics.checkSuggestionsLimit = function(userID, callback){
-	User.getUser(userID, function(bool, actualUser){
-		console.log("found user");
-		if (bool){
-			User.getSuggestions(userID, function(suggestions){
-				console.log("found suggestions");
-				console.log(suggestions);
-				var newCount;
-				if (suggestions >= 1){
-					console.log("updating suggestions");
-					newCount = suggestions - 1
-					User.update({_id: userID}, {$set: {suggestions: newCount}}, function(){});
-					callback(true)
-				}
-				if (suggestions === 1){
-					newCount - 1;
-					User.update({_id: userID}, {$set: {suggestions: newCount}}, function(){});
-					callback(true)
-				}
-				else{
-					console.log("failed");
-					callback(false);
-				}
-			});
-		} else{
-			callback({msg: 'Invalid user'});
-		}
-	});
-}
-
 var User = mongoose.model('User', userSchema);
 
 module.exports = User;
