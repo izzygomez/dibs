@@ -8,7 +8,7 @@
 	    <% if (_event.suggestions !== undefined){ 
 	    	for (var i = 0; i < _event.suggestions.length; i++){ %>
 	    		<li> <%= _event.suggestions[i].drink + ": " + _event.suggestions[i].count %>
-	    		<button id="addToMenu" data-drink="<%= _event.suggestions[i].drink %>">Add to Menu</button>
+	    		<button class="btn btn-sm btn-success" id="addToMenu" data-drink="<%= _event.suggestions[i].drink %>">Add to Menu</button>
 	    		</li>
 	    	<% } %>
 		<% } %>
@@ -21,15 +21,15 @@
 	    	<p>Drink Limit Per Guest: <%= _event.drinkLimit %></p>
 	    	<div>
 		    	<input type="text" id="limitBox" value="Guest Drink Limit">
-		    	<button id="setDrinkLimit">Set Limit</button>
+		    	<button class="btn btn-sm btn-success" id="setDrinkLimit">Set Limit</button>
 	    	</div>
 	        <ul>
 		    <% if (menu.drinks !== undefined){
 		    	for (var i = 0; i < menu.drinks.length; i++){ %>
 		    		<li data-drink="<%= menu.drinks[i].drink %>"> <%= menu.drinks[i].drink + " (" + menu.drinks[i].stock + ")"%>
-		    		<input type='button' class = "removeDrink" id="remove-drink" value = "Remove"><br><br>
+		    		<input type='button' class = "btn btn-sm btn-success removeDrink" id="remove-drink" value = "Remove"><br><br>
 		    		<input type="text" id="<%=menu.drinks[i].drink%>"name="<%=menu.drinks[i].drink + "stock"%>" value="">
-		    		<input type="button" id="setStock" data-drink="<%= menu.drinks[i].drink %>" data-menu-id="<%= _event._id %>" value="Set Stock">
+		    		<input type="button" class="btn btn-sm btn-success" id="setStock" data-drink="<%= menu.drinks[i].drink %>" data-menu-id="<%= _event._id %>" value="Set Stock">
 		    		</li>
 		    		<br>
 		    	<% } %>
@@ -37,7 +37,7 @@
 			</ul>
 			<input type="text" id="customName" data-menu-id="<%= _event._id %>" value="Enter Drink">
 			<input type="text" id="customStock" data-menu-id="<%= _event._id %>" value="Enter Stock">
-			<input type="button" id="addCustomDrink" value="Add Drink">
+			<input type="button" class="btn btn-sm btn-success" id="addCustomDrink" value="Add Drink">
 		</form>
 	</div>
 </div>

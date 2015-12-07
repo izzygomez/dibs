@@ -2,47 +2,53 @@
 
 <div id = "allEvents">
 	<div id = 'hostRegisteredEvents' class = 'event-container'>
-		<h3>Dibs Events You're Hosting</h3>
+		<div class="page-header"><h3>Dibs events you're hosting</h3></div>
 
 		<% if(hostRegisteredEvents.length===0) { %>
 			<p>No events that you're hosting are using dibs :(</p>
 		<% } %>
-
+		<ul class="list-group">
 		<% for(var i = 0; i<hostRegisteredEvents.length; i++) { %>
 			<% include ./hostRegisteredEvent %>	
+		</ul>
 		<% } %>
 	</div>
 	<div id = 'attendingRegisteredEvents' class = 'event-container'>
-		<h3>Dibs Events You're Attending</h3>
+		<div class="page-header"><h3>Dibs events you're attending</h3></div>
 
 		<% if(attendingRegisteredEvents.length===0) { %>
 			<p>No events that you're attending are using dibs. Contact event hosts to enable dibs integration!</p>
 		<% } %>
-
+		<ul class="list-group">
 		<% for(var i = 0; i<attendingRegisteredEvents.length; i++) { %>
 			<% include ./attendingRegisteredEvent %>
+		</ul>
 		<% } %>
 	</div>
 	<div id = 'hostNotRegisteredEvents' class = 'event-container'>
-		<h3>Other Events You're Hosting - <b>register them with dibs!</b></h3>
+		<div class="page-header"><h3>Other events you're hosting - <b>register them with dibs!</b></h3></div>
 
 		<% if(hostNotRegisteredEvents.length===0) { %>
 			<p>You're not hosting any events that aren't already registered with dibs.</p>
 		<% } %>
-
+		<ul class="list-group">
 		<% for(var i = 0; i<hostNotRegisteredEvents.length; i++) { %>
 			<% include ./hostNotRegisteredEvent %>
+		</ul>
 		<% } %>
 	</div>
 	<div id = 'attendingNotRegisteredEvents' class = 'event-container'>
-		<h3>Other Events You're Attending - <b>contact hosts to support dibs integration!</b></h3>
+		<div class="page-header"><h3>Other events you're attending - <b>contact hosts to support dibs integration!</b></h3></div>
 
 		<% if(attendingNotRegisteredEvents.length===0) { %>
 			<p>You're not attending any events that aren't already registered with dibs.</p>
+		<% } else { %>
+			<ul class="list-group">
+			<% for(var i = 0; i<attendingNotRegisteredEvents.length; i++) { %>
+				<% include ./attendingNotRegisteredEvent %>
+			<% } %>
+			</ul>
 		<% } %>
-
-		<% for(var i = 0; i<attendingNotRegisteredEvents.length; i++) { %>
-			<% include ./attendingNotRegisteredEvent %>
-		<% } %>
+		
 	</div>
 </div>
