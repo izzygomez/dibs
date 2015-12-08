@@ -36,9 +36,8 @@
 	});
 
 	$(document).on('click', '#servedButton', function(evt) {
-		var item = $(this).parent();
-		var orderID = item.data('order-id'); 
-		var eventID = $(this).parent().data('id');
+		var orderID = $('.queue').data('order-id');
+		var eventID = $('.queue').data('id');
 
 		$.post(
 			'/orders/served',
@@ -52,16 +51,13 @@
 	});
 
 	$(document).on('click', '#notifyButton', function(evt) {
-		var item = $(this).parent();
-		var orderID = item.data('order-id');
-		var eventID = $(this).parent().data('id');
+		var orderID = $('.queue').data('order-id');
+		var eventID = $('.queue').data('id');
 
-		// console.log(eventID);
 		$.post(
 			'/orders/notified',
 			{orderID: orderID}
 		).done(function(response) {
-			// console.log('done '+ eventID);
 			loadQueuePage(eventID); // still same page
 		}).fail(function(responseObject) {
 			var response = $.parseJSON(responseObject.responseText);
