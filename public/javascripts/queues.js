@@ -7,8 +7,7 @@
 **/
   $(document).on('click', '#servedButton', function(evt) {
     evt.preventDefault();
-    var item = $(this).parent();
-    var id = item.data('id');
+    var id = $('.queue').data('id');
     $.post(
         '/queues/served',
         { _id: id }

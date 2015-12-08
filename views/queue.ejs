@@ -2,7 +2,7 @@
 <div class = "eventQueue">
 	<h2>Order Queue</h2>
 	<% for (var i=0; i<orderAttributes.length; i++) { %>
-		<div data-id = <%= queueID %> data-order-id = <%= orderAttributes[i].orderID %> class = "panel panel-primary">
+		<div data-id = <%= queueID %> data-order-id = <%= orderAttributes[i].orderID %> class = "panel panel-primary queue">
 			<div class="panel-heading"><%= orderAttributes[i].drink %></div>
 				<div class = "panel-body">
 					<div>
