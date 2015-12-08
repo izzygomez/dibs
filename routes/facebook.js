@@ -3,6 +3,7 @@ var router = express.Router();
 var Event = require('../models/Event.js');
 var User = require('../models/User.js');
 var FB = require('fb');
+var utils = require('../utils/utils');
 
 /*
   GET /tweets

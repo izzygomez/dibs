@@ -2,22 +2,24 @@
 <div class = "eventQueue">
 	<h2>Order Queue</h2>
 	<% for (var i=0; i<orderAttributes.length; i++) { %>
-		<div data-id = <%= queueID %> data-order-id = <%= orderAttributes[i].orderID %> class = "panel panel-primary queue">
-			<div class="panel-heading"><%= orderAttributes[i].drink %></div>
-				<div class = "panel-body">
-					<div>
-						<img src="//graph.facebook.com/<%= orderAttributes[i].fromUserID %>/picture">
-						
-						<% if (orderAttributes[i]._status===0) { %>
-							<button class="btn btn-sm btn-primary" id="notifyButton">Notify</button>
-						<% } %>
-						<% if (orderAttributes[i]._status===1) { %>
-							<button class="btn btn-sm btn-primary" id="servedButton">Served</button>
-						<% } %>
+		<% if (orderAttributes[i]._status!==2) { %>
+			<div data-id = <%= queueID %> data-order-id = <%= orderAttributes[i].orderID %> class = "panel panel-primary queue">
+				<div class="panel-heading"><%= orderAttributes[i].drink %></div>
+					<div class = "panel-body">
+						<div>
+							<img src="//graph.facebook.com/<%= orderAttributes[i].fromUserID %>/picture">
+							
+							<% if (orderAttributes[i]._status===0) { %>
+								<button class="btn btn-sm btn-primary" id="notifyButton">Notify</button>
+							<% } %>
+							<% if (orderAttributes[i]._status===1) { %>
+								<button class="btn btn-sm btn-primary" id="servedButton">Served</button>
+							<% } %>
+						</div>
 					</div>
-				</div>
-			<div class="panel-footer"><%= orderAttributes[i].fromUser %></div>
-		</div>
+				<div class="panel-footer"><%= orderAttributes[i].fromUser %></div>
+			</div>
+		<% } %>
 	<% } %>
 </div>
 
